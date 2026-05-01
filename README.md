@@ -32,7 +32,6 @@ discord_multibot/
     │       ├── admin.py             # /backup_database, /send_message, /send_embed
     │       ├── community.py         # /rules, /information + persistente Views
     │       ├── minigames.py         # /random, /rg, /flachwitz, /add_flachwitz
-    │       ├── orders.py            # /donation, /order_terms, /order_price
     │       ├── support.py           # /script_guides
     │       └── utility.py           # /ping, /userinfo (inkl. Punkte), /clear
     │
@@ -165,9 +164,6 @@ sudo systemctl disable multibot.service
 | `/clear`           | Nachrichten löschen (max. 100)                    | Team                            |
 | `/random`          | Geheimzahl für Ratespiel setzen                   | Team                            |
 | `/add_flachwitz`   | Flachwitz hinzufügen                              | Team                            |
-| `/donation`        | Spendenlink senden                                | Founder, Manager                |
-| `/order_terms`     | Nutzungsbedingungen senden                        | Founder, Manager, Developer     |
-| `/order_price`     | Preisbestätigung senden                           | Founder, Manager, Developer     |
 | `/send_message`    | Nachricht über Modal senden                       | Founder, Manager                |
 | `/send_embed`      | Embed über Modal senden                           | Founder, Manager                |
 | `/information`     | Information-Embed senden                          | Founder, Manager                |
