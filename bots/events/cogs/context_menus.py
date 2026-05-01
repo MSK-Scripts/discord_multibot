@@ -90,6 +90,42 @@ class ContextMenusCog(commands.Cog, name="ContextMenus"):
             "Successfully commented the feedback :white_check_mark:", ephemeral=True, delete_after=2
         )
 
+        # ── DM an den Feedback-Autor senden ────────────────────────────────────
+        # User-ID aus dem Embed-Description-Mention extrahieren (<@USER_ID>)
+        author_id = None
+        if last_embed.description:
+            import re
+            match = re.search(r"<@!?(\d+)>", last_embed.description)
+            if match:
+                author_id = int(match.group(1))
+
+        if author_id:
+            try:
+                feedback_author = await interaction.client.fetch_user(author_id)
+                dm_embed = discord.Embed(
+                    title="📨 Your feedback has been commented!",
+                    color=discord.Color.blurple(),
+                )
+                dm_embed.add_field(
+                    name="Comment by",
+                    value=f"{interaction.user.display_name} ({interaction.user.mention})",
+                    inline=False,
+                )
+                dm_embed.add_field(
+                    name="Comment",
+                    value=comment,
+                    inline=False,
+                )
+                dm_embed.set_footer(text=f"MSK Scripts • {interaction.guild.name}")
+                await feedback_author.send(embed=dm_embed)
+                log.info("DM an Feedback-Autor %s gesendet.", feedback_author)
+            except discord.Forbidden:
+                log.warning("Konnte keine DM an User %d senden (DMs deaktiviert).", author_id)
+            except discord.NotFound:
+                log.warning("Feedback-Autor mit ID %d nicht gefunden.", author_id)
+            except Exception as exc:
+                log.error("Fehler beim Senden der DM: %s", exc)
+
     # ── Answer a Message ──────────────────────────────────────────────────────
 
     @app_commands.checks.has_any_role("Founder", "Manager")
