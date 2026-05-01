@@ -40,4 +40,4 @@ desktop.ini
 *.swo
 
 # ─── Eigene Dateien ───────────────────────────────────────────────────────────
-bots/commands/orders.py
+bots/commands/cogs/orders.py
