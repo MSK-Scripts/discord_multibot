@@ -115,7 +115,10 @@ python main.py
 ### Create a system user (recommended)
 
 ```bash
+# Create a dedicated system user (recommended — never run as root)
 sudo useradd --system --no-create-home --shell /sbin/nologin discord
+
+# Set permissions
 sudo chown -R discord:discord /opt/discord_multibot
 ```
 
