@@ -1,0 +1,42 @@
+{
+    "games": {
+        "tictactoe": {
+            "easy":   { "win": 5,  "lose": -2, "draw": 1 },
+            "medium": { "win": 10, "lose": -4, "draw": 2 },
+            "hard":   { "win": 20, "lose": -5, "draw": 5 }
+        },
+        "flipcoin":  { "win": 3,  "lose": -1 },
+        "rps":       { "win": 5,  "lose": -2, "draw": 0 },
+        "slots": {
+            "jackpot":    50,
+            "mega_win":   20,
+            "big_win":    10,
+            "win":        8,
+            "small_win":  3,
+            "no_match":  -2
+        },
+        "trivia": {
+            "easy":   { "win": 5,  "lose": -1 },
+            "medium": { "win": 10, "lose": -2 },
+            "hard":   { "win": 20, "lose": -3 }
+        },
+        "hangman":   { "win": 15, "lose": -3 },
+        "connect4":  { "win": 10, "lose": -3, "draw": 2 },
+        "wordle": {
+            "1_try": 50,
+            "2_try": 30,
+            "3_try": 20,
+            "4_try": 15,
+            "5_try": 10,
+            "6_try":  5,
+            "lose":  -5
+        },
+        "blackjack": { "win": 15, "blackjack": 25, "lose": -5, "draw": 0 }
+    },
+    "rewards": [
+        { "points": 500,   "description": "🥉 Bronze Player",  "role_id": 1494310340132081805 },
+        { "points": 1500,  "description": "🥈 Silver Player",  "role_id": 1494310449506811985 },
+        { "points": 4000,  "description": "🥇 Gold Player",    "role_id": 1494310566762774539 },
+        { "points": 10000, "description": "💎 Diamond Player", "role_id": 1494310621569617990 }
+    ]
+}
