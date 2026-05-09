@@ -2,6 +2,8 @@
 
 A modular Discord bot system built with **discord.js v14**, running three independent bots in a single Node.js process. Developed and maintained by [MSK Scripts](https://www.msk-scripts.de).
 
+📄 [Readme (EN)](README.md) · [Readme (DE)](README_DE.md)
+
 ---
 
 ## Overview
