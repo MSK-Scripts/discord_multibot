@@ -1,3 +1,5 @@
+<img width="1978" height="394" alt="msk_multi_bot_banner" src="https://github.com/user-attachments/assets/24114a67-6acf-43c7-a8d8-32d1d30c75e0" />
+
 # MSK Scripts – Discord Multi-Bot
 
 A modular Discord bot system built with **discord.js v14**, running three independent bots in a single Node.js process. Developed and maintained by [MSK Scripts](https://www.msk-scripts.de).
