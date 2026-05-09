@@ -1,10 +1,20 @@
 <img width="1978" height="394" alt="msk_multi_bot_banner" src="https://github.com/user-attachments/assets/24114a67-6acf-43c7-a8d8-32d1d30c75e0" />
 
-# MSK Scripts – Discord Multi-Bot
+<div align="center">
 
-A modular Discord bot system built with **discord.js v14**, running three independent bots in a single Node.js process. Developed and maintained by [MSK Scripts](https://www.msk-scripts.de).
+# Discord Multi-Bot
+
+A modular Discord bot system built with **discord.js v14**, running three independent bots in a single Node.js process.
+
+[![Version](https://img.shields.io/github/v/release/MSK-Scripts/discord_multibot?style=flat-square&label=Version&color=5eb131)](https://github.com/MSK-Scripts/discord_multibot/releases)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blueviolet?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0)
+[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Discord.js](https://img.shields.io/badge/Discord.js-v14-5865F2?style=flat-square&logo=discord)](https://discord.js.org)
+[![Documentation](https://img.shields.io/badge/Docs-docu.msk--scripts.de-5eb131?style=flat-square)](https://docu.msk-scripts.de/discord/discord_multibot/getting-started)
 
 📄 [Readme (EN)](README.md) · [Readme (DE)](README_DE.md)
+
+</div>
 
 ---
 
