@@ -1,9 +1,30 @@
-name: 🎫 Auto Release – MSK-Scripts/discord_ticketbot
+name: 🎫 Auto Release
 
 on:
   push:
     tags:
       - 'v*'   # Trigger bei: v1.0.0, v1.2.3, etc.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag, der released werden soll (z. B. v1.2.3)'
+        required: true
+        type: string
+      create_tag:
+        description: 'Neuen Tag erstellen, falls er noch nicht existiert'
+        required: false
+        type: boolean
+        default: false
+      ref:
+        description: 'Branch/Commit für den neuen Tag (nur falls oben aktiviert)'
+        required: false
+        type: string
+        default: main
+
+# Verhindert, dass sich zwei Release-Läufe für denselben Tag überschneiden
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -12,48 +33,93 @@ jobs:
       contents: write
 
     steps:
+      # Tag ermitteln — funktioniert sowohl bei Tag-Push als auch bei manueller Ausführung
+      - name: Tag ermitteln
+        id: tag
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          else
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          if [[ ! "$TAG" =~ ^v ]]; then
+            echo "::error::Tag '$TAG' entspricht nicht dem erwarteten Muster 'v*'."
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      # Checkout des Tags (falls vorhanden) bzw. des angegebenen Branches (für neue Tags).
+      # fetch-depth: 0 holt komplette History + alle Tags.
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0   # Komplette Git-History für Diff
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 0
+
+      # Prüft, ob der Tag existiert. Falls nicht:
+      #   - create_tag aktiviert  → Tag wird aus 'ref' erstellt und gepusht
+      #   - create_tag deaktiviert → Abbruch mit Hinweis
+      - name: Tag prüfen & ggf. erstellen
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.tag.outputs.tag }}"
+
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "✅ Tag '$TAG' existiert bereits."
+            exit 0
+          fi
+
+          if [ "${{ inputs.create_tag }}" != "true" ]; then
+            echo "::error::Tag '$TAG' existiert nicht. Workflow erneut ausführen und die Option 'Neuen Tag erstellen' aktivieren — der Tag wird dann aus '${{ inputs.ref }}' erstellt."
+            exit 1
+          fi
+
+          echo "🏷️  Tag '$TAG' existiert nicht — wird aus '${{ inputs.ref }}' erstellt."
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "refs/tags/$TAG"
+          echo "✅ Tag '$TAG' erstellt und gepusht."
 
       - name: Modified files & Commits ermitteln
-        id: changes
         run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          CURR_TAG="${GITHUB_REF_NAME}"
+          set -euo pipefail
+          CURR_TAG="${{ steps.tag.outputs.tag }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 "${CURR_TAG}^" 2>/dev/null || echo "")
+          REPO="${GITHUB_REPOSITORY}"
 
           if [ -z "$PREV_TAG" ]; then
-            RANGE="HEAD"
-            echo -e "> ⚠️ First Release – no comparison with previous tag possible.\n" > release_body.md
+            RANGE="$CURR_TAG"
+            printf '> ⚠️ First Release – no comparison with previous tag possible.\n\n' > release_body.md
           else
             RANGE="$PREV_TAG..$CURR_TAG"
-            echo -e "> 🔍 Comparison: [\`$PREV_TAG\` → \`$CURR_TAG\`](https://github.com/MSK-Scripts/discord_ticketbot/compare/$PREV_TAG...$CURR_TAG)\n" > release_body.md
+            printf '> 🔍 Comparison: [`%s` → `%s`](https://github.com/%s/compare/%s...%s)\n\n' \
+              "$PREV_TAG" "$CURR_TAG" "$REPO" "$PREV_TAG" "$CURR_TAG" > release_body.md
           fi
 
           # Commits
-          REPO="MSK-Scripts/discord_ticketbot"
           echo "## 📝 Commits" >> release_body.md
-          git log $RANGE --pretty=format:"%H %s (%an)" | while read hash rest; do
-            SHORT=$(echo $hash | cut -c1-7)
-            echo "- [\`$SHORT\`](https://github.com/$REPO/commit/$hash) $rest" >> release_body.md
+          git log "$RANGE" --pretty=format:"%h %H %s (%an)" | while read -r short hash rest; do
+            echo "- [\`$short\`](https://github.com/$REPO/commit/$hash) $rest" >> release_body.md
           done
 
           # Modified files
-          echo -e "\n\n## 📂 Modified files" >> release_body.md
+          printf '\n\n## 📂 Modified files\n' >> release_body.md
           echo '```' >> release_body.md
-          git diff --name-status $RANGE \
+          git diff --name-status "$RANGE" \
             | sed 's/^A\t/✅  NEW      /;s/^M\t/✏️  CHANGED /;s/^D\t/🗑️  DELETED /' \
             >> release_body.md
           echo '```' >> release_body.md
 
           # Statistics
-          STATS=$(git diff --shortstat $RANGE 2>/dev/null || echo "Erster Release")
-          echo -e "\n---\n📊 **$STATS**" >> release_body.md
+          STATS=$(git diff --shortstat "$RANGE" 2>/dev/null || echo "First Release")
+          printf '\n---\n📊 **%s**\n' "$STATS" >> release_body.md
 
       - name: GitHub Release erstellen
         uses: softprops/action-gh-release@v3
         with:
+          tag_name: ${{ steps.tag.outputs.tag }}
           body_path: release_body.md
           generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
