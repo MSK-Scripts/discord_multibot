@@ -99,10 +99,14 @@ jobs:
           fi
 
           # Commits
+          # Use --pretty=format:"...%n" so every line (including the last) ends
+          # with a newline. The previous `while read` loop silently dropped the
+          # most recent commit, because `read` returns non-zero on a final line
+          # without a trailing newline — the loop body was skipped for it.
           echo "## 📝 Commits" >> release_body.md
-          git log "$RANGE" --pretty=format:"%h %H %s (%an)" | while read -r short hash rest; do
-            echo "- [\`$short\`](https://github.com/$REPO/commit/$hash) $rest" >> release_body.md
-          done
+          git log "$RANGE" \
+            --pretty=format:"- [\`%h\`](https://github.com/$REPO/commit/%H) %s (%an)%n" \
+            >> release_body.md
 
           # Modified files
           printf '\n\n## 📂 Modified files\n' >> release_body.md
