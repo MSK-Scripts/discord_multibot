@@ -1,45 +1,35 @@
 const {
-  Client, GatewayIntentBits, Partials, Events, REST, Routes, ActivityType,
+  GatewayIntentBits, Partials, Events, ActivityType,
 } = require('discord.js');
 const { guild: gcfg } = require('../../core/config');
 
-function createBot() {
-  const client = new Client({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMembers,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
-      GatewayIntentBits.GuildModeration,
-      GatewayIntentBits.GuildVoiceStates,
-      GatewayIntentBits.GuildInvites,
-      GatewayIntentBits.GuildMessageReactions,
-    ],
-    partials: [Partials.Channel, Partials.Message],
-  });
+const intents = [
+  GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMembers,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
+  GatewayIntentBits.GuildModeration,
+  GatewayIntentBits.GuildVoiceStates,
+  GatewayIntentBits.GuildInvites,
+  GatewayIntentBits.GuildMessageReactions,
+];
 
+const partials = [Partials.Channel, Partials.Message];
+
+function attach(client, registry) {
   const logging        = require('./handlers/logging');
   const messageHandler = require('./handlers/messageHandler');
   const contextMenus   = require('./handlers/contextMenus');
 
+  // Register context menu commands into the combined registry
+  for (const cmd of contextMenus.getCommands()) {
+    registry.addCommand(cmd);
+  }
+
   client.once(Events.ClientReady, async () => {
-    console.log(`[Events Bot] Ready: ${client.user.tag}`);
+    console.log(`[Events Bot] Ready as ${client.user.tag}`);
     client.user.setPresence({ activities: [{ name: 'MSK Scripts', type: ActivityType.Playing }], status: 'online' });
-
     await updateMemberCount(client);
-
-    // Register context menus guild-specifically
-    try {
-      const rest  = new REST({ version: '10' }).setToken(client.token);
-      const cmds  = contextMenus.getCommands();
-      await rest.put(Routes.applicationGuildCommands(client.user.id, String(gcfg.ID)), { body: cmds.map(c => c.toJSON()) });
-      console.log(`[Events Bot] ${cmds.length} context menu command(s) registered.`);
-    } catch (err) {
-      console.error(`[Events Bot] Failed to register commands (code ${err.code}): ${err.message}`);
-      if (err.code === 50001) {
-        console.error(`[Events Bot] → Bot is missing the "applications.commands" OAuth2 scope. Re-invite the bot with that scope.`);
-      }
-    }
   });
 
   // Member events
@@ -78,10 +68,8 @@ function createBot() {
   // Messages
   client.on(Events.MessageCreate, msg => messageHandler.onMessage(msg));
 
-  // Interactions (context menus)
+  // Interactions (context menus only)
   client.on(Events.InteractionCreate, interaction => contextMenus.handleInteraction(interaction, client));
-
-  return client;
 }
 
 async function updateMemberCount(client) {
@@ -92,4 +80,4 @@ async function updateMemberCount(client) {
   }
 }
 
-module.exports = { createBot };
+module.exports = { intents, partials, attach };

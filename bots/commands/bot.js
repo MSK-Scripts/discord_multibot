@@ -1,22 +1,22 @@
 const {
-  Client, Collection, GatewayIntentBits, Events, REST, Routes,
+  Collection, GatewayIntentBits, Events,
   ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,
 } = require('discord.js');
 const { readdirSync } = require('fs');
 const { join }        = require('path');
 const { guild: gcfg } = require('../../core/config');
 
-function createBot() {
-  const client = new Client({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMembers,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
-    ],
-  });
+const intents = [
+  GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMembers,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
+];
 
-  client.commands = new Collection();
+const partials = [];
+
+function attach(client, registry) {
+  const commands = new Collection();
 
   // Load command files (supports single export or array of commands)
   const cmdDir = join(__dirname, 'commands');
@@ -24,30 +24,21 @@ function createBot() {
     const exported = require(join(cmdDir, file));
     const cmds = Array.isArray(exported) ? exported : [exported];
     for (const cmd of cmds) {
-      if (cmd.data && cmd.execute) client.commands.set(cmd.data.name, cmd);
+      if (cmd.data && cmd.execute) {
+        commands.set(cmd.data.name, cmd);
+        registry.addCommand(cmd.data);
+      }
     }
   }
 
-  client.once(Events.ClientReady, async () => {
-    console.log(`[Commands Bot] Ready: ${client.user.tag}`);
-
-    try {
-      const rest = new REST({ version: '10' }).setToken(client.token);
-      const body = client.commands.map(c => c.data.toJSON());
-      await rest.put(Routes.applicationGuildCommands(client.user.id, String(gcfg.ID)), { body });
-      console.log(`[Commands Bot] ${body.length} slash commands registered.`);
-    } catch (err) {
-      console.error(`[Commands Bot] Failed to register commands (code ${err.code}): ${err.message}`);
-      if (err.code === 50001) {
-        console.error(`[Commands Bot] → Bot is missing the "applications.commands" OAuth2 scope. Re-invite the bot with that scope.`);
-      }
-    }
+  client.once(Events.ClientReady, () => {
+    console.log(`[Commands Bot] Ready as ${client.user.tag} - ${commands.size} commands loaded.`);
   });
 
   client.on(Events.InteractionCreate, async interaction => {
     try {
       if (interaction.isChatInputCommand()) {
-        const cmd = client.commands.get(interaction.commandName);
+        const cmd = commands.get(interaction.commandName);
         if (cmd) await cmd.execute(interaction);
         return;
       }
@@ -57,6 +48,9 @@ function createBot() {
         return;
       }
     } catch (err) {
+      // 10062 = Unknown interaction (interaction token already used/expired).
+      // Silently ignore - usually means another client raced us or the user is offline.
+      if (err.code === 10062) return;
       console.error(`[Commands Bot] Interaction error: ${err}`);
       const msg = { content: '❌ An unexpected error occurred.', flags: MessageFlags.Ephemeral };
       if (interaction.replied || interaction.deferred) {
@@ -66,11 +60,9 @@ function createBot() {
       }
     }
   });
-
-  return client;
 }
 
-// ─── Persistent button handler ────────────────────────────────────────────────
+// --- Persistent button handler -----------------------------------------------
 
 async function handlePersistentButton(interaction) {
   const { customId, member, guild } = interaction;
@@ -124,7 +116,7 @@ async function toggleRole(interaction, roleId) {
     return;
   }
 
-  // Role present → offer removal
+  // Role present -> offer removal
   const removeBtn = new ButtonBuilder()
     .setCustomId(`confirm_remove_role_${roleId}`)
     .setLabel('Remove Role')
@@ -147,4 +139,4 @@ async function toggleRole(interaction, roleId) {
   });
 }
 
-module.exports = { createBot };
+module.exports = { intents, partials, attach };
