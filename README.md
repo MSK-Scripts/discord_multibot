@@ -8,7 +8,7 @@ A modular Discord bot system built with **discord.js v14**, running three indepe
 
 [![Version](https://img.shields.io/github/v/release/MSK-Scripts/discord_multibot?style=flat-square&label=Version&color=5eb131)](https://github.com/MSK-Scripts/discord_multibot/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blueviolet?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0)
-[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-v22%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
 [![Discord.js](https://img.shields.io/badge/Discord.js-v14-5865F2?style=flat-square&logo=discord)](https://discord.js.org)
 [![Documentation](https://img.shields.io/badge/Docs-docu.msk--scripts.de-5eb131?style=flat-square)](https://docu.msk-scripts.de/discord/discord_multibot/getting-started)
 
@@ -32,7 +32,7 @@ All three bots run in parallel. If one crashes, it automatically restarts after 
 
 ## Requirements
 
-- **Node.js >= 18** (built-in `fetch` required for the Trivia API)
+- **Node.js >= 22** (LTS — built-in `fetch` and `AbortSignal.timeout()` required for the Trivia API)
 - **npm**
 - A Discord application with three bot tokens (one per bot)
 - A Discord server (guild) with the required roles and channels configured

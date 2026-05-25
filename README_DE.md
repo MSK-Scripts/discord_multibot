@@ -8,7 +8,7 @@ Ein modulares Discord-Bot-System auf Basis von **discord.js v14**, das drei unab
 
 [![Version](https://img.shields.io/github/v/release/MSK-Scripts/discord_multibot?style=flat-square&label=Version&color=5eb131)](https://github.com/MSK-Scripts/discord_multibot/releases)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blueviolet?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0)
-[![Node.js](https://img.shields.io/badge/Node.js-v18%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-v22%2B-339933?style=flat-square&logo=node.js)](https://nodejs.org)
 [![Discord.js](https://img.shields.io/badge/Discord.js-v14-5865F2?style=flat-square&logo=discord)](https://discord.js.org)
 [![Documentation](https://img.shields.io/badge/Docs-docu.msk--scripts.de-5eb131?style=flat-square)](https://docu.msk-scripts.de/discord/discord_multibot/getting-started)
 
@@ -32,7 +32,7 @@ Alle drei Bots laufen parallel. Stürzt einer ab, wird er nach 10 Sekunden autom
 
 ## Voraussetzungen
 
-- **Node.js >= 18** (integriertes `fetch` wird für die Trivia-API benötigt)
+- **Node.js >= 22** (LTS — integriertes `fetch` und `AbortSignal.timeout()` werden für die Trivia-API benötigt)
 - **npm**
 - Eine Discord-Anwendung mit drei Bot-Tokens (einer pro Bot)
 - Ein Discord-Server (Guild) mit den entsprechend konfigurierten Rollen und Channels
