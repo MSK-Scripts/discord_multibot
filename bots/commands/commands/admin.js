@@ -85,9 +85,20 @@ module.exports = [
       const submitted = await showModal(interaction, 'Send Message', [input]);
       if (!submitted) return;
 
+      // Acknowledge the modal submission immediately. A slow channel.send()
+      // would otherwise blow past Discord's 3s interaction deadline — the user
+      // sees a generic "interaction failed" and our later reply() throws a
+      // silently-swallowed 10062.
+      await submitted.deferReply({ flags: MessageFlags.Ephemeral });
+
       const text = submitted.fields.getTextInputValue('message_text');
-      await interaction.channel.send(text);
-      await submitted.reply({ content: 'The message was sent successfully ✅', flags: MessageFlags.Ephemeral });
+      try {
+        await interaction.channel.send(text);
+      } catch (err) {
+        console.error('[send_message]', err);
+        return submitted.editReply({ content: '❌ Could not send the message. Check my permissions in this channel.' });
+      }
+      await submitted.editReply({ content: 'The message was sent successfully ✅' });
       setTimeout(() => submitted.deleteReply().catch(() => {}), 2000);
     },
   },
@@ -114,6 +125,9 @@ module.exports = [
       const submitted = await showModal(interaction, 'Send Embed', inputs);
       if (!submitted) return;
 
+      // Acknowledge the modal submission immediately (see send_message above).
+      await submitted.deferReply({ flags: MessageFlags.Ephemeral });
+
       const title     = submitted.fields.getTextInputValue('title');
       const desc      = submitted.fields.getTextInputValue('description');
       const thumbnail = submitted.fields.getTextInputValue('thumbnail');
@@ -125,8 +139,13 @@ module.exports = [
       if (image)     embed.setImage(image);
       if (footer)    embed.setFooter({ text: footer, iconURL: THUMBNAIL_URL });
 
-      await interaction.channel.send({ embeds: [embed] });
-      await submitted.reply({ content: 'The embed was sent successfully ✅', flags: MessageFlags.Ephemeral });
+      try {
+        await interaction.channel.send({ embeds: [embed] });
+      } catch (err) {
+        console.error('[send_embed]', err);
+        return submitted.editReply({ content: '❌ Could not send the embed. Check the URLs and my permissions in this channel.' });
+      }
+      await submitted.editReply({ content: 'The embed was sent successfully ✅' });
       setTimeout(() => submitted.deleteReply().catch(() => {}), 2000);
     },
   },

@@ -58,6 +58,11 @@ const create = {
     }).catch(() => null);
     if (!submitted) return; // timed out / dismissed
 
+    // Acknowledge the modal submission immediately — a slow channel.send()
+    // would otherwise blow past Discord's 3s deadline and surface as a generic
+    // "interaction failed" while the follow-up reply throws a swallowed 10062.
+    await submitted.deferReply({ flags: MessageFlags.Ephemeral });
+
     const title       = submitted.fields.getTextInputValue('title').trim();
     const description  = submitted.fields.getTextInputValue('description').trim();
     const durationRaw = submitted.fields.getTextInputValue('duration');
@@ -65,17 +70,15 @@ const create = {
 
     const ms = parseDuration(durationRaw);
     if (!ms) {
-      return submitted.reply({
+      return submitted.editReply({
         content: '❌ Invalid duration. Use a number followed by `s`, `m`, `h`, `d` or `w` — e.g. `30m`, `1h`, `2d`, `1w`.',
-        flags: MessageFlags.Ephemeral,
       });
     }
 
     const winners = parseInt(winnersRaw, 10);
     if (!Number.isInteger(winners) || winners < 1 || winners > 50) {
-      return submitted.reply({
+      return submitted.editReply({
         content: '❌ Number of winners must be a whole number between 1 and 50.',
-        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -86,12 +89,18 @@ const create = {
       hostId: interaction.user.id, participants: [], ended: false, winners: [],
     };
 
-    const msg = await submitted.channel.send({
-      content: `<@&${gcfg.GIVEAWAY_NOTIFY_ROLE_ID}>`,
-      embeds: [giveawayManager.buildEmbed(draft, interaction.guild.name)],
-      components: giveawayManager.buildComponents(id, false),
-      allowedMentions: { roles: [String(gcfg.GIVEAWAY_NOTIFY_ROLE_ID)] },
-    });
+    let msg;
+    try {
+      msg = await submitted.channel.send({
+        content: `<@&${gcfg.GIVEAWAY_NOTIFY_ROLE_ID}>`,
+        embeds: [giveawayManager.buildEmbed(draft, interaction.guild.name)],
+        components: giveawayManager.buildComponents(id, false),
+        allowedMentions: { roles: [String(gcfg.GIVEAWAY_NOTIFY_ROLE_ID)] },
+      });
+    } catch (err) {
+      console.error('[g_create]', err);
+      return submitted.editReply({ content: '❌ Could not post the giveaway. Check my permissions in this channel.' });
+    }
 
     giveawayManager.create({
       id,
@@ -102,9 +111,8 @@ const create = {
       hostId: interaction.user.id,
     });
 
-    return submitted.reply({
+    return submitted.editReply({
       content: `✅ Giveaway **${title}** created — ID \`${id}\`, ends <t:${Math.floor(endsAt / 1000)}:R>.`,
-      flags: MessageFlags.Ephemeral,
     });
   },
 };
