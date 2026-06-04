@@ -117,6 +117,14 @@ async function handleGiveawayJoin(interaction, giveawayId) {
     return interaction.followUp({ content: 'ℹ️ This giveaway has ended.', flags: MessageFlags.Ephemeral }).catch(() => {});
   }
 
+  // Team members are excluded from giveaways.
+  if (interaction.member.roles.cache.has(String(gcfg.TEAM_ROLE_ID))) {
+    return interaction.reply({
+      content: '❌ Team members are not eligible to enter giveaways.',
+      flags: MessageFlags.Ephemeral,
+    });
+  }
+
   const res = giveawayManager.toggleParticipant(gw.id, interaction.user.id);
   if (!res) {
     return interaction.reply({ content: 'ℹ️ This giveaway is no longer active.', flags: MessageFlags.Ephemeral });

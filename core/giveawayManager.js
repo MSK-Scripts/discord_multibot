@@ -2,7 +2,7 @@ const { join } = require('path');
 const {
   ButtonBuilder, ButtonStyle, ActionRowBuilder,
 } = require('discord.js');
-const { DATA_DIR } = require('./config');
+const { DATA_DIR, guild: gcfg } = require('./config');
 const { readJson, writeJson, makeEmbed } = require('./utils');
 
 const GIVEAWAYS_FILE = join(DATA_DIR, 'giveaways.json');
@@ -151,6 +151,28 @@ function buildComponents(id, disabled = false) {
 
 // --- Ending / rerolling / cancelling -----------------------------------------
 
+// Resolves the participants who are still eligible to win at draw time:
+// excludes Team members and anyone who has since left the guild. If the
+// guild/members can't be fetched, no one is dropped (fail-open).
+async function _eligibleParticipants(client, gw) {
+  if (!gw.participants.length) return [];
+  const guild = await client.guilds.fetch(gw.guildId).catch(() => null);
+  if (!guild) return gw.participants;
+
+  let members;
+  try {
+    members = await guild.members.fetch({ user: gw.participants });
+  } catch {
+    return gw.participants;
+  }
+
+  return gw.participants.filter(uid => {
+    const m = members.get(uid);
+    if (!m) return false; // left the guild -> can't be awarded
+    return !m.roles.cache.has(String(gcfg.TEAM_ROLE_ID));
+  });
+}
+
 async function _fetchMessage(client, gw) {
   const channel = await client.channels.fetch(gw.channelId).catch(() => null);
   if (!channel || !channel.isTextBased?.()) return { channel: null, message: null };
@@ -186,11 +208,17 @@ async function endGiveaway(client, id) {
   const gw   = data[_normId(id)];
   if (!gw || gw.ended) return null; // idempotent
 
-  // Persist winners + ended BEFORE any Discord call so a crash or an
-  // overlapping scheduler tick can never draw the same giveaway twice.
-  gw.winners = pickWinners(gw.participants, gw.winnerCount);
-  gw.ended   = true;
+  // Claim the giveaway synchronously (ended=true) BEFORE any await so an
+  // overlapping scheduler tick or a crash-restart can never draw it twice.
+  gw.ended = true;
   _writeAll(data);
+
+  // Draw from the currently-eligible entrants (excludes Team members and
+  // anyone who left the guild), then persist the winners.
+  const eligible = await _eligibleParticipants(client, gw);
+  gw.winners = pickWinners(eligible, gw.winnerCount);
+  const fresh = _readAll();
+  if (fresh[gw.id]) { fresh[gw.id].winners = gw.winners; _writeAll(fresh); }
 
   const { channel, message } = await _fetchMessage(client, gw);
   const guildName = channel?.guild?.name ?? '';
@@ -213,7 +241,8 @@ async function reroll(client, id, count = null) {
   if (!gw.ended) return { error: 'not_ended' };
   if (!gw.participants.length) return { error: 'no_entries' };
 
-  gw.winners = pickWinners(gw.participants, count ?? gw.winnerCount);
+  const eligible = await _eligibleParticipants(client, gw);
+  gw.winners = pickWinners(eligible, count ?? gw.winnerCount);
   _writeAll(data);
 
   const { channel, message } = await _fetchMessage(client, gw);
