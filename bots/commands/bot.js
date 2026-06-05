@@ -5,7 +5,6 @@ const {
 const { readdirSync } = require('fs');
 const { join }        = require('path');
 const { guild: gcfg } = require('../../core/config');
-const giveawayManager = require('../../core/giveawayManager');
 
 const intents = [
   GatewayIntentBits.Guilds,
@@ -34,7 +33,6 @@ function attach(client, registry) {
 
   client.once(Events.ClientReady, () => {
     console.log(`[Commands Bot] Ready as ${client.user.tag} - ${commands.size} commands loaded.`);
-    giveawayManager.init(client);
   });
 
   client.on(Events.InteractionCreate, async interaction => {
@@ -69,11 +67,6 @@ function attach(client, registry) {
 async function handlePersistentButton(interaction) {
   const { customId, member, guild } = interaction;
 
-  // Giveaway join/leave toggle (customId = "giveaway_join:<id>")
-  if (customId.startsWith(giveawayManager.JOIN_PREFIX)) {
-    return handleGiveawayJoin(interaction, customId.slice(giveawayManager.JOIN_PREFIX.length));
-  }
-
   // Verification
   if (customId === 'rules_verification') {
     const role = guild.roles.cache.get(String(gcfg.MEMBER_ROLE_ID));
@@ -106,38 +99,6 @@ async function handlePersistentButton(interaction) {
   if (toggleMap[customId] !== undefined) {
     await toggleRole(interaction, toggleMap[customId]);
   }
-}
-
-async function handleGiveawayJoin(interaction, giveawayId) {
-  const gw = giveawayManager.getById(giveawayId);
-
-  if (!gw || gw.ended) {
-    // Disable the stale button best-effort so it stops inviting clicks.
-    await interaction.update({ components: giveawayManager.buildComponents(giveawayId, true) }).catch(() => {});
-    return interaction.followUp({ content: 'ℹ️ This giveaway has ended.', flags: MessageFlags.Ephemeral }).catch(() => {});
-  }
-
-  // Team members are excluded from giveaways.
-  if (interaction.member.roles.cache.has(String(gcfg.TEAM_ROLE_ID))) {
-    return interaction.reply({
-      content: '❌ Team members are not eligible to enter giveaways.',
-      flags: MessageFlags.Ephemeral,
-    });
-  }
-
-  const res = giveawayManager.toggleParticipant(gw.id, interaction.user.id);
-  if (!res) {
-    return interaction.reply({ content: 'ℹ️ This giveaway is no longer active.', flags: MessageFlags.Ephemeral });
-  }
-
-  await interaction.update({
-    embeds: [giveawayManager.buildEmbed(res.giveaway, interaction.guild?.name ?? '')],
-    components: giveawayManager.buildComponents(gw.id, false),
-  });
-  return interaction.followUp({
-    content: res.joined ? '🎉 You have entered the giveaway! Good luck!' : '👋 You have left the giveaway.',
-    flags: MessageFlags.Ephemeral,
-  }).catch(() => {});
 }
 
 async function toggleRole(interaction, roleId) {
