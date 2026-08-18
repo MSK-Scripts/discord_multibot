@@ -4,7 +4,8 @@
   "description": "MSK Scripts Discord Multi-Bot",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "test": "node test/harness.js"
   },
   "dependencies": {
     "discord.js": "^14.27.0",

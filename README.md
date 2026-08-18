@@ -261,6 +261,34 @@ Point values per game are configurable in `bots/minigames/points_config.json`.
 
 ---
 
+## Testing
+
+```bash
+npm test
+```
+
+`test/harness.js` boots every bot module against a fake client, exactly the way
+`main.js` does but without logging in. It unions the intents, builds the shared
+command registry through all three `attach()` calls, serializes the exact
+payload that goes to Discord, and dispatches mock interactions through the real
+`InteractionCreate` listeners. It also round trips the points system and
+restores `data/points.json` afterwards, so it is safe to run on a machine that
+holds real data.
+
+The last section makes one unauthenticated request to Discord: it logs in with
+an obviously invalid token and asserts that Discord rejects it. That proves the
+REST stack works end to end. Set `SKIP_NETWORK_TESTS=1` to skip it offline.
+
+**What it cannot cover.** An invalid token fails at REST authentication, so the
+gateway WebSocket is never opened and `@discordjs/ws` never runs. Anything that
+touches the gateway needs a real login with a real token. This is not a
+theoretical gap: an `@discordjs/ws` override once passed this harness 47 checks
+out of 47 and still crashed the bot on startup.
+
+The harness runs in CI on every pull request.
+
+---
+
 ## Project Structure
 
 ```
@@ -275,6 +303,8 @@ discord_multibot/
 │       ├── codeql.yml               ← Code scanning
 │       ├── deploy.yml               ← SSH deploy + systemd restart on push to main
 │       └── release.yml              ← GitHub release on v* tags
+├── test/
+│   └── harness.js                   ← Boot harness, run via npm test
 ├── core/
 │   ├── config.js                    ← Environment config
 │   ├── utils.js                     ← Shared helpers (makeEmbed, readJson, …)
@@ -323,10 +353,27 @@ discord_multibot/
 
 | Package | Version |
 |---|---|
-| [discord.js](https://discord.js.org) | `^14.26.4` |
-| [dotenv](https://github.com/motdotla/dotenv) | `^16.6.1` |
+| [discord.js](https://discord.js.org) | `^14.27.0` |
+| [dotenv](https://github.com/motdotla/dotenv) | `^17.4.2` |
 
 Dependency updates are monitored automatically via [Dependabot](.github/dependabot.yml) (weekly, grouped).
+
+### No overrides, on purpose
+
+`npm outdated --all` reports major updates for `@discordjs/collection`,
+`@discordjs/ws` and `undici`. They belong to the discord.js 15 line and are
+deliberately left alone. Both attempts to force them failed:
+
+- **`undici@8`** kills the REST layer. `@discordjs/rest` puts Node's
+  `sensitiveHeaders` symbol into the request headers and undici 8 rejects it
+  (`Key Symbol(sensitiveHeaders) in init is a symbol, which cannot be converted
+  to a ByteString`). No command registration, no interaction reply. `npm test`
+  catches this one.
+- **`@discordjs/ws@2.0.4`** passed every test and crashed the bot on startup in
+  production. Note that discord.js 14.27.0 pins `@discordjs/collection` to
+  exactly `1.5.3`, without a caret.
+
+Patch level updates inside the existing ranges are fine and need no override.
 
 ---
 

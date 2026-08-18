@@ -262,6 +262,36 @@ Die Punktwerte pro Spiel sind in `bots/minigames/points_config.json` konfigurier
 
 ---
 
+## Tests
+
+```bash
+npm test
+```
+
+`test/harness.js` bootet alle Bot-Module gegen einen Fake-Client, genau wie
+`main.js`, nur ohne Login. Es vereinigt die Intents, baut die gemeinsame
+Command-Registry über alle drei `attach()`-Aufrufe, serialisiert exakt das
+Payload, das an Discord geht, und schickt Mock-Interactions durch die echten
+`InteractionCreate`-Listener. Das Punktesystem wird ebenfalls durchgespielt und
+`data/points.json` danach wiederhergestellt, der Lauf ist also auch auf einer
+Maschine mit echten Daten unbedenklich.
+
+Der letzte Abschnitt stellt eine unauthentifizierte Anfrage an Discord: Login
+mit offensichtlich ungültigem Token, und die Erwartung, dass Discord ihn
+ablehnt. Das beweist, dass die REST-Schicht durchgängig funktioniert. Mit
+`SKIP_NETWORK_TESTS=1` bleibt der Test offline außen vor.
+
+**Was er nicht abdeckt.** Ein ungültiges Token scheitert an der
+REST-Authentifizierung, der Gateway-WebSocket wird also nie geöffnet und
+`@discordjs/ws` nie ausgeführt. Alles, was den Gateway betrifft, braucht einen
+echten Login mit echtem Token. Das ist keine theoretische Lücke: ein
+`@discordjs/ws`-Override hat diesen Harness mit 47 von 47 bestanden und den Bot
+trotzdem beim Start zum Absturz gebracht.
+
+Der Harness läuft in der CI bei jedem Pull Request.
+
+---
+
 ## Projektstruktur
 
 ```
@@ -276,6 +306,8 @@ discord_multibot/
 │       ├── codeql.yml               ← Code Scanning
 │       ├── deploy.yml               ← SSH-Deploy + systemd-Restart bei Push auf main
 │       └── release.yml              ← GitHub-Release bei v*-Tags
+├── test/
+│   └── harness.js                   ← Boot-Harness, Aufruf über npm test
 ├── core/
 │   ├── config.js                    ← Umgebungskonfiguration
 │   ├── utils.js                     ← Gemeinsame Helfer (makeEmbed, readJson, …)
@@ -324,10 +356,28 @@ discord_multibot/
 
 | Paket | Version |
 |---|---|
-| [discord.js](https://discord.js.org) | `^14.26.4` |
-| [dotenv](https://github.com/motdotla/dotenv) | `^16.6.1` |
+| [discord.js](https://discord.js.org) | `^14.27.0` |
+| [dotenv](https://github.com/motdotla/dotenv) | `^17.4.2` |
 
 Dependency-Updates werden automatisch über [Dependabot](.github/dependabot.yml) überwacht (wöchentlich, gruppiert).
+
+### Bewusst keine Overrides
+
+`npm outdated --all` meldet Major-Updates für `@discordjs/collection`,
+`@discordjs/ws` und `undici`. Die gehören zur discord.js-15-Linie und bleiben
+bewusst liegen. Beide Versuche, sie zu erzwingen, sind gescheitert:
+
+- **`undici@8`** zerlegt die REST-Schicht. `@discordjs/rest` reicht Nodes
+  `sensitiveHeaders`-Symbol in die Request-Header, undici 8 lehnt das ab (`Key
+  Symbol(sensitiveHeaders) in init is a symbol, which cannot be converted to a
+  ByteString`). Keine Command-Registrierung, keine Interaction-Antwort. Das
+  findet `npm test`.
+- **`@discordjs/ws@2.0.4`** hat jeden Test bestanden und den Bot in Produktion
+  beim Start zum Absturz gebracht. discord.js 14.27.0 pinnt
+  `@discordjs/collection` übrigens auf exakt `1.5.3`, ohne Caret.
+
+Patch-Updates innerhalb der bestehenden Ranges sind unproblematisch und
+brauchen keinen Override.
 
 ---
 
