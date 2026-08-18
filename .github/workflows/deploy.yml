@@ -93,15 +93,26 @@ jobs:
             # multibot.service itself is NOT installed from here. If the unit
             # changed, copy it to /etc/systemd/system and run daemon-reload by
             # hand, that is why it sits in paths-ignore above.
+
+            # Clear a previous crash loop first. The unit has StartLimitBurst=5
+            # within 120s, and once that budget is spent systemd refuses to
+            # start the service at all, even after the broken code is gone.
+            # Without this, one bad deploy keeps every following deploy red.
+            sudo systemctl reset-failed multibot || true
+
             sudo systemctl restart multibot
-            sleep 3
-            sudo systemctl --no-pager status multibot | head -n 8
+            sleep 5
+
+            # `systemctl status` exits 3 for a dead unit, which would abort the
+            # script here under `set -e` and skip the diagnostics below. That is
+            # exactly when the log output is needed, so swallow the exit code.
+            sudo systemctl --no-pager status multibot | head -n 8 || true
 
             # Fail the workflow loudly if the bot died right after the restart,
             # instead of reporting a green deploy for a dead service.
             if ! systemctl is-active --quiet multibot; then
               echo "ERROR: multibot is not running after the restart. Last log lines:"
-              journalctl -u multibot -n 40 --no-pager
+              journalctl -u multibot -n 60 --no-pager || true
               exit 1
             fi
 
