@@ -43,8 +43,11 @@ function writeJson(path, data) {
   renameSync(tmp, path);
 }
 
-function hasAnyRole(interaction, ...roleNames) {
-  return roleNames.some(name => interaction.member.roles.cache.some(r => r.name === name));
+// Role checks go by ID, never by name. `roles.cache` is keyed by role ID, so a
+// plain `has()` is enough. Names are user-editable in the Discord UI: renaming a
+// role used to revoke access silently, without any trace in the logs.
+function hasAnyRole(interaction, ...roleIds) {
+  return roleIds.some(id => id && interaction.member.roles.cache.has(id));
 }
 
 module.exports = { nowStr, makeEmbed, readJson, writeJson, hasAnyRole };

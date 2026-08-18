@@ -50,14 +50,15 @@
   },
   "nodes": [
     {
-      "label": "bot.js",
+      "label": "commands/bot.js",
       "file_type": "code",
       "source_file": "bots/commands/bot.js",
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_commands_bot",
       "community": 9,
-      "norm_label": "bot.js"
+      "community_name": "config.js",
+      "norm_label": "commands/bot.js"
     },
     {
       "label": "{\n  Collection, GatewayIntentBits, Events,\n  ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,\n}",
@@ -67,6 +68,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_collection_gatewayintentbits_events_buttonstyle_buttonbuilder_actionrowbuilder_messageflags",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "{\n  collection, gatewayintentbits, events,\n  buttonstyle, buttonbuilder, actionrowbuilder, messageflags,\n}"
     },
     {
@@ -77,6 +79,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_readdirsync",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ readdirsync }"
     },
     {
@@ -87,6 +90,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_join",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ join }"
     },
     {
@@ -97,6 +101,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_guild_gcfg",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ guild: gcfg }"
     },
     {
@@ -107,6 +112,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_intents",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "intents"
     },
     {
@@ -117,6 +123,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_partials",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "partials"
     },
     {
@@ -127,6 +134,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_attach",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "attach()"
     },
     {
@@ -137,6 +145,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_handlepersistentbutton",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "handlepersistentbutton()"
     },
     {
@@ -147,6 +156,7 @@
       "_origin": "ast",
       "id": "bots_commands_bot_togglerole",
       "community": 9,
+      "community_name": "config.js",
       "norm_label": "togglerole()"
     },
     {
@@ -156,7 +166,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_commands_commands_admin",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "admin.js"
     },
     {
@@ -166,7 +177,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_slashcommandbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_embedbuilder_attachmentbuilder_messageflags",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{\n  slashcommandbuilder, modalbuilder, textinputbuilder, textinputstyle, actionrowbuilder, embedbuilder, attachmentbuilder, messageflags,\n}"
     },
     {
@@ -176,7 +188,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_execfile",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ execfile }"
     },
     {
@@ -186,7 +199,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_join",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ join }"
     },
     {
@@ -196,7 +210,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_mkdirsync_writefilesync_unlinksync",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ mkdirsync, writefilesync, unlinksync }"
     },
     {
@@ -206,7 +221,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_hasanyrole_nowstr",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ hasanyrole, nowstr }"
     },
     {
@@ -216,7 +232,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_embed_color_thumbnail_url_database_guild_gcfg_data_dir",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ embed_color, thumbnail_url, database, guild: gcfg, data_dir }"
     },
     {
@@ -226,7 +243,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_showmodal",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "showmodal()"
     },
     {
@@ -236,7 +254,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "bots_commands_commands_admin_execute",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "execute()"
     },
     {
@@ -247,6 +266,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_community",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "community.js"
     },
     {
@@ -257,6 +277,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_community_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_messageflags",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, messageflags }"
     },
     {
@@ -267,6 +288,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_community_makeembed_hasanyrole",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ makeembed, hasanyrole }"
     },
     {
@@ -277,6 +299,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_community_guild_gcfg",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ guild: gcfg }"
     },
     {
@@ -287,6 +310,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_community_execute",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "execute()"
     },
     {
@@ -297,6 +321,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_minigames",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "minigames.js"
     },
     {
@@ -307,6 +332,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_minigames_slashcommandbuilder_messageflags",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ slashcommandbuilder, messageflags }"
     },
     {
@@ -317,6 +343,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_minigames_join",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ join }"
     },
     {
@@ -327,17 +354,19 @@
       "_origin": "ast",
       "id": "bots_commands_commands_minigames_makeembed_hasanyrole_readjson_writejson",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ makeembed, hasanyrole, readjson, writejson }"
     },
     {
-      "label": "{ DATA_DIR }",
+      "label": "{ DATA_DIR, guild: gcfg }",
       "file_type": "code",
       "source_file": "bots/commands/commands/minigames.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "bots_commands_commands_minigames_data_dir",
+      "id": "bots_commands_commands_minigames_data_dir_guild_gcfg",
       "community": 0,
-      "norm_label": "{ data_dir }"
+      "community_name": "utils.js",
+      "norm_label": "{ data_dir, guild: gcfg }"
     },
     {
       "label": "FLACHWITZE_FILE",
@@ -347,16 +376,40 @@
       "_origin": "ast",
       "id": "bots_commands_commands_minigames_flachwitze_file",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "flachwitze_file"
+    },
+    {
+      "label": "newRound()",
+      "file_type": "code",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "bots_commands_commands_minigames_newround",
+      "community": 0,
+      "community_name": "utils.js",
+      "norm_label": "newround()"
+    },
+    {
+      "label": "round",
+      "file_type": "code",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "bots_commands_commands_minigames_round",
+      "community": 0,
+      "community_name": "utils.js",
+      "norm_label": "round"
     },
     {
       "label": "execute()",
       "file_type": "code",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L19",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "bots_commands_commands_minigames_execute",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "execute()"
     },
     {
@@ -367,6 +420,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_support",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "support.js"
     },
     {
@@ -377,6 +431,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_support_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_messageflags",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, messageflags }"
     },
     {
@@ -387,6 +442,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_support_makeembed",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ makeembed }"
     },
     {
@@ -397,6 +453,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_support_guides",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "guides"
     },
     {
@@ -407,6 +464,7 @@
       "_origin": "ast",
       "id": "bots_commands_commands_support_execute",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "execute()"
     },
     {
@@ -416,7 +474,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_commands_commands_utility",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "utility.js"
     },
     {
@@ -426,7 +485,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_commands_commands_utility_slashcommandbuilder_messageflags",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ slashcommandbuilder, messageflags }"
     },
     {
@@ -436,7 +496,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "bots_commands_commands_utility_makeembed_hasanyrole",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ makeembed, hasanyrole }"
     },
     {
@@ -446,28 +507,42 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "bots_commands_commands_utility_getpoints",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ getpoints }"
+    },
+    {
+      "label": "{ guild: gcfg }",
+      "file_type": "code",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "bots_commands_commands_utility_guild_gcfg",
+      "community": 5,
+      "community_name": "pointsManager.js",
+      "norm_label": "{ guild: gcfg }"
     },
     {
       "label": "execute()",
       "file_type": "code",
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "bots_commands_commands_utility_execute",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "execute()"
     },
     {
-      "label": "bot.js",
+      "label": "events/bot.js",
       "file_type": "code",
       "source_file": "bots/events/bot.js",
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_events_bot",
-      "community": 12,
-      "norm_label": "bot.js"
+      "community": 9,
+      "community_name": "config.js",
+      "norm_label": "events/bot.js"
     },
     {
       "label": "{\n  GatewayIntentBits, Partials, Events, ActivityType,\n}",
@@ -476,7 +551,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_events_bot_gatewayintentbits_partials_events_activitytype",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{\n  gatewayintentbits, partials, events, activitytype,\n}"
     },
     {
@@ -486,7 +562,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "bots_events_bot_guild_gcfg",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ guild: gcfg }"
     },
     {
@@ -496,7 +573,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "bots_events_bot_intents",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "intents"
     },
     {
@@ -506,7 +584,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "bots_events_bot_partials",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "partials"
     },
     {
@@ -516,17 +595,30 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "bots_events_bot_attach",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "attach()"
+    },
+    {
+      "label": "scheduleMemberCountUpdate()",
+      "file_type": "code",
+      "source_file": "bots/events/bot.js",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "bots_events_bot_schedulemembercountupdate",
+      "community": 9,
+      "community_name": "config.js",
+      "norm_label": "schedulemembercountupdate()"
     },
     {
       "label": "updateMemberCount()",
       "file_type": "code",
       "source_file": "bots/events/bot.js",
-      "source_location": "L75",
+      "source_location": "L101",
       "_origin": "ast",
       "id": "bots_events_bot_updatemembercount",
-      "community": 12,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "updatemembercount()"
     },
     {
@@ -536,7 +628,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "contextmenus.js"
     },
     {
@@ -546,7 +639,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_contextmenucommandbuilder_applicationcommandtype_embedbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_messageflags",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{\n  contextmenucommandbuilder, applicationcommandtype, embedbuilder, modalbuilder,\n  textinputbuilder, textinputstyle, actionrowbuilder, messageflags,\n}"
     },
     {
@@ -556,7 +650,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_nowstr_hasanyrole",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ nowstr, hasanyrole }"
     },
     {
@@ -566,7 +661,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_guild_gcfg_thumbnail_url",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "{ guild: gcfg, thumbnail_url }"
     },
     {
@@ -576,7 +672,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_showmodal",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "showmodal()"
     },
     {
@@ -586,7 +683,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_cloneembed",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "cloneembed()"
     },
     {
@@ -596,7 +694,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_getcommands",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "getcommands()"
     },
     {
@@ -606,7 +705,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_commentfeedback",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "commentfeedback()"
     },
     {
@@ -616,7 +716,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_answermessage",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "answermessage()"
     },
     {
@@ -626,7 +727,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_editmessage",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "editmessage()"
     },
     {
@@ -636,7 +738,8 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_editembed",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "editembed()"
     },
     {
@@ -646,7 +749,8 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "bots_events_handlers_contextmenus_handleinteraction",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "handleinteraction()"
     },
     {
@@ -657,6 +761,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "logging.js"
     },
     {
@@ -667,6 +772,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_embedbuilder_auditlogevent_channeltype",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "{ embedbuilder, auditlogevent, channeltype }"
     },
     {
@@ -677,6 +783,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_guild_gcfg",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "{ guild: gcfg }"
     },
     {
@@ -687,6 +794,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_channel_type_names",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "channel_type_names"
     },
     {
@@ -697,6 +805,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_channeltypename",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "channeltypename()"
     },
     {
@@ -707,6 +816,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_nowutc",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "nowutc()"
     },
     {
@@ -717,6 +827,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_embed",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "embed()"
     },
     {
@@ -727,6 +838,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_getlogchannel",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "getlogchannel()"
     },
     {
@@ -737,6 +849,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_log",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "log()"
     },
     {
@@ -747,6 +860,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_getaudituser",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "getaudituser()"
     },
     {
@@ -757,6 +871,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmemberjoin",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmemberjoin()"
     },
     {
@@ -767,6 +882,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmemberremove",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmemberremove()"
     },
     {
@@ -777,6 +893,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmemberupdate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmemberupdate()"
     },
     {
@@ -787,6 +904,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmemberban",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmemberban()"
     },
     {
@@ -797,6 +915,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmemberunban",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmemberunban()"
     },
     {
@@ -807,6 +926,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmessagedelete",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmessagedelete()"
     },
     {
@@ -817,6 +937,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onbulkmessagedelete",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onbulkmessagedelete()"
     },
     {
@@ -827,6 +948,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onmessageedit",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onmessageedit()"
     },
     {
@@ -837,6 +959,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onchannelcreate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onchannelcreate()"
     },
     {
@@ -847,6 +970,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onchanneldelete",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onchanneldelete()"
     },
     {
@@ -857,6 +981,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onchannelupdate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onchannelupdate()"
     },
     {
@@ -867,6 +992,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onrolecreate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onrolecreate()"
     },
     {
@@ -877,6 +1003,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onroledelete",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onroledelete()"
     },
     {
@@ -887,6 +1014,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onroleupdate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onroleupdate()"
     },
     {
@@ -897,6 +1025,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_onvoicestateupdate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "onvoicestateupdate()"
     },
     {
@@ -907,6 +1036,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_oninvitecreate",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "oninvitecreate()"
     },
     {
@@ -917,6 +1047,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_logging_oninvitedelete",
       "community": 3,
+      "community_name": "logging.js",
       "norm_label": "oninvitedelete()"
     },
     {
@@ -927,6 +1058,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_messagehandler",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "messagehandler.js"
     },
     {
@@ -937,6 +1069,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_messagehandler_makeembed",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ makeembed }"
     },
     {
@@ -947,6 +1080,7 @@
       "_origin": "ast",
       "id": "bots_events_handlers_messagehandler_guild_gcfg",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ guild: gcfg }"
     },
     {
@@ -957,17 +1091,19 @@
       "_origin": "ast",
       "id": "bots_events_handlers_messagehandler_onmessage",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "onmessage()"
     },
     {
-      "label": "bot.js",
+      "label": "minigames/bot.js",
       "file_type": "code",
       "source_file": "bots/minigames/bot.js",
       "source_location": "L1",
       "_origin": "ast",
       "id": "bots_minigames_bot",
       "community": 13,
-      "norm_label": "bot.js"
+      "community_name": "minigames/bot.js",
+      "norm_label": "minigames/bot.js"
     },
     {
       "label": "{\n  Collection, GatewayIntentBits, Events, ActivityType, MessageFlags,\n}",
@@ -977,6 +1113,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_collection_gatewayintentbits_events_activitytype_messageflags",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "{\n  collection, gatewayintentbits, events, activitytype, messageflags,\n}"
     },
     {
@@ -987,6 +1124,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_readdirsync",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "{ readdirsync }"
     },
     {
@@ -997,6 +1135,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_join",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "{ join }"
     },
     {
@@ -1007,6 +1146,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_intents",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "intents"
     },
     {
@@ -1017,6 +1157,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_partials",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "partials"
     },
     {
@@ -1027,6 +1168,7 @@
       "_origin": "ast",
       "id": "bots_minigames_bot_attach",
       "community": 13,
+      "community_name": "minigames/bot.js",
       "norm_label": "attach()"
     },
     {
@@ -1037,6 +1179,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "blackjack.js"
     },
     {
@@ -1047,6 +1190,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }"
     },
     {
@@ -1057,6 +1201,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1067,6 +1212,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_suits",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "suits"
     },
     {
@@ -1077,6 +1223,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_ranks",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "ranks"
     },
     {
@@ -1087,6 +1234,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_values",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "values"
     },
     {
@@ -1097,6 +1245,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_makedeck",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "makedeck()"
     },
     {
@@ -1107,6 +1256,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_handvalue",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "handvalue()"
     },
     {
@@ -1117,6 +1267,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_handstr",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "handstr()"
     },
     {
@@ -1127,6 +1278,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_isblackjack",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "isblackjack()"
     },
     {
@@ -1137,6 +1289,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_resolve",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "resolve()"
     },
     {
@@ -1147,6 +1300,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_ptskey",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "ptskey()"
     },
     {
@@ -1157,6 +1311,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_outcomes",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "outcomes"
     },
     {
@@ -1167,6 +1322,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_buildembed",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "buildembed()"
     },
     {
@@ -1177,6 +1333,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_buildbuttons",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "buildbuttons()"
     },
     {
@@ -1187,6 +1344,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_blackjack_execute",
       "community": 4,
+      "community_name": "blackjack.js",
       "norm_label": "execute()"
     },
     {
@@ -1197,6 +1355,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "connect4.js"
     },
     {
@@ -1207,6 +1366,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }"
     },
     {
@@ -1217,6 +1377,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1227,6 +1388,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_col_nums",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "col_nums"
     },
     {
@@ -1237,6 +1399,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_newboard",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "newboard()"
     },
     {
@@ -1247,6 +1410,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_drop",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "drop()"
     },
     {
@@ -1257,6 +1421,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_checkwin",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "checkwin()"
     },
     {
@@ -1267,6 +1432,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_isdraw",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "isdraw()"
     },
     {
@@ -1277,6 +1443,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_validcols",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "validcols()"
     },
     {
@@ -1287,6 +1454,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_botmove",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "botmove()"
     },
     {
@@ -1297,6 +1465,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_renderboard",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "renderboard()"
     },
     {
@@ -1307,6 +1476,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_buildcomponents",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "buildcomponents()"
     },
     {
@@ -1317,6 +1487,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_buildembed",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "buildembed()"
     },
     {
@@ -1327,6 +1498,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_connect4_execute",
       "community": 7,
+      "community_name": "connect4.js",
       "norm_label": "execute()"
     },
     {
@@ -1337,6 +1509,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_dice",
       "community": 14,
+      "community_name": "dice.js",
       "norm_label": "dice.js"
     },
     {
@@ -1347,6 +1520,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_dice_slashcommandbuilder_embedbuilder",
       "community": 14,
+      "community_name": "dice.js",
       "norm_label": "{ slashcommandbuilder, embedbuilder }"
     },
     {
@@ -1357,6 +1531,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_dice_execute",
       "community": 14,
+      "community_name": "dice.js",
       "norm_label": "execute()"
     },
     {
@@ -1367,6 +1542,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "eightball.js"
     },
     {
@@ -1377,6 +1553,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_slashcommandbuilder_embedbuilder",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "{ slashcommandbuilder, embedbuilder }"
     },
     {
@@ -1387,6 +1564,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_positive",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "positive"
     },
     {
@@ -1397,6 +1575,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_neutral",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "neutral"
     },
     {
@@ -1407,6 +1586,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_negative",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "negative"
     },
     {
@@ -1417,6 +1597,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_all",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "all"
     },
     {
@@ -1427,6 +1608,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_colors",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "colors"
     },
     {
@@ -1437,6 +1619,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_eightball_execute",
       "community": 10,
+      "community_name": "eightball.js",
       "norm_label": "execute()"
     },
     {
@@ -1447,6 +1630,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_flipcoin",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "flipcoin.js"
     },
     {
@@ -1457,6 +1641,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_flipcoin_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder }"
     },
     {
@@ -1467,6 +1652,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_flipcoin_makeembed",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ makeembed }"
     },
     {
@@ -1477,6 +1663,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_flipcoin_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1487,6 +1674,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_flipcoin_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -1497,6 +1685,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "hangman.js"
     },
     {
@@ -1507,6 +1696,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder_modalbuilder_textinputbuilder_textinputstyle_messageflags",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder, modalbuilder, textinputbuilder, textinputstyle, messageflags }"
     },
     {
@@ -1517,6 +1707,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1527,6 +1718,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_words",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "words"
     },
     {
@@ -1537,6 +1729,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_stages",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "stages"
     },
     {
@@ -1547,6 +1740,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_buildembed",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "buildembed()"
     },
     {
@@ -1557,6 +1751,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_hangman_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -1567,6 +1762,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_points",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "points.js"
     },
     {
@@ -1577,6 +1773,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_points_slashcommandbuilder_embedbuilder",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ slashcommandbuilder, embedbuilder }"
     },
     {
@@ -1587,6 +1784,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_points_getconfig_getpoints",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ getconfig, getpoints }"
     },
     {
@@ -1597,6 +1795,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_points_execute",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "execute()"
     },
     {
@@ -1607,6 +1806,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "rps.js"
     },
     {
@@ -1617,6 +1817,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }"
     },
     {
@@ -1627,6 +1828,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1637,6 +1839,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps_choices",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "choices"
     },
     {
@@ -1647,6 +1850,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps_result",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "result()"
     },
     {
@@ -1657,6 +1861,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_rps_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -1667,6 +1872,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "slots.js"
     },
     {
@@ -1677,6 +1883,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }"
     },
     {
@@ -1687,6 +1894,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1697,6 +1905,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_symbols_weighted",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "symbols_weighted"
     },
     {
@@ -1707,6 +1916,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_spin",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "spin()"
     },
     {
@@ -1717,6 +1927,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_evaluate",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "evaluate()"
     },
     {
@@ -1727,6 +1938,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_buildembed",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "buildembed()"
     },
     {
@@ -1737,6 +1949,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_slots_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -1747,6 +1960,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "tictactoe.js"
     },
     {
@@ -1757,6 +1971,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }"
     },
     {
@@ -1767,6 +1982,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1777,6 +1993,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_winning_combos",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "winning_combos"
     },
     {
@@ -1787,6 +2004,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_cell_emojis",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "cell_emojis"
     },
     {
@@ -1797,6 +2015,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_diff_labels",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "diff_labels"
     },
     {
@@ -1807,6 +2026,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_checkwinner",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "checkwinner()"
     },
     {
@@ -1817,6 +2037,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_isdraw",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "isdraw()"
     },
     {
@@ -1827,6 +2048,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_available",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "available()"
     },
     {
@@ -1837,6 +2059,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_aieasy",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "aieasy()"
     },
     {
@@ -1847,6 +2070,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_winningmove",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "winningmove()"
     },
     {
@@ -1857,6 +2081,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_aimedium",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "aimedium()"
     },
     {
@@ -1867,6 +2092,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_minimax",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "minimax()"
     },
     {
@@ -1877,6 +2103,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_aihard",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "aihard()"
     },
     {
@@ -1887,6 +2114,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_buildboard",
       "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "buildboard()"
     },
     {
@@ -1896,7 +2124,8 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_buildembed",
-      "community": 1,
+      "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "buildembed()"
     },
     {
@@ -1906,7 +2135,8 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "bots_minigames_commands_tictactoe_execute",
-      "community": 1,
+      "community": 6,
+      "community_name": "tictactoe.js",
       "norm_label": "execute()"
     },
     {
@@ -1917,6 +2147,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "trivia.js"
     },
     {
@@ -1927,6 +2158,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder_messageflags",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder, messageflags }"
     },
     {
@@ -1937,6 +2169,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -1947,6 +2180,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_diff_colors",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "diff_colors"
     },
     {
@@ -1957,6 +2191,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_labels",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "labels"
     },
     {
@@ -1967,6 +2202,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_local_questions",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "local_questions"
     },
     {
@@ -1977,6 +2213,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_b64",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "b64()"
     },
     {
@@ -1987,6 +2224,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_fetchquestion",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "fetchquestion()"
     },
     {
@@ -1997,6 +2235,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_localquestion",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "localquestion()"
     },
     {
@@ -2007,6 +2246,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_buildembed",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "buildembed()"
     },
     {
@@ -2017,6 +2257,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_cooldowns",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "cooldowns"
     },
     {
@@ -2027,6 +2268,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_trivia_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -2037,6 +2279,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "wordle.js"
     },
     {
@@ -2047,6 +2290,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_slashcommandbuilder_buttonbuilder_buttonstyle_actionrowbuilder_embedbuilder_modalbuilder_textinputbuilder_textinputstyle_messageflags",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder, modalbuilder, textinputbuilder, textinputstyle, messageflags }"
     },
     {
@@ -2057,6 +2301,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_addpoints_getpts_notifyrewards_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "{ addpoints, getpts, notifyrewards, pointsfooter }"
     },
     {
@@ -2067,6 +2312,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_words",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "words"
     },
     {
@@ -2077,6 +2323,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_evaluate",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "evaluate()"
     },
     {
@@ -2087,6 +2334,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_buildembed",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "buildembed()"
     },
     {
@@ -2097,6 +2345,7 @@
       "_origin": "ast",
       "id": "bots_minigames_commands_wordle_execute",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "execute()"
     },
     {
@@ -2106,7 +2355,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "core_config",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "config.js"
     },
     {
@@ -2116,7 +2366,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "core_config_join",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ join }"
     },
     {
@@ -2126,7 +2377,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "core_config_base_dir",
-      "community": 0,
+      "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "base_dir"
     },
     {
@@ -2137,6 +2389,7 @@
       "_origin": "ast",
       "id": "core_config_data_dir",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "data_dir"
     },
     {
@@ -2146,7 +2399,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "core_config_assets_dir",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "assets_dir"
     },
     {
@@ -2156,7 +2410,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "core_config_mkdirsync",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ mkdirsync }"
     },
     {
@@ -2166,7 +2421,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "core_config_id",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "_id()"
     },
     {
@@ -2176,7 +2432,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "core_config_str",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "_str()"
     },
     {
@@ -2186,27 +2443,30 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "core_config_guild",
-      "community": 0,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "guild"
     },
     {
       "label": "database",
       "file_type": "code",
       "source_file": "core/config.js",
-      "source_location": "L37",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "core_config_database",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "database"
     },
     {
       "label": "tokens",
       "file_type": "code",
       "source_file": "core/config.js",
-      "source_location": "L44",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "core_config_tokens",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "tokens"
     },
     {
@@ -2217,6 +2477,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "pointsmanager.js"
     },
     {
@@ -2227,6 +2488,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_join",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ join }"
     },
     {
@@ -2237,6 +2499,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_messageflags",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ messageflags }"
     },
     {
@@ -2247,6 +2510,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_data_dir_base_dir",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ data_dir, base_dir }"
     },
     {
@@ -2257,6 +2521,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_readjson_writejson",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "{ readjson, writejson }"
     },
     {
@@ -2267,6 +2532,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_points_file",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "points_file"
     },
     {
@@ -2277,6 +2543,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_config_file",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "config_file"
     },
     {
@@ -2287,6 +2554,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_getconfig",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "getconfig()"
     },
     {
@@ -2297,6 +2565,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_getpts",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "getpts()"
     },
     {
@@ -2307,6 +2576,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_getpoints",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "getpoints()"
     },
     {
@@ -2317,6 +2587,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_addpoints",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "addpoints()"
     },
     {
@@ -2327,6 +2598,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_getnewlyunlockedrewards",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "getnewlyunlockedrewards()"
     },
     {
@@ -2337,6 +2609,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_notifyrewards",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "notifyrewards()"
     },
     {
@@ -2347,6 +2620,7 @@
       "_origin": "ast",
       "id": "core_pointsmanager_pointsfooter",
       "community": 1,
+      "community_name": "addPoints",
       "norm_label": "pointsfooter()"
     },
     {
@@ -2357,6 +2631,7 @@
       "_origin": "ast",
       "id": "core_utils",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "utils.js"
     },
     {
@@ -2367,6 +2642,7 @@
       "_origin": "ast",
       "id": "core_utils_embedbuilder",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ embedbuilder }"
     },
     {
@@ -2377,6 +2653,7 @@
       "_origin": "ast",
       "id": "core_utils_readfilesync_writefilesync_mkdirsync_renamesync",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ readfilesync, writefilesync, mkdirsync, renamesync }"
     },
     {
@@ -2387,6 +2664,7 @@
       "_origin": "ast",
       "id": "core_utils_dirname",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ dirname }"
     },
     {
@@ -2397,6 +2675,7 @@
       "_origin": "ast",
       "id": "core_utils_embed_color_thumbnail_url",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "{ embed_color, thumbnail_url }"
     },
     {
@@ -2406,7 +2685,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "core_utils_nowstr",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "nowstr()"
     },
     {
@@ -2417,6 +2697,7 @@
       "_origin": "ast",
       "id": "core_utils_makeembed",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "makeembed()"
     },
     {
@@ -2427,6 +2708,7 @@
       "_origin": "ast",
       "id": "core_utils_readjson",
       "community": 5,
+      "community_name": "pointsManager.js",
       "norm_label": "readjson()"
     },
     {
@@ -2437,16 +2719,18 @@
       "_origin": "ast",
       "id": "core_utils_writejson",
       "community": 0,
+      "community_name": "utils.js",
       "norm_label": "writejson()"
     },
     {
       "label": "hasAnyRole()",
       "file_type": "code",
       "source_file": "core/utils.js",
-      "source_location": "L46",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "core_utils_hasanyrole",
-      "community": 0,
+      "community": 11,
+      "community_name": "contextMenus.js",
       "norm_label": "hasanyrole()"
     },
     {
@@ -2456,7 +2740,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "main",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "main.js"
     },
     {
@@ -2466,7 +2751,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "main_client_events_rest_routes",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ client, events, rest, routes }"
     },
     {
@@ -2476,7 +2762,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "main_tokens_guild_gcfg",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "{ tokens, guild: gcfg }"
     },
     {
@@ -2486,7 +2773,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "main_botmodules",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "botmodules"
     },
     {
@@ -2496,7 +2784,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "main_createregistry",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "createregistry()"
     },
     {
@@ -2506,7 +2795,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "main_rungroup",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "rungroup()"
     },
     {
@@ -2516,7 +2806,8 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "main_main",
-      "community": 11,
+      "community": 9,
+      "community_name": "config.js",
       "norm_label": "main()"
     },
     {
@@ -2527,6 +2818,7 @@
       "_origin": "ast",
       "id": "package",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "package.json"
     },
     {
@@ -2537,6 +2829,7 @@
       "_origin": "ast",
       "id": "package_name",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "name"
     },
     {
@@ -2547,6 +2840,7 @@
       "_origin": "ast",
       "id": "package_version",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "version"
     },
     {
@@ -2557,6 +2851,7 @@
       "_origin": "ast",
       "id": "package_description",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "description"
     },
     {
@@ -2567,6 +2862,7 @@
       "_origin": "ast",
       "id": "package_main",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "main"
     },
     {
@@ -2577,6 +2873,7 @@
       "_origin": "ast",
       "id": "package_scripts",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "scripts"
     },
     {
@@ -2587,6 +2884,7 @@
       "_origin": "ast",
       "id": "package_scripts_start",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "start"
     },
     {
@@ -2597,6 +2895,7 @@
       "_origin": "ast",
       "id": "package_dependencies",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "dependencies"
     },
     {
@@ -2607,6 +2906,7 @@
       "_origin": "ast",
       "id": "package_dependencies_discord_js",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "discord.js"
     },
     {
@@ -2617,6 +2917,7 @@
       "_origin": "ast",
       "id": "discord_js",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "discord.js"
     },
     {
@@ -2627,6 +2928,7 @@
       "_origin": "ast",
       "id": "package_dependencies_dotenv",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "dotenv"
     },
     {
@@ -2637,6 +2939,7 @@
       "_origin": "ast",
       "id": "dotenv",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "dotenv"
     },
     {
@@ -2647,6 +2950,7 @@
       "_origin": "ast",
       "id": "package_engines",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "engines"
     },
     {
@@ -2657,6 +2961,7 @@
       "_origin": "ast",
       "id": "package_engines_node",
       "community": 8,
+      "community_name": "package.json",
       "norm_label": "node"
     },
     {
@@ -2668,9 +2973,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_dependabot_dependabot_config",
       "community": 2,
-      "norm_label": "dependabot npm update config"
+      "norm_label": "dependabot npm update config",
+      "_origin": "semantic",
+      "id": "_github_dependabot_dependabot_config",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Grouped Weekly Dependency Updates",
@@ -2681,9 +2988,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_dependabot_grouped_weekly_updates",
       "community": 2,
-      "norm_label": "grouped weekly dependency updates"
+      "norm_label": "grouped weekly dependency updates",
+      "_origin": "semantic",
+      "id": "_github_dependabot_grouped_weekly_updates",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Auto Release Workflow",
@@ -2694,9 +3003,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_workflows_release_auto_release_workflow",
       "community": 2,
-      "norm_label": "auto release workflow"
+      "norm_label": "auto release workflow",
+      "_origin": "semantic",
+      "id": "_github_workflows_release_auto_release_workflow",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Tag Resolution and Optional Tag Creation",
@@ -2707,9 +3018,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_workflows_release_tag_resolution",
       "community": 2,
-      "norm_label": "tag resolution and optional tag creation"
+      "norm_label": "tag resolution and optional tag creation",
+      "_origin": "semantic",
+      "id": "_github_workflows_release_tag_resolution",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Release Body Generation from Git History",
@@ -2720,9 +3033,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_workflows_release_release_body_generation",
       "community": 2,
-      "norm_label": "release body generation from git history"
+      "norm_label": "release body generation from git history",
+      "_origin": "semantic",
+      "id": "_github_workflows_release_release_body_generation",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Release Concurrency Guard",
@@ -2733,9 +3048,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "_github_workflows_release_concurrency_guard",
       "community": 2,
-      "norm_label": "release concurrency guard"
+      "norm_label": "release concurrency guard",
+      "_origin": "semantic",
+      "id": "_github_workflows_release_concurrency_guard",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Contributor Covenant Code of Conduct v2.0",
@@ -2746,9 +3063,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "code_of_conduct_contributor_covenant",
       "community": 2,
-      "norm_label": "contributor covenant code of conduct v2.0"
+      "norm_label": "contributor covenant code of conduct v2.0",
+      "_origin": "semantic",
+      "id": "code_of_conduct_contributor_covenant",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Community Impact Enforcement Ladder",
@@ -2759,9 +3078,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "code_of_conduct_enforcement_ladder",
       "community": 2,
-      "norm_label": "community impact enforcement ladder"
+      "norm_label": "community impact enforcement ladder",
+      "_origin": "semantic",
+      "id": "code_of_conduct_enforcement_ladder",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "GNU Affero General Public License v3",
@@ -2772,9 +3093,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "license_agpl_v3",
       "community": 2,
-      "norm_label": "gnu affero general public license v3"
+      "norm_label": "gnu affero general public license v3",
+      "_origin": "semantic",
+      "id": "license_agpl_v3",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Network-Use Copyleft (AGPL Section 13)",
@@ -2785,9 +3108,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "license_network_use_copyleft",
       "community": 2,
-      "norm_label": "network-use copyleft (agpl section 13)"
+      "norm_label": "network-use copyleft (agpl section 13)",
+      "_origin": "semantic",
+      "id": "license_network_use_copyleft",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Discord Multi-Bot README (EN)",
@@ -2798,9 +3123,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_discord_multibot",
       "community": 2,
-      "norm_label": "discord multi-bot readme (en)"
+      "norm_label": "discord multi-bot readme (en)",
+      "_origin": "semantic",
+      "id": "readme_discord_multibot",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Discord Multi-Bot README (DE)",
@@ -2811,9 +3138,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_de_discord_multibot",
       "community": 2,
-      "norm_label": "discord multi-bot readme (de)"
+      "norm_label": "discord multi-bot readme (de)",
+      "_origin": "semantic",
+      "id": "readme_de_discord_multibot",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Commands Bot Role",
@@ -2824,9 +3153,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_commands_bot",
       "community": 2,
-      "norm_label": "commands bot role"
+      "norm_label": "commands bot role",
+      "_origin": "semantic",
+      "id": "readme_commands_bot",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Events Bot Role",
@@ -2837,9 +3168,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_events_bot",
       "community": 2,
-      "norm_label": "events bot role"
+      "norm_label": "events bot role",
+      "_origin": "semantic",
+      "id": "readme_events_bot",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Minigames Bot Role",
@@ -2850,9 +3183,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_minigames_bot",
       "community": 2,
-      "norm_label": "minigames bot role"
+      "norm_label": "minigames bot role",
+      "_origin": "semantic",
+      "id": "readme_minigames_bot",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Auto-Restart Supervision (10s)",
@@ -2863,9 +3198,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_auto_restart_supervision",
       "community": 2,
-      "norm_label": "auto-restart supervision (10s)"
+      "norm_label": "auto-restart supervision (10s)",
+      "_origin": "semantic",
+      "id": "readme_auto_restart_supervision",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Points and Rewards System",
@@ -2876,9 +3213,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_points_and_rewards_system",
       "community": 2,
-      "norm_label": "points and rewards system"
+      "norm_label": "points and rewards system",
+      "_origin": "semantic",
+      "id": "readme_points_and_rewards_system",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Persistent Role-Toggle Buttons",
@@ -2889,9 +3228,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_persistent_role_toggle_buttons",
       "community": 2,
-      "norm_label": "persistent role-toggle buttons"
+      "norm_label": "persistent role-toggle buttons",
+      "_origin": "semantic",
+      "id": "readme_persistent_role_toggle_buttons",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": ".env Configuration Contract",
@@ -2902,9 +3243,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_env_configuration",
       "community": 2,
-      "norm_label": ".env configuration contract"
+      "norm_label": ".env configuration contract",
+      "_origin": "semantic",
+      "id": "readme_env_configuration",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "systemd Deployment (multibot-js.service)",
@@ -2915,9 +3258,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_systemd_deployment",
       "community": 2,
-      "norm_label": "systemd deployment (multibot-js.service)"
+      "norm_label": "systemd deployment (multibot-js.service)",
+      "_origin": "semantic",
+      "id": "readme_systemd_deployment",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Node.js >= 22 Runtime Requirement",
@@ -2928,9 +3273,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_node22_runtime_requirement",
       "community": 2,
-      "norm_label": "node.js >= 22 runtime requirement"
+      "norm_label": "node.js >= 22 runtime requirement",
+      "_origin": "semantic",
+      "id": "readme_node22_runtime_requirement",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Session-Based Minigame State",
@@ -2941,9 +3288,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_session_based_game_state",
       "community": 2,
-      "norm_label": "session-based minigame state"
+      "norm_label": "session-based minigame state",
+      "_origin": "semantic",
+      "id": "readme_session_based_game_state",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Guild Event Logging to Log Channel",
@@ -2954,9 +3303,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_guild_event_logging",
       "community": 2,
-      "norm_label": "guild event logging to log channel"
+      "norm_label": "guild event logging to log channel",
+      "_origin": "semantic",
+      "id": "readme_guild_event_logging",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Message Context Menus",
@@ -2967,9 +3318,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_context_menus",
       "community": 2,
-      "norm_label": "message context menus"
+      "norm_label": "message context menus",
+      "_origin": "semantic",
+      "id": "readme_context_menus",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Feedback Embed Conversion",
@@ -2980,9 +3333,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_feedback_embed_conversion",
       "community": 2,
-      "norm_label": "feedback embed conversion"
+      "norm_label": "feedback embed conversion",
+      "_origin": "semantic",
+      "id": "readme_feedback_embed_conversion",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "/backup_database MySQL Backup",
@@ -2993,9 +3348,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "readme_database_backup_command",
       "community": 2,
-      "norm_label": "/backup_database mysql backup"
+      "norm_label": "/backup_database mysql backup",
+      "_origin": "semantic",
+      "id": "readme_database_backup_command",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Vulnerability Reporting Policy",
@@ -3006,9 +3363,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "security_vulnerability_reporting_policy",
       "community": 2,
-      "norm_label": "vulnerability reporting policy"
+      "norm_label": "vulnerability reporting policy",
+      "_origin": "semantic",
+      "id": "security_vulnerability_reporting_policy",
+      "community_name": "Discord Multi-Bot README (EN)"
     },
     {
       "label": "Private Disclosure Channel Preference",
@@ -3019,9 +3378,11 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "security_private_disclosure_channel",
       "community": 2,
-      "norm_label": "private disclosure channel preference"
+      "norm_label": "private disclosure channel preference",
+      "_origin": "semantic",
+      "id": "security_private_disclosure_channel",
+      "community_name": "Discord Multi-Bot README (EN)"
     }
   ],
   "links": [
@@ -3517,14 +3878,14 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_data_dir",
+      "target": "bots_commands_commands_minigames_data_dir_guild_gcfg",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L88",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames",
@@ -3568,6 +3929,28 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_minigames",
+      "target": "bots_commands_commands_minigames_newround",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_minigames",
+      "target": "bots_commands_commands_minigames_round",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/minigames.js",
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
@@ -3597,6 +3980,18 @@
       "_origin": "ast",
       "source": "bots_commands_commands_minigames",
       "target": "core_config_data_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_minigames",
+      "target": "core_config_guild",
       "confidence_score": 1.0
     },
     {
@@ -3663,9 +4058,21 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_minigames_execute",
+      "target": "bots_commands_commands_minigames_newround",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L20",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames_execute",
@@ -3677,7 +4084,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L31",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames_execute",
@@ -3689,7 +4096,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L71",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames_execute",
@@ -3701,7 +4108,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L97",
+      "source_location": "L152",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_minigames_execute",
@@ -3791,7 +4198,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_utility",
@@ -3807,6 +4214,17 @@
       "_origin": "ast",
       "source": "bots_commands_commands_utility",
       "target": "bots_commands_commands_utility_getpoints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_utility",
+      "target": "bots_commands_commands_utility_guild_gcfg",
       "confidence_score": 1.0
     },
     {
@@ -3829,6 +4247,30 @@
       "_origin": "ast",
       "source": "bots_commands_commands_utility",
       "target": "bots_commands_commands_utility_slashcommandbuilder_messageflags",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_utility",
+      "target": "core_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_commands_commands_utility",
+      "target": "core_config_guild",
       "confidence_score": 1.0
     },
     {
@@ -3897,7 +4339,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_utility_execute",
@@ -3909,7 +4351,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_utility_execute",
@@ -3921,7 +4363,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_utility_execute",
@@ -3933,7 +4375,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_commands_commands_utility_execute",
@@ -3943,7 +4385,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "bots/events/bot.js",
-      "source_location": "L83",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -3999,7 +4441,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "bots/events/bot.js",
-      "source_location": "L75",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_events_bot",
+      "target": "bots_events_bot_schedulemembercountupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/events/bot.js",
+      "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_events_bot",
@@ -4035,10 +4488,34 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "bots/events/bot.js",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_events_bot_attach",
+      "target": "bots_events_bot_schedulemembercountupdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/events/bot.js",
       "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "bots_events_bot_attach",
+      "target": "bots_events_bot_updatemembercount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bots/events/bot.js",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "bots_events_bot_schedulemembercountupdate",
       "target": "bots_events_bot_updatemembercount",
       "confidence_score": 1.0
     },
@@ -4971,18 +5448,6 @@
       "source": "bots_events_handlers_logging_onvoicestateupdate",
       "target": "bots_events_handlers_logging_embed",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "context": "collection",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "bots/minigames/commands/blackjack.js",
-      "source_location": "L111",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "bots_minigames_commands_blackjack_execute",
-      "target": "bots_events_handlers_logging_embed"
     },
     {
       "relation": "calls",
@@ -6294,18 +6759,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "bots/minigames/commands/connect4.js",
-      "source_location": "L138",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "bots_minigames_commands_connect4_execute",
-      "target": "bots_minigames_commands_rps_result"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -6803,18 +7256,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "bots/minigames/commands/hangman.js",
-      "source_location": "L114",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "bots_minigames_commands_hangman_execute",
-      "target": "bots_minigames_commands_rps_result"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -7069,18 +7510,6 @@
       "source": "bots_minigames_commands_rps_execute",
       "target": "bots_minigames_commands_rps_result",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "bots/minigames/commands/tictactoe.js",
-      "source_location": "L201",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "bots_minigames_commands_tictactoe_execute",
-      "target": "bots_minigames_commands_rps_result"
     },
     {
       "relation": "calls",
@@ -8363,7 +8792,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "core/config.js",
-      "source_location": "L37",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "core_config",
@@ -8429,7 +8858,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "core/config.js",
-      "source_location": "L44",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "core_config",
@@ -8826,7 +9255,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "core/utils.js",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -8838,7 +9267,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "core/utils.js",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -8850,7 +9279,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "core/utils.js",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -8873,7 +9302,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "core/utils.js",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -8885,7 +9314,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "core/utils.js",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -9147,6 +9576,7 @@
       "source_file": ".github/dependabot.yml",
       "source_location": "5-12",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "_github_dependabot_dependabot_config",
       "target": "_github_dependabot_grouped_weekly_updates"
     },
@@ -9157,6 +9587,7 @@
       "source_file": "README_DE.md",
       "source_location": "296",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_de_discord_multibot",
       "target": "_github_dependabot_dependabot_config"
     },
@@ -9167,6 +9598,7 @@
       "source_file": "README.md",
       "source_location": "296",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_discord_multibot",
       "target": "_github_dependabot_dependabot_config"
     },
@@ -9177,6 +9609,7 @@
       "source_file": "SECURITY.md",
       "source_location": "3-7",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "security_private_disclosure_channel",
       "target": "_github_dependabot_grouped_weekly_updates"
     },
@@ -9187,6 +9620,7 @@
       "source_file": ".github/workflows/release.yml",
       "source_location": "24-27",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "_github_workflows_release_auto_release_workflow",
       "target": "_github_workflows_release_concurrency_guard"
     },
@@ -9197,6 +9631,7 @@
       "source_file": ".github/workflows/release.yml",
       "source_location": "85-121",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "_github_workflows_release_auto_release_workflow",
       "target": "_github_workflows_release_release_body_generation"
     },
@@ -9207,6 +9642,7 @@
       "source_file": ".github/workflows/release.yml",
       "source_location": "36-83",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "_github_workflows_release_auto_release_workflow",
       "target": "_github_workflows_release_tag_resolution"
     },
@@ -9217,6 +9653,7 @@
       "source_file": ".github/workflows/release.yml",
       "source_location": "88",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "_github_workflows_release_release_body_generation",
       "target": "_github_workflows_release_tag_resolution"
     },
@@ -9227,6 +9664,7 @@
       "source_file": "README.md",
       "source_location": "29",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_auto_restart_supervision",
       "target": "_github_workflows_release_concurrency_guard"
     },
@@ -9237,6 +9675,7 @@
       "source_file": "CODE_OF_CONDUCT.md",
       "source_location": "69-122",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "code_of_conduct_contributor_covenant",
       "target": "code_of_conduct_enforcement_ladder"
     },
@@ -9247,6 +9686,7 @@
       "source_file": "SECURITY.md",
       "source_location": "7",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "code_of_conduct_contributor_covenant",
       "target": "security_vulnerability_reporting_policy"
     },
@@ -9257,6 +9697,7 @@
       "source_file": "LICENSE.md",
       "source_location": "536-547",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "license_agpl_v3",
       "target": "license_network_use_copyleft"
     },
@@ -9267,6 +9708,7 @@
       "source_file": "README_DE.md",
       "source_location": "10",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_de_discord_multibot",
       "target": "license_agpl_v3"
     },
@@ -9277,6 +9719,7 @@
       "source_file": "README.md",
       "source_location": "10",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_discord_multibot",
       "target": "license_agpl_v3"
     },
@@ -9287,6 +9730,7 @@
       "source_file": "LICENSE.md",
       "source_location": "536-547",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "license_network_use_copyleft",
       "target": "readme_systemd_deployment"
     },
@@ -9297,6 +9741,7 @@
       "source_file": "README_DE.md",
       "source_location": "15",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_de_discord_multibot",
       "target": "readme_discord_multibot"
     },
@@ -9307,6 +9752,7 @@
       "source_file": "README.md",
       "source_location": "25",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_discord_multibot",
       "target": "readme_commands_bot"
     },
@@ -9317,6 +9763,7 @@
       "source_file": "README.md",
       "source_location": "26",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_discord_multibot",
       "target": "readme_events_bot"
     },
@@ -9327,6 +9774,7 @@
       "source_file": "README.md",
       "source_location": "27",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_discord_multibot",
       "target": "readme_minigames_bot"
     },
@@ -9337,6 +9785,7 @@
       "source_file": "README.md",
       "source_location": "170-173",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_commands_bot",
       "target": "readme_persistent_role_toggle_buttons"
     },
@@ -9347,6 +9796,7 @@
       "source_file": "README.md",
       "source_location": "163",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_commands_bot",
       "target": "readme_points_and_rewards_system"
     },
@@ -9357,6 +9807,7 @@
       "source_file": "README.md",
       "source_location": "192-196",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_events_bot",
       "target": "readme_context_menus"
     },
@@ -9367,6 +9818,7 @@
       "source_file": "README.md",
       "source_location": "191",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_events_bot",
       "target": "readme_feedback_embed_conversion"
     },
@@ -9377,6 +9829,7 @@
       "source_file": "README.md",
       "source_location": "177-188",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_events_bot",
       "target": "readme_guild_event_logging"
     },
@@ -9387,6 +9840,7 @@
       "source_file": "README.md",
       "source_location": "35",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_minigames_bot",
       "target": "readme_node22_runtime_requirement"
     },
@@ -9397,6 +9851,7 @@
       "source_file": "README.md",
       "source_location": "200-232",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_minigames_bot",
       "target": "readme_points_and_rewards_system"
     },
@@ -9407,6 +9862,7 @@
       "source_file": "README.md",
       "source_location": "200",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_minigames_bot",
       "target": "readme_session_based_game_state"
     },
@@ -9417,6 +9873,7 @@
       "source_file": "README.md",
       "source_location": "29",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_systemd_deployment",
       "target": "readme_auto_restart_supervision"
     },
@@ -9427,6 +9884,7 @@
       "source_file": "README.md",
       "source_location": "221-230",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_points_and_rewards_system",
       "target": "readme_env_configuration"
     },
@@ -9437,6 +9895,7 @@
       "source_file": "README.md",
       "source_location": "128-135",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_persistent_role_toggle_buttons",
       "target": "readme_env_configuration"
     },
@@ -9447,6 +9906,7 @@
       "source_file": "README.md",
       "source_location": "170-200",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_session_based_game_state",
       "target": "readme_persistent_role_toggle_buttons"
     },
@@ -9457,6 +9917,7 @@
       "source_file": "README.md",
       "source_location": "137-141",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_database_backup_command",
       "target": "readme_env_configuration"
     },
@@ -9467,6 +9928,7 @@
       "source_file": "README.md",
       "source_location": "124-126",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_guild_event_logging",
       "target": "readme_env_configuration"
     },
@@ -9477,6 +9939,7 @@
       "source_file": "README.md",
       "source_location": "103",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_systemd_deployment",
       "target": "readme_env_configuration"
     },
@@ -9487,6 +9950,7 @@
       "source_file": "README.md",
       "source_location": "161",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_database_backup_command",
       "target": "readme_guild_event_logging"
     },
@@ -9497,6 +9961,7 @@
       "source_file": "README.md",
       "source_location": "193",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "readme_context_menus",
       "target": "readme_feedback_embed_conversion"
     },
@@ -9507,6 +9972,7 @@
       "source_file": "SECURITY.md",
       "source_location": "5-7",
       "weight": 1.0,
+      "_origin": "semantic",
       "source": "security_vulnerability_reporting_policy",
       "target": "security_private_disclosure_channel"
     }
@@ -9556,5 +10022,5 @@
       "source_file": "SECURITY.md"
     }
   ],
-  "built_at_commit": "3971fbbd4c84f89a49f7d27f4cf437ac2c656541"
+  "built_at_commit": "84f44f3c2c43bc5e1d6ed1361b1646ae685813d0"
 }

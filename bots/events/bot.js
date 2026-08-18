@@ -61,9 +61,9 @@ function attach(client, registry) {
   client.on(Events.InviteCreate, i => logging.onInviteCreate(i));
   client.on(Events.InviteDelete, i => logging.onInviteDelete(i));
 
-  // Member count update on join/leave
-  client.on(Events.GuildMemberAdd,    () => updateMemberCount(client));
-  client.on(Events.GuildMemberRemove, () => updateMemberCount(client));
+  // Member count update on join/leave (debounced, see below)
+  client.on(Events.GuildMemberAdd,    () => scheduleMemberCountUpdate(client));
+  client.on(Events.GuildMemberRemove, () => scheduleMemberCountUpdate(client));
 
   // Messages
   client.on(Events.MessageCreate, msg => messageHandler.onMessage(msg));
@@ -72,7 +72,35 @@ function attach(client, registry) {
   client.on(Events.InteractionCreate, interaction => contextMenus.handleInteraction(interaction, client));
 }
 
+// Discord throttles channel renames to 2 per 10 minutes. Renaming on every join
+// and leave burns that budget within seconds on a busy day, and every further
+// rename is dropped by the API until the window rolls over, so the channel ends
+// up showing a stale count.
+//
+// Trailing debounce: the first event schedules a rename, further events during
+// the window are absorbed, and the rename that finally runs reads the current
+// member count. The displayed number lags by at most MEMBER_COUNT_INTERVAL_MS
+// but is always the real one.
+const MEMBER_COUNT_INTERVAL_MS = 5 * 60 * 1000;
+
+let memberCountTimer   = null;
+let memberCountLastRun = 0;
+
+function scheduleMemberCountUpdate(client) {
+  if (memberCountTimer) return;  // a rename is already pending
+
+  const wait = Math.max(0, MEMBER_COUNT_INTERVAL_MS - (Date.now() - memberCountLastRun));
+  memberCountTimer = setTimeout(() => {
+    memberCountTimer = null;
+    updateMemberCount(client);
+  }, wait);
+  // Do not keep the process alive just for a pending rename.
+  memberCountTimer.unref?.();
+}
+
 async function updateMemberCount(client) {
+  memberCountLastRun = Date.now();
+
   const guild   = client.guilds.cache.get(String(gcfg.ID));
   const channel = client.channels.cache.get(String(gcfg.MEMBER_COUNT_CHANNEL_ID));
   if (guild && channel) {

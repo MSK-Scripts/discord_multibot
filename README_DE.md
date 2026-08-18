@@ -43,8 +43,8 @@ Alle drei Bots laufen parallel. Stürzt einer ab, wird er nach 10 Sekunden autom
 
 ```bash
 # 1. Repository klonen
-git clone https://github.com/MSK-Scripts/discord-multibot-js.git
-cd discord-multibot-js
+git clone https://github.com/MSK-Scripts/discord_multibot.git
+cd discord_multibot
 
 # 2. Abhängigkeiten installieren
 npm install
@@ -63,44 +63,70 @@ node main.js
 
 ### systemd-Dienst
 
-Eine fertige systemd-Unit-Datei liegt unter `multibot-js.service` bereit.
+Eine fertige systemd-Unit-Datei liegt unter `multibot.service` bereit
+(Benutzer `discord`, Arbeitsverzeichnis `/opt/discord_multibot`).
 
-**1. Pfade und Benutzer in der Datei bei Bedarf anpassen** (Standard: Benutzer `deploy`, Pfad `/home/deploy/discord_multibot_js`).
+**1. Pfade und Benutzer in der Datei bei Bedarf anpassen.**
 
 **2. Service-Datei nach systemd kopieren:**
 
 ```bash
-sudo cp multibot-js.service /etc/systemd/system/
+sudo cp multibot.service /etc/systemd/system/
 ```
 
 **3. systemd neu laden und Dienst aktivieren:**
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable multibot-js
-sudo systemctl start multibot-js
+sudo systemctl enable --now multibot
 ```
 
 **4. Status prüfen:**
 
 ```bash
-sudo systemctl status multibot-js
+sudo systemctl status multibot
 ```
 
 **Nützliche Befehle:**
 
 ```bash
 # Live-Logs anzeigen
-journalctl -u multibot-js -f
+journalctl -u multibot -f
 
 # Nach einem Update neu starten
-sudo systemctl restart multibot-js
+sudo systemctl restart multibot
 
 # Bots stoppen
-sudo systemctl stop multibot-js
+sudo systemctl stop multibot
 ```
 
 > **Hinweis:** Der Dienst liest die `.env`-Datei über `EnvironmentFile=`. Stelle sicher, dass die Datei am konfigurierten Pfad vorhanden und vom Service-Benutzer lesbar ist.
+
+### Automatisches Deployment
+
+`.github/workflows/deploy.yml` deployt jeden Push auf `main`, der echten Code
+betrifft: erst läuft das CI-Gate, dann geht es per SSH auf den Server, setzt
+`/opt/discord_multibot` hart auf `origin/main`, führt `npm ci --omit=dev` aus,
+startet den Dienst neu und lässt den Lauf rot werden, wenn der Bot danach nicht
+läuft.
+
+Dafür braucht das Repository vier Secrets:
+
+| Secret | Bedeutung |
+|---|---|
+| `DEPLOY_HOST` | Hostname oder IP des Servers |
+| `DEPLOY_USER` | SSH-Benutzer (braucht `sudo systemctl` und Schreibrechte auf `/opt/discord_multibot`) |
+| `DEPLOY_SSH_KEY` | Privater SSH-Key dieses Benutzers |
+| `DEPLOY_PORT` | SSH-Port |
+
+Zwei Dinge bleiben bewusst außerhalb der Pipeline. Die produktive `.env` wandert
+nie durch Git, fehlt sie, bricht der Deploy ab. Und `multibot.service` wird nicht
+automatisch installiert, eine geänderte Unit muss von Hand kopiert und neu
+geladen werden.
+
+Der Deploy nutzt `git clean -df` ohne `-x`, damit alles aus der `.gitignore`
+erhalten bleibt: `.env`, `data/` (Punkte und Datenbank-Backups), `assets/`, die
+Logdateien und das ungetrackte `bots/commands/commands/orders.js`.
 
 ---
 
@@ -125,8 +151,11 @@ LOG_CHANNEL_ID=
 FEEDBACK_CHANNEL_ID=
 MEMBER_COUNT_CHANNEL_ID=
 
-# Rollen-IDs
+# Rollen-IDs (FOUNDER / MANAGER / DEVELOPER / TEAM steuern die Team-Commands)
 MEMBER_ROLE_ID=
+FOUNDER_ROLE_ID=
+MANAGER_ROLE_ID=
+DEVELOPER_ROLE_ID=
 TEAM_ROLE_ID=
 GIVEAWAY_NOTIFY_ROLE_ID=
 GARAGE_ROLE_ID=
@@ -236,12 +265,17 @@ Die Punktwerte pro Spiel sind in `bots/minigames/points_config.json` konfigurier
 ## Projektstruktur
 
 ```
-discord_multibot_js/
+discord_multibot/
 ├── main.js                          ← Startet alle 3 Bots, Auto-Restart-Logik
 ├── package.json
 ├── .env                             ← Nicht eingecheckt (siehe .gitignore)
 ├── .github/
-│   └── dependabot.yml               ← Wöchentliche Dependency-Update-Prüfung
+│   ├── dependabot.yml               ← Wöchentliche Dependency-Update-Prüfung
+│   └── workflows/
+│       ├── ci.yml                   ← Syntax-, JSON- und Audit-Check bei jedem PR
+│       ├── codeql.yml               ← Code Scanning
+│       ├── deploy.yml               ← SSH-Deploy + systemd-Restart bei Push auf main
+│       └── release.yml              ← GitHub-Release bei v*-Tags
 ├── core/
 │   ├── config.js                    ← Umgebungskonfiguration
 │   ├── utils.js                     ← Gemeinsame Helfer (makeEmbed, readJson, …)

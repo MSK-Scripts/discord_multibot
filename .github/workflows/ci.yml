@@ -1,0 +1,92 @@
+name: ✅ CI
+
+# Runs on every pull request and on pushes to main. Until this existed, pull
+# requests had no checks at all: release.yml only fires on v* tags and CodeQL
+# looks for security patterns, not for a file that fails to parse.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Called as a gate by deploy.yml, so nothing reaches the server that does not
+  # even parse.
+  workflow_call:
+
+# A newer push to the same branch makes the running check obsolete.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    name: Syntax & install
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      # Also verifies that package-lock.json is in sync with package.json,
+      # npm ci fails outright when it is not.
+      - name: Install dependencies
+        run: npm ci
+
+      # Parses every tracked JS file. Catches typos, stray brackets and broken
+      # template literals that would otherwise only show up when the bot boots
+      # on the server. Untracked files (bots/commands/commands/orders.js) are
+      # intentionally not part of this.
+      - name: Syntax check all tracked JS files
+        run: |
+          set -euo pipefail
+          FILES=$(git ls-files '*.js')
+          if [ -z "$FILES" ]; then
+            echo "::error::No JS files found, something is wrong with the checkout."
+            exit 1
+          fi
+          echo "$FILES" | while read -r f; do
+            node --check "$f"
+          done
+          echo "$FILES" | wc -l | xargs printf '✅ %s files parsed without errors.\n'
+
+      # points_config.json is read at runtime, a broken one takes the bot down.
+      - name: Validate tracked JSON files
+        run: |
+          set -euo pipefail
+          git ls-files '*.json' | while read -r f; do
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$f"
+          done
+          echo "✅ All tracked JSON files are valid."
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Production dependencies only, the bot ships no dev dependencies.
+      # Fails on high and critical advisories, which is the level this repo has
+      # been kept at since the August 2026 cleanup.
+      - name: npm audit
+        run: npm audit --omit=dev --audit-level=high

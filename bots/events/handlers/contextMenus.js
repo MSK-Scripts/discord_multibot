@@ -47,7 +47,7 @@ function getCommands() {
 // ─── Handlers ─────────────────────────────────────────────────────────────────
 
 async function commentFeedback(interaction) {
-  if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+  if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
     return interaction.reply({ content: '❌ No permission.', flags: MessageFlags.Ephemeral, fetchReply: false });
   }
 
@@ -97,7 +97,7 @@ async function commentFeedback(interaction) {
 }
 
 async function answerMessage(interaction) {
-  if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+  if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
     return interaction.reply({ content: '❌ No permission.', flags: MessageFlags.Ephemeral });
   }
 
@@ -117,7 +117,7 @@ async function answerMessage(interaction) {
 }
 
 async function editMessage(interaction) {
-  if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+  if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
     return interaction.reply({ content: '❌ No permission.', flags: MessageFlags.Ephemeral });
   }
 
@@ -139,7 +139,7 @@ async function editMessage(interaction) {
 }
 
 async function editEmbed(interaction) {
-  if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+  if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
     return interaction.reply({ content: '❌ No permission.', flags: MessageFlags.Ephemeral });
   }
 

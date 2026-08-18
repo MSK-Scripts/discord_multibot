@@ -21,7 +21,7 @@ module.exports = [
       .setDescription('Backup Database [ONLY FOR FOUNDER ROLE]'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Founder')) {
+      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 
@@ -71,7 +71,7 @@ module.exports = [
       .setDescription('Send a Message'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 
@@ -109,7 +109,7 @@ module.exports = [
       .setDescription('Send an Embed Message'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Founder', 'Manager')) {
+      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 

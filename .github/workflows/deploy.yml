@@ -1,0 +1,108 @@
+name: 🚀 Deploy
+
+# On every push to main: run the CI gate first, then deploy to the Debian server
+# over SSH and restart the systemd unit. Can also be triggered manually via
+# "Run workflow".
+
+on:
+  push:
+    branches: [main]
+    # Documentation and meta changes must not trigger a production redeploy.
+    # graphify-out/ belongs in this list for the same reason: the codebase graph
+    # is versioned but never executed, so a `graphify update` would otherwise
+    # restart the live bot for nothing.
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+      - '.gitignore'
+      - 'graphify-out/**'
+      - 'multibot.service'
+  workflow_dispatch:
+
+# Never let two deploys touch the server at the same time. Not cancelling in
+# progress: a half-applied deploy is worse than a redundant one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # Same checks pull requests get. Nothing reaches the server that fails to parse.
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host:     ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key:      ${{ secrets.DEPLOY_SSH_KEY }}
+          port:     ${{ secrets.DEPLOY_PORT }}
+          script: |
+            set -euo pipefail
+            REPO="https://github.com/MSK-Scripts/discord_multibot.git"
+            DIR="/opt/discord_multibot"
+
+            mkdir -p "$DIR"
+            cd "$DIR"
+
+            # Self-healing: initialize the directory as a git repo if needed and
+            # hard-reset it onto origin/main. Works for the very first deploy
+            # too, when $DIR was not a clone yet.
+            git config --global --add safe.directory "$DIR" 2>/dev/null || true
+            git init -q
+            git remote get-url origin >/dev/null 2>&1 \
+              && git remote set-url origin "$REPO" \
+              || git remote add origin "$REPO"
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+
+            # Deliberately `clean -df` and NOT `-dfx`: without -x, git leaves
+            # everything listed in .gitignore alone. That is exactly what has to
+            # survive a deploy here: .env, data/ with points.json and the
+            # database backups, assets/ with the terms PDF, node_modules/, the
+            # log files, and bots/commands/commands/orders.js, which is
+            # intentionally untracked and would otherwise be deleted on every
+            # single deploy.
+            # A new .gitignore entry is protected automatically this way.
+            git clean -df
+
+            # The production .env is never transferred through git.
+            if [ ! -f .env ]; then
+              echo "ERROR: $DIR/.env is missing. Create the production .env first (see README)."
+              exit 1
+            fi
+
+            # No devDependencies in this project, --omit=dev keeps it that way
+            # should any ever be added.
+            npm ci --omit=dev
+
+            # The deploy runs as root, the service runs as discord:discord.
+            # Without this, files would end up owned by root:root. .env is
+            # restricted to the owner on top of that.
+            chown -R discord:discord "$DIR"
+            chmod 600 "$DIR/.env"
+
+            # multibot.service itself is NOT installed from here. If the unit
+            # changed, copy it to /etc/systemd/system and run daemon-reload by
+            # hand, that is why it sits in paths-ignore above.
+            sudo systemctl restart multibot
+            sleep 3
+            sudo systemctl --no-pager status multibot | head -n 8
+
+            # Fail the workflow loudly if the bot died right after the restart,
+            # instead of reporting a green deploy for a dead service.
+            if ! systemctl is-active --quiet multibot; then
+              echo "ERROR: multibot is not running after the restart. Last log lines:"
+              journalctl -u multibot -n 40 --no-pager
+              exit 1
+            fi
+
+            echo "✅ Deployed $(git rev-parse --short HEAD) and multibot is running."

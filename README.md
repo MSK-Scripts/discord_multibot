@@ -43,8 +43,8 @@ All three bots run in parallel. If one crashes, it automatically restarts after 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/MSK-Scripts/discord-multibot-js.git
-cd discord-multibot-js
+git clone https://github.com/MSK-Scripts/discord_multibot.git
+cd discord_multibot
 
 # 2. Install dependencies
 npm install
@@ -63,44 +63,69 @@ node main.js
 
 ### systemd Service
 
-A ready-to-use systemd unit file is included at `multibot-js.service`.
+A ready-to-use systemd unit file is included at `multibot.service`
+(user `discord`, working directory `/opt/discord_multibot`).
 
-**1. Adjust the paths and user in the file if necessary** (default: user `deploy`, path `/home/deploy/discord_multibot_js`).
+**1. Adjust the paths and user in the file if necessary.**
 
 **2. Copy the service file to systemd:**
 
 ```bash
-sudo cp multibot-js.service /etc/systemd/system/
+sudo cp multibot.service /etc/systemd/system/
 ```
 
 **3. Reload systemd and enable the service:**
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable multibot-js
-sudo systemctl start multibot-js
+sudo systemctl enable --now multibot
 ```
 
 **4. Check the status:**
 
 ```bash
-sudo systemctl status multibot-js
+sudo systemctl status multibot
 ```
 
 **Useful commands:**
 
 ```bash
 # View live logs
-journalctl -u multibot-js -f
+journalctl -u multibot -f
 
 # Restart after update
-sudo systemctl restart multibot-js
+sudo systemctl restart multibot
 
 # Stop the bots
-sudo systemctl stop multibot-js
+sudo systemctl stop multibot
 ```
 
 > **Note:** The service reads the `.env` file via `EnvironmentFile=`. Make sure the file exists at the configured path and is readable by the service user.
+
+### Automated deployment
+
+`.github/workflows/deploy.yml` deploys every push to `main` that touches actual
+code: it runs the CI gate first, then connects over SSH, resets
+`/opt/discord_multibot` onto `origin/main`, runs `npm ci --omit=dev`, restarts
+the service and fails the run if the bot is not alive afterwards.
+
+Four repository secrets are required:
+
+| Secret | Meaning |
+|---|---|
+| `DEPLOY_HOST` | Server hostname or IP |
+| `DEPLOY_USER` | SSH user (needs `sudo systemctl` and write access to `/opt/discord_multibot`) |
+| `DEPLOY_SSH_KEY` | Private SSH key for that user |
+| `DEPLOY_PORT` | SSH port |
+
+Two things stay outside the pipeline on purpose. The production `.env` is never
+transferred through git, the deploy aborts if it is missing. And
+`multibot.service` is not installed automatically, a changed unit has to be
+copied over and reloaded by hand.
+
+The deploy uses `git clean -df` without `-x`, so everything in `.gitignore`
+survives: `.env`, `data/` (points and database backups), `assets/`, the log files
+and the untracked `bots/commands/commands/orders.js`.
 
 ---
 
@@ -125,8 +150,11 @@ LOG_CHANNEL_ID=
 FEEDBACK_CHANNEL_ID=
 MEMBER_COUNT_CHANNEL_ID=
 
-# Role IDs
+# Role IDs (FOUNDER / MANAGER / DEVELOPER / TEAM gate the staff commands)
 MEMBER_ROLE_ID=
+FOUNDER_ROLE_ID=
+MANAGER_ROLE_ID=
+DEVELOPER_ROLE_ID=
 TEAM_ROLE_ID=
 GIVEAWAY_NOTIFY_ROLE_ID=
 GARAGE_ROLE_ID=
@@ -236,12 +264,17 @@ Point values per game are configurable in `bots/minigames/points_config.json`.
 ## Project Structure
 
 ```
-discord_multibot_js/
+discord_multibot/
 ├── main.js                          ← Starts all 3 bots, handles auto-restart
 ├── package.json
 ├── .env                             ← Not committed (see .gitignore)
 ├── .github/
-│   └── dependabot.yml               ← Weekly dependency update checks
+│   ├── dependabot.yml               ← Weekly dependency update checks
+│   └── workflows/
+│       ├── ci.yml                   ← Syntax + JSON + audit check on every PR
+│       ├── codeql.yml               ← Code scanning
+│       ├── deploy.yml               ← SSH deploy + systemd restart on push to main
+│       └── release.yml              ← GitHub release on v* tags
 ├── core/
 │   ├── config.js                    ← Environment config
 │   ├── utils.js                     ← Shared helpers (makeEmbed, readJson, …)

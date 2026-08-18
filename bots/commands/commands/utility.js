@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const { makeEmbed, hasAnyRole } = require('../../../core/utils');
 const { getPoints } = require('../../../core/pointsManager');
+const { guild: gcfg } = require('../../../core/config');
 
 module.exports = [
   {
@@ -58,7 +59,7 @@ module.exports = [
       .addIntegerOption(o => o.setName('amount').setDescription('Number of messages to delete (max 100)').setRequired(true)),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Team')) {
+      if (!hasAnyRole(interaction, gcfg.TEAM_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 

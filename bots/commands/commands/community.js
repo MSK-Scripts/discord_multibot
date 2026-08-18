@@ -9,7 +9,7 @@ module.exports = [
       .setDescription('Information Message with URL Buttons'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Manager', 'Founder')) {
+      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 
@@ -45,7 +45,7 @@ module.exports = [
       .setDescription('Rules Message with Reaction Buttons'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Manager', 'Founder')) {
+      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 
@@ -81,7 +81,7 @@ module.exports = [
       .setDescription('Roles Message with Script Notification Buttons'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, 'Manager', 'Founder')) {
+      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
         return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
       }
 
