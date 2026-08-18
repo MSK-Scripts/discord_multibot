@@ -323,10 +323,29 @@ discord_multibot/
 
 | Package | Version |
 |---|---|
-| [discord.js](https://discord.js.org) | `^14.26.4` |
-| [dotenv](https://github.com/motdotla/dotenv) | `^16.6.1` |
+| [discord.js](https://discord.js.org) | `^14.27.0` |
+| [dotenv](https://github.com/motdotla/dotenv) | `^17.4.2` |
 
 Dependency updates are monitored automatically via [Dependabot](.github/dependabot.yml) (weekly, grouped).
+
+### Overrides
+
+Two of discord.js' own sub-dependencies are pulled forward in `package.json`:
+
+```json
+"overrides": {
+  "@discordjs/collection": "2.1.1",
+  "@discordjs/ws": "2.0.4"
+}
+```
+
+`undici` deliberately stays on the 6.x line that discord.js asks for. Forcing
+`undici@8` breaks the whole REST layer: `@discordjs/rest` passes Node's
+`sensitiveHeaders` symbol into the request headers and undici 8 refuses it with
+`Key Symbol(sensitiveHeaders) in init is a symbol, which cannot be converted to
+a ByteString`. Every REST call fails at that point, including command
+registration and every single interaction reply. Do not add it back without
+testing an actual login.
 
 ---
 

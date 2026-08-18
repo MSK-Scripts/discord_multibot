@@ -12,5 +12,9 @@
   },
   "engines": {
     "node": ">=22.0.0"
+  },
+  "overrides": {
+    "@discordjs/collection": "2.1.1",
+    "@discordjs/ws": "2.0.4"
   }
 }
