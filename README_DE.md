@@ -324,29 +324,10 @@ discord_multibot/
 
 | Paket | Version |
 |---|---|
-| [discord.js](https://discord.js.org) | `^14.27.0` |
-| [dotenv](https://github.com/motdotla/dotenv) | `^17.4.2` |
+| [discord.js](https://discord.js.org) | `^14.26.4` |
+| [dotenv](https://github.com/motdotla/dotenv) | `^16.6.1` |
 
 Dependency-Updates werden automatisch über [Dependabot](.github/dependabot.yml) überwacht (wöchentlich, gruppiert).
-
-### Overrides
-
-Zwei Sub-Dependencies von discord.js werden in der `package.json` vorgezogen:
-
-```json
-"overrides": {
-  "@discordjs/collection": "2.1.1",
-  "@discordjs/ws": "2.0.4"
-}
-```
-
-`undici` bleibt bewusst auf der 6.x-Linie, die discord.js verlangt. Ein
-erzwungenes `undici@8` zerlegt die komplette REST-Schicht: `@discordjs/rest`
-reicht Nodes `sensitiveHeaders`-Symbol in die Request-Header, und undici 8 lehnt
-das ab mit `Key Symbol(sensitiveHeaders) in init is a symbol, which cannot be
-converted to a ByteString`. Ab da scheitert jeder REST-Aufruf, also auch die
-Command-Registrierung und jede einzelne Interaction-Antwort. Nicht ohne einen
-echten Login-Test wieder aufnehmen.
 
 ---
 
