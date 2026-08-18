@@ -1,34 +1,33 @@
-# Graph Report - discord_multibot  (2026-08-18)
+# Graph Report - .  (2026-08-18)
 
 ## Corpus Check
-- 34 files · ~24,242 words
-- Verdict: corpus is large enough that graph structure adds value.
+- cluster-only mode — file stats not available
 
 ## Summary
 - 293 nodes · 569 edges · 14 communities (13 shown, 1 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 44 edges (avg confidence: 0.57)
-- Token cost: 0 input · 0 output
+- Token cost: 900 input · 152 output
 
 ## Graph Freshness
-- Built from commit: `84f44f3c`
+- Built from commit: `50e11046`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- utils.js
-- addPoints
-- Discord Multi-Bot README (EN)
-- logging.js
-- blackjack.js
-- pointsManager.js
-- tictactoe.js
-- connect4.js
-- package.json
-- config.js
-- eightball.js
-- contextMenus.js
-- minigames/bot.js
-- dice.js
+- Community Minigames
+- Rewards and Minigames
+- Project Maintenance
+- Audit Logging
+- Blackjack Game
+- Points Management
+- Tic-Tac-Toe Game
+- Connect 4 Game
+- Project Configuration
+- Bot Core Events
+- Magic 8-Ball
+- Admin Commands
+- Minigame Bot Core
+- Dice Roller
 
 ## God Nodes (most connected - your core abstractions)
 1. `addPoints()` - 21 edges
@@ -64,60 +63,60 @@
 
 ## Communities (14 total, 1 thin omitted)
 
-### Community 0 - "utils.js"
+### Community 0 - "Community Minigames"
 Cohesion: 0.09
 Nodes (26): execute(), { guild: gcfg }, { makeEmbed, hasAnyRole }, { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags }, { DATA_DIR, guild: gcfg }, execute(), FLACHWITZE_FILE, { join } (+18 more)
 
-### Community 1 - "addPoints"
+### Community 1 - "Rewards and Minigames"
 Cohesion: 0.08
 Nodes (43): { addPoints, getPts, notifyRewards, pointsFooter }, execute(), { makeEmbed }, { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder }, { addPoints, getPts, notifyRewards, pointsFooter }, buildEmbed(), execute(), { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } (+35 more)
 
-### Community 2 - "Discord Multi-Bot README (EN)"
+### Community 2 - "Project Maintenance"
 Cohesion: 0.10
 Nodes (28): Dependabot npm Update Config, Grouped Weekly Dependency Updates, Auto Release Workflow, Release Concurrency Guard, Release Body Generation from Git History, Tag Resolution and Optional Tag Creation, Contributor Covenant Code of Conduct v2.0, Community Impact Enforcement Ladder (+20 more)
 
-### Community 3 - "logging.js"
+### Community 3 - "Audit Logging"
 Cohesion: 0.21
 Nodes (26): CHANNEL_TYPE_NAMES, channelTypeName(), embed(), { EmbedBuilder, AuditLogEvent, ChannelType }, getAuditUser(), getLogChannel(), { guild: gcfg }, log() (+18 more)
 
-### Community 4 - "blackjack.js"
+### Community 4 - "Blackjack Game"
 Cohesion: 0.23
 Nodes (15): { addPoints, getPts, notifyRewards, pointsFooter }, buildButtons(), buildEmbed(), execute(), handStr(), handValue(), isBlackjack(), makeDeck() (+7 more)
 
-### Community 5 - "pointsManager.js"
+### Community 5 - "Points Management"
 Cohesion: 0.13
 Nodes (19): execute(), { getPoints }, { guild: gcfg }, { makeEmbed, hasAnyRole }, { SlashCommandBuilder, MessageFlags }, execute(), { getConfig, getPoints }, { SlashCommandBuilder, EmbedBuilder } (+11 more)
 
-### Community 6 - "tictactoe.js"
+### Community 6 - "Tic-Tac-Toe Game"
 Cohesion: 0.25
 Nodes (16): { addPoints, getPts, notifyRewards, pointsFooter }, aiEasy(), aiHard(), aiMedium(), available(), buildBoard(), buildEmbed(), CELL_EMOJIS (+8 more)
 
-### Community 7 - "connect4.js"
+### Community 7 - "Connect 4 Game"
 Cohesion: 0.29
 Nodes (13): { addPoints, getPts, notifyRewards, pointsFooter }, botMove(), buildComponents(), buildEmbed(), checkWin(), COL_NUMS, drop(), execute() (+5 more)
 
-### Community 8 - "package.json"
+### Community 8 - "Project Configuration"
 Cohesion: 0.14
 Nodes (13): discord.js, dotenv, dependencies, discord.js, dotenv, description, engines, node (+5 more)
 
-### Community 9 - "config.js"
+### Community 9 - "Bot Core Events"
 Cohesion: 0.08
 Nodes (27): attach(), {
   Collection, GatewayIntentBits, Events,
   ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,
 }, { guild: gcfg }, handlePersistentButton(), intents, { join }, partials, { readdirSync } (+19 more)
 
-### Community 10 - "eightball.js"
+### Community 10 - "Magic 8-Ball"
 Cohesion: 0.32
 Nodes (7): ALL, COLORS, execute(), NEGATIVE, NEUTRAL, POSITIVE, { SlashCommandBuilder, EmbedBuilder }
 
-### Community 11 - "contextMenus.js"
+### Community 11 - "Admin Commands"
 Cohesion: 0.15
 Nodes (21): { EMBED_COLOR, THUMBNAIL_URL, database, guild: gcfg, DATA_DIR }, { execFile }, execute(), { hasAnyRole, nowStr }, { join }, { mkdirSync, writeFileSync, unlinkSync }, showModal(), {
   SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, AttachmentBuilder, MessageFlags,
 } (+13 more)
 
-### Community 13 - "minigames/bot.js"
+### Community 13 - "Minigame Bot Core"
 Cohesion: 0.29
 Nodes (5): {
   Collection, GatewayIntentBits, Events, ActivityType, MessageFlags,
@@ -140,18 +139,18 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Network-Use Copyleft (AGPL Section 13)` and `systemd Deployment (multibot-js.service)`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `guild` connect `config.js` to `utils.js`, `logging.js`, `contextMenus.js`, `pointsManager.js`?**
+- **Why does `guild` connect `Bot Core Events` to `Community Minigames`, `Audit Logging`, `Admin Commands`, `Points Management`?**
   _High betweenness centrality (0.042) - this node is a cross-community bridge._
-- **Why does `pointsFooter()` connect `addPoints` to `blackjack.js`, `pointsManager.js`, `tictactoe.js`, `connect4.js`?**
+- **Why does `pointsFooter()` connect `Rewards and Minigames` to `Blackjack Game`, `Points Management`, `Tic-Tac-Toe Game`, `Connect 4 Game`?**
   _High betweenness centrality (0.037) - this node is a cross-community bridge._
-- **Why does `addPoints()` connect `addPoints` to `utils.js`, `blackjack.js`, `pointsManager.js`, `tictactoe.js`, `connect4.js`?**
+- **Why does `addPoints()` connect `Rewards and Minigames` to `Community Minigames`, `Blackjack Game`, `Points Management`, `Tic-Tac-Toe Game`, `Connect 4 Game`?**
   _High betweenness centrality (0.037) - this node is a cross-community bridge._
 - **What connects `{
   Collection, GatewayIntentBits, Events,
   ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,
 }`, `{ readdirSync }`, `{ join }` to the rest of the system?**
   _111 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `utils.js` be split into smaller, more focused modules?**
+- **Should `Community Minigames` be split into smaller, more focused modules?**
   _Cohesion score 0.08817204301075268 - nodes in this community are weakly interconnected._
-- **Should `addPoints` be split into smaller, more focused modules?**
+- **Should `Rewards and Minigames` be split into smaller, more focused modules?**
   _Cohesion score 0.08333333333333333 - nodes in this community are weakly interconnected._
