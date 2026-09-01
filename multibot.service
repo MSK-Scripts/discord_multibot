@@ -7,6 +7,9 @@
 #   sudo systemctl daemon-reload
 #   sudo systemctl enable --now multibot.service
 #
+# ACHTUNG: deploy.yml installiert diese Datei NICHT. Eine Aenderung hier
+# erreicht den Server erst durch das cp plus daemon-reload oben.
+#
 # Nützliche Befehle:
 #   sudo systemctl status  multibot.service     # Status anzeigen
 #   sudo systemctl restart multibot.service     # Neustart
@@ -36,8 +39,19 @@ WorkingDirectory=/opt/discord_multibot
 # für systemd zusätzlich hier referenzieren (doppelte Absicherung).
 EnvironmentFile=/opt/discord_multibot/.env
 
-# Node.js-Pfad sicherstellen
-ExecStart=/usr/bin/node main.js
+# ── Einstiegspunkt ───────────────────────────────────────────────────────────
+# dashboard.js ist der Supervisor: er startet main.js als KINDPROZESS und
+# daneben, wenn DASHBOARD_ENABLED=true gesetzt ist, das Webpanel. Das Panel muss
+# der Elternprozess sein, sonst kann es den Bot weder neu starten noch einen
+# Absturz ueberleben, und genau dann braucht man es.
+#
+# NIEMALS BEIDE GLEICHZEITIG. Wer daneben noch `node main.js` laufen laesst,
+# haengt zwei Bots an dasselbe Token und Discord wirft beide raus.
+#
+# `node main.js` bleibt der schlichte Einstieg ohne Dashboard und laedt keine
+# Zeile des Webstacks. Wer das will, traegt es hier ein und laesst
+# DASHBOARD_ENABLED weg.
+ExecStart=/usr/bin/node dashboard.js
 
 # ── Restart-Verhalten ─────────────────────────────────────────────────────────
 # Neustart bei jedem unerwarteten Exit (Absturz, OOM, etc.)
