@@ -51,6 +51,6 @@ const tokens = {
 };
 
 const EMBED_COLOR   = 0x5EB131;
-const THUMBNAIL_URL = 'https://i.imgur.com/PizJGsh.png';
+const THUMBNAIL_URL = "https://cdn.msk-scripts.de/brand/msk_logo.webp";
 
 module.exports = { BASE_DIR, DATA_DIR, ASSETS_DIR, guild, database, tokens, EMBED_COLOR, THUMBNAIL_URL };
