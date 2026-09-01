@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const { join } = require('path');
+const { randomInt } = require('crypto');
 const { makeEmbed, readJson, writeJson } = require('../../../core/utils');
 const { applyMeta, optionText, guard } = require('../../../core/commandKit');
 const { t } = require('../../../core/i18n');
@@ -13,6 +14,14 @@ const JOKES_FILE = join(config.DATA_DIR, 'flachwitze.json');
 // space is small enough to enumerate (1-100 by default), an unlimited /rg lets
 // anyone walk the whole range and collect the prize. A stronger PRNG would not
 // change that; a per-user budget does.
+//
+// The secret is still drawn with randomInt rather than Math.random. The
+// argument above says a better PRNG buys nothing, and that stays true, but it
+// only holds while the range is small. An operator who sets 1 to 1000000 has
+// left enumeration behind and is relying on the draw alone, and at that point
+// Math.random is genuinely too weak: V8 seeds it per context and its output is
+// recoverable from a handful of observed values. Costing one call to make the
+// setting safe at every range beats a comment explaining why it is not.
 const settings = () => ({
   min:      Number(config.get('features.guessNumber.defaultMin', 1)) || 1,
   max:      Number(config.get('features.guessNumber.defaultMax', 100)) || 100,
@@ -25,7 +34,7 @@ function newRound(min, max) {
   return {
     min,
     max,
-    secret: Math.floor(Math.random() * (max - min + 1)) + min,
+    secret: randomInt(min, max + 1),
     // user ID -> { count, last }, dropped wholesale when a new round starts
     attempts: new Map(),
   };

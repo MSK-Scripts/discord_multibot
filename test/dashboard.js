@@ -611,6 +611,76 @@ const anonymous = async (method, url) => {
     }
   });
 
+  // ──────────────────────────────────────────────────────────────────────────
+  section('L) the limits the scanner cannot see');
+
+  // CodeQL reports js/missing-rate-limiting across this server because it only
+  // recognises a handful of middleware packages, and the limiter here is our
+  // own. Dismissing those alerts is only honest if the limiter demonstrably
+  // works, so these checks are the evidence: they drive it over HTTP and
+  // require a real 429. Every request below carries its own X-Forwarded-For, so
+  // one check cannot spend another check's budget.
+
+  const withIp = (ip) => async (method, url, headers = {}) => {
+    const res = await fetch(`${baseUrl}${url}`, {
+      method, redirect: 'manual', headers: { 'x-forwarded-for': ip, ...headers },
+    });
+    return { status: res.status, headers: res.headers };
+  };
+
+  await check('the login route stops answering once its budget is spent', async () => {
+    const call = withIp('203.0.113.10');
+    const seen = [];
+    // The auth budget is the small one, ten in five minutes.
+    for (let i = 0; i < 12; i++) seen.push((await call('GET', '/auth/login')).status);
+    assert.ok(seen.includes(429), 'never rate limited: ' + seen.join(','));
+    assert.strictEqual(seen[0], 302, 'the first attempt should still redirect to Discord');
+  });
+
+  await check('the global limiter answers 429 with a Retry-After', async () => {
+    const call = withIp('203.0.113.11');
+    let limited = null;
+    // The global budget is 240 a minute. Unauthenticated calls are 401 until it
+    // trips, which is the point: the limiter runs BEFORE the auth check, so it
+    // protects the routes an anonymous caller can reach.
+    for (let i = 0; i < 260 && !limited; i++) {
+      const res = await call('GET', '/api/status');
+      if (res.status === 429) limited = res;
+    }
+    assert.ok(limited, 'the global limiter never tripped');
+    assert.ok(Number(limited.headers.get('retry-after')) > 0, 'no usable Retry-After header');
+  });
+
+  await check('one caller being limited does not lock everybody out', async () => {
+    // A fixed window keyed per IP. If this ever came back 429 it would mean the
+    // limiter had become a way for one client to take the panel down for all.
+    const res = await withIp('203.0.113.12')('GET', '/api/status');
+    assert.strictEqual(res.status, 401);
+  });
+
+  await check('the Discord client refuses a path that would leave discord.com', async () => {
+    // CodeQL reports js/request-forgery here because an id reaches the URL. The
+    // ids are snowflakes, and the path is matched against a strict pattern
+    // before it is ever concatenated. These are the shapes that would matter if
+    // it were not.
+    const real = require(path.join(REPO, 'core/dashboard/discord'));
+    const evil = [
+      '//evil.example.com/x',
+      '/guilds/../../../evil',
+      '/guilds/1?redirect=http://evil.example.com',
+      '/guilds/1#@evil.example.com',
+      '/guilds/1\\@evil.example.com',
+      'https://evil.example.com/x',
+    ];
+    for (const pathname of evil) {
+      await assert.rejects(
+        () => real.request(pathname),
+        /unexpected path/,
+        `accepted a path it should refuse: ${pathname}`,
+      );
+    }
+  });
+
   // ── done ───────────────────────────────────────────────────────────────────
   server.close();
   await db.close().catch(() => {});

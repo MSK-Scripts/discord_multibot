@@ -14,6 +14,9 @@ const config = require('../config');
 
 const API = 'https://discord.com/api/v10';
 
+/** Slash-separated segments, nothing that could redirect the request. */
+const SAFE_PATH = /^(?:\/[A-Za-z0-9_-]+)+$/;
+
 class DiscordApiError extends Error {
   constructor(status, body) {
     super(`Discord API ${status}: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
@@ -43,10 +46,20 @@ async function request(pathname, { method = 'GET', body, token = null, retries =
   const auth = token ?? botToken();
   if (!auth) throw new Error('No bot token is configured, so the dashboard cannot talk to Discord.');
 
-  // Resolve and pin the target host. Path segments are snowflakes from the
-  // database or from route params; concatenating them cannot change the host,
-  // but verifying the origin anyway means a request can never be steered off
-  // discord.com by a value that turns out not to be a snowflake after all.
+  // The path is checked BEFORE it is concatenated, against a pattern that only
+  // admits the shape every caller here actually uses: slash-separated segments
+  // of letters, digits, underscore and hyphen. Every id that reaches this
+  // function is a snowflake from the database or from a route param, so the
+  // pattern costs nothing, and it rules out the whole family of tricks that
+  // turn a path into a different target: a leading double slash, a userinfo @,
+  // a query or fragment, a backslash, or a .. segment.
+  if (!SAFE_PATH.test(pathname)) {
+    throw new Error(`Refusing a request with an unexpected path: ${pathname}`);
+  }
+
+  // Then pin the host as well. The check above already makes this unreachable,
+  // which is the point: two independent reasons the request cannot leave
+  // discord.com, so neither one being wrong on its own is enough.
   const url = new URL(`${API}${pathname}`);
   if (url.protocol !== 'https:' || url.host !== 'discord.com') {
     throw new Error(`Refusing a request to an unexpected host: ${url.host}`);
