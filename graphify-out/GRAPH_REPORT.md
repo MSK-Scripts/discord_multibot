@@ -1,16 +1,16 @@
 # Graph Report - discord_multibot  (2026-09-01)
 
 ## Corpus Check
-- 96 files · ~86,310 words
+- 100 files · ~91,642 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 998 nodes · 1821 edges · 81 communities (65 shown, 16 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 186 edges (avg confidence: 0.85)
+- 1013 nodes · 1900 edges · 78 communities (62 shown, 16 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 187 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8429a739`
+- Built from commit: `1749a62f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -37,36 +37,33 @@
 - migrate-config.js
 - server.js
 - test/dashboard.js
-- routes.js
+- contextMenus.js
 - t
-- BotSupervisor
+- dashboard/config.js
 - security.js
 - inputs.jsx
 - dashboard/settings.js
 - dashboard/discord.js
 - ui.jsx
 - minigames.js
-- dashboard/config.js
-- gameKit.js
+- i18n.jsx
+- class-variance-authority
 - dependencies
 - App.jsx
-- wordle.js
+- gameColor
 - admin.js
 - Settings.jsx
-- slots.js
+- gameKit.js
 - devDependencies
-- support.js
 - utility.js
 - core/utils.js
 - web/package.json
 - BotControl.jsx
-- Config.jsx
-- envFile.js
+- useI18n
 - api.js
 - alert.jsx
 - badge.jsx
 - button.jsx
-- @fontsource/dm-sans
 - @fontsource/syne
 - @radix-ui/react-dialog
 - @radix-ui/react-dropdown-menu
@@ -83,13 +80,13 @@
 1. `t()` - 80 edges
 2. `gameColor()` - 24 edges
 3. `embed()` - 23 edges
-4. `applyMeta()` - 21 edges
-5. `gameFooter()` - 21 edges
-6. `notifyRewards()` - 21 edges
-7. `addPoints()` - 20 edges
-8. `f()` - 19 edges
-9. `getPts()` - 19 edges
-10. `log()` - 18 edges
+4. `useI18n()` - 23 edges
+5. `applyMeta()` - 21 edges
+6. `gameFooter()` - 21 edges
+7. `notifyRewards()` - 21 edges
+8. `addPoints()` - 20 edges
+9. `f()` - 19 edges
+10. `getPts()` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Discord Multi-Bot` --references--> `MSK Scripts Logo`  [INFERRED]
@@ -110,7 +107,7 @@
 - **Tag-Driven Release Automation Pipeline** — _github_workflows_release_auto_release_workflow, _github_workflows_release_tag_resolution, _github_workflows_release_release_body_generation, _github_workflows_release_concurrency_guard [EXTRACTED 1.00]
 - **Project Governance and Compliance Documents** — code_of_conduct_contributor_covenant, license_agpl_v3, security_vulnerability_reporting_policy, _github_dependabot_dependabot_config [INFERRED 0.85]
 
-## Communities (81 total, 16 thin omitted)
+## Communities (78 total, 16 thin omitted)
 
 ### Community 0 - "notifyRewards"
 Cohesion: 0.15
@@ -125,8 +122,8 @@ Cohesion: 0.21
 Nodes (35): actorText(), CHANNEL_TYPE_KEYS, channelTypeName(), color(), config, { dateStr }, embed(), { EmbedBuilder, AuditLogEvent, ChannelType } (+27 more)
 
 ### Community 3 - "pointsManager.js"
-Cohesion: 0.12
-Nodes (18): execute(), { applyMeta }, config, execute(), { gameColor }, { getPoints, rewards }, { SlashCommandBuilder, EmbedBuilder }, { t } (+10 more)
+Cohesion: 0.13
+Nodes (16): { applyMeta }, config, execute(), { gameColor }, { getPoints, rewards }, { SlashCommandBuilder, EmbedBuilder }, { t }, config (+8 more)
 
 ### Community 4 - "index.js"
 Cohesion: 0.09
@@ -137,11 +134,8 @@ Cohesion: 0.07
 Nodes (17): assert, client, commands, config, { EventEmitter }, { execSync }, failures, FIXTURE (+9 more)
 
 ### Community 6 - "i18n.js"
-Cohesion: 0.05
-Nodes (63): answerMessage(), cloneEmbed(), commentFeedback(), config, {
-  ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder, ModalBuilder,
-  TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags,
-}, editEmbed(), editMessage(), { guardMenu } (+55 more)
+Cohesion: 0.07
+Nodes (47): applyConfigPatch(), applyTextsPatch(), config, deletePath(), fs, i18n, isPlain(), { parseJsonc, deepMerge, getPath } (+39 more)
 
 ### Community 7 - "blackjack.js"
 Cohesion: 0.18
@@ -172,7 +166,7 @@ Nodes (15): { applyMeta, guard }, config, execute(), informationEmbed(), { makeE
 
 ### Community 13 - "trivia.js"
 Cohesion: 0.18
-Nodes (13): { addPoints, getPts, notifyRewards }, { applyMeta }, b64(), buildEmbed(), config, cooldowns, fetchQuestion(), { gameFooter, gameColor } (+5 more)
+Nodes (12): { addPoints, getPts, notifyRewards }, { applyMeta }, b64(), buildEmbed(), config, cooldowns, fetchQuestion(), { gameFooter, gameColor } (+4 more)
 
 ### Community 14 - "minigames/bot.js"
 Cohesion: 0.09
@@ -184,7 +178,7 @@ Nodes (4): Auto Release Workflow, Release Concurrency Guard, Release Body Genera
 
 ### Community 16 - "commandKit.js"
 Cohesion: 0.12
-Nodes (17): { applyMeta, optionText }, { gameColor }, SIDES, { SlashCommandBuilder, EmbedBuilder }, { t }, { applyMeta, optionText }, CATEGORIES, { gameColor } (+9 more)
+Nodes (21): { applyMeta, optionText, guard }, buildData(), config, execute(), guides(), { makeEmbed, linkRow }, { SlashCommandBuilder, MessageFlags }, { t } (+13 more)
 
 ### Community 18 - "mysql.js"
 Cohesion: 0.24
@@ -195,32 +189,35 @@ Cohesion: 0.21
 Nodes (11): BASE_DIR, buildConfig(), CONFIG_PATH, dryRun, env(), { existsSync, readFileSync, writeFileSync, copyFileSync }, force, { join } (+3 more)
 
 ### Community 21 - "server.js"
-Cohesion: 0.09
-Nodes (31): buildAuthorizeUrl(), exchangeCode(), fetchOAuthUser(), { redirectUri }, redirectUri(), canUseDashboard(), hasPermission(), resolvePermissions() (+23 more)
+Cohesion: 0.05
+Nodes (60): buildAuthorizeUrl(), exchangeCode(), fetchOAuthUser(), { redirectUri }, ENV_PATH, redirectUri(), detectEol(), parseEnvFile() (+52 more)
 
 ### Community 22 - "test/dashboard.js"
 Cohesion: 0.06
 Nodes (20): assert, CONFIG_PATH, crypto, db, discord, failures, fs, { loadDashboardConfig } (+12 more)
 
-### Community 23 - "routes.js"
-Cohesion: 0.12
-Nodes (23): ENV_PATH, checkSelfEdit(), isPermission(), isSubjectType(), parsePermissions(), PERMISSION_LABELS, PERMISSIONS, SUBJECT_TYPES (+15 more)
+### Community 23 - "contextMenus.js"
+Cohesion: 0.16
+Nodes (18): answerMessage(), cloneEmbed(), commentFeedback(), config, {
+  ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder, ModalBuilder,
+  TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags,
+}, editEmbed(), editMessage(), { guardMenu } (+10 more)
 
 ### Community 24 - "t"
 Cohesion: 0.20
 Nodes (20): { addPoints, getPts, notifyRewards }, aiEasy(), aiHard(), aiMedium(), { applyMeta }, available(), buildBoard(), buildEmbed() (+12 more)
 
-### Community 25 - "BotSupervisor"
-Cohesion: 0.17
-Nodes (8): BOT_ENTRY, BotSupervisor, config, ENV_PATH, EventEmitter, { fork, spawn }, fs, path
+### Community 25 - "dashboard/config.js"
+Cohesion: 0.09
+Nodes (22): config, crypto, ensureSessionSecret(), fs, isLoopback(), loadDashboardConfig(), path, { setEnvValue } (+14 more)
 
 ### Community 26 - "security.js"
 Cohesion: 0.15
 Nodes (14): b64url(), buckets, createOAuthState(), createSession(), createToken(), crypto, getSecret(), safeEqual() (+6 more)
 
 ### Community 27 - "inputs.jsx"
-Cohesion: 0.10
-Nodes (3): ACTIVITY_TYPES, BUTTON_STYLES, STATUSES
+Cohesion: 0.14
+Nodes (16): ACTIVITY_TYPES, BUTTON_STYLES, ColorInput(), CommandTable(), ContextMenus(), IdListPicker(), IdPicker(), ItemCard() (+8 more)
 
 ### Community 28 - "dashboard/settings.js"
 Cohesion: 0.20
@@ -232,34 +229,27 @@ Nodes (15): avatarUrl(), botToken(), cacheUser(), config, DiscordApiError, getGu
 
 ### Community 30 - "ui.jsx"
 Cohesion: 0.21
-Nodes (11): api, Banner(), BANNER_VARIANT, Empty(), fmtDate(), SectionTitle(), STATE_LABEL, STATE_VARIANT (+3 more)
+Nodes (13): api, getLocale(), Banner(), BANNER_VARIANT, Empty(), fmtDate(), SectionTitle(), STATE_VARIANT (+5 more)
 
 ### Community 31 - "minigames.js"
-Cohesion: 0.16
-Nodes (15): { applyMeta, optionText, guard }, config, execute(), { join }, JOKES_FILE, { makeEmbed, readJson, writeJson }, newRound(), settings() (+7 more)
+Cohesion: 0.21
+Nodes (11): { applyMeta, optionText, guard }, config, execute(), { join }, JOKES_FILE, { makeEmbed, readJson, writeJson }, newRound(), settings() (+3 more)
 
-### Community 32 - "dashboard/config.js"
-Cohesion: 0.20
-Nodes (14): config, crypto, ensureSessionSecret(), fs, isLoopback(), loadDashboardConfig(), path, { setEnvValue } (+6 more)
-
-### Community 33 - "gameKit.js"
-Cohesion: 0.16
-Nodes (13): { addPoints, getPts, notifyRewards }, { applyMeta }, buildEmbed(), { gameFooter, gameColor }, {
-  SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder,
-  ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags,
-}, STAGES, { t, tList }, config (+5 more)
+### Community 32 - "i18n.jsx"
+Cohesion: 0.28
+Nodes (11): BUNDLES, interpolate(), lookup(), resolve(), detectLanguage(), I18nContext, I18nProvider(), LANGUAGES (+3 more)
 
 ### Community 34 - "dependencies"
 Cohesion: 0.13
-Nodes (15): class-variance-authority, clsx, @fontsource/space-mono, lucide-react, @radix-ui/react-slot, @radix-ui/react-tooltip, tailwind-merge, dependencies (+7 more)
+Nodes (15): clsx, @fontsource/dm-sans, @fontsource/space-mono, lucide-react, @radix-ui/react-slot, @radix-ui/react-tooltip, tailwind-merge, dependencies (+7 more)
 
 ### Community 35 - "App.jsx"
-Cohesion: 0.23
-Nodes (11): allowed(), App(), NAV, NavContent(), DETAIL_VIEWS, parseRoute(), SEGMENT_TO_VIEW, useRouter() (+3 more)
+Cohesion: 0.29
+Nodes (10): allowed(), App(), NAV, NavContent(), DETAIL_VIEWS, parseRoute(), SEGMENT_TO_VIEW, useRouter() (+2 more)
 
-### Community 36 - "wordle.js"
-Cohesion: 0.21
-Nodes (12): execute(), pickWord(), { addPoints, getPts, notifyRewards }, { applyMeta }, buildEmbed(), evaluate(), execute(), { gameFooter, gameColor } (+4 more)
+### Community 36 - "gameColor"
+Cohesion: 0.10
+Nodes (26): execute(), { applyMeta, optionText }, CATEGORIES, execute(), { gameColor }, { SlashCommandBuilder, EmbedBuilder, MessageFlags }, { t, tList }, { addPoints, getPts, notifyRewards } (+18 more)
 
 ### Community 37 - "admin.js"
 Cohesion: 0.20
@@ -269,21 +259,17 @@ Nodes (11): { applyMeta, guard }, config, { execFile }, execute(), { join }, { m
 Cohesion: 0.35
 Nodes (8): ACCENT_VARS, applyAccent(), applyDashboardSettings(), applyFavicon(), hexToRgb(), loadAndApplyDashboardSettings(), readableForeground(), Settings()
 
-### Community 39 - "slots.js"
-Cohesion: 0.24
-Nodes (10): { addPoints, getPts, notifyRewards }, { applyMeta }, buildEmbed(), evaluate(), execute(), { gameFooter, gameColor }, { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder }, spin() (+2 more)
+### Community 39 - "gameKit.js"
+Cohesion: 0.15
+Nodes (16): { addPoints, getPts, notifyRewards }, { applyMeta }, buildEmbed(), evaluate(), execute(), { gameFooter, gameColor }, { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder }, spin() (+8 more)
 
 ### Community 40 - "devDependencies"
 Cohesion: 0.18
 Nodes (11): tailwindcss, @tailwindcss/vite, tw-animate-css, vite, @vitejs/plugin-react, devDependencies, tailwindcss, @tailwindcss/vite (+3 more)
 
-### Community 43 - "support.js"
-Cohesion: 0.27
-Nodes (9): { applyMeta, optionText, guard }, buildData(), config, execute(), guides(), { makeEmbed, linkRow }, { SlashCommandBuilder, MessageFlags }, { t } (+1 more)
-
 ### Community 44 - "utility.js"
-Cohesion: 0.24
-Nodes (9): { applyMeta, optionText, guard }, config, execute(), { getPoints }, { makeEmbed, dateTimeStr }, { SlashCommandBuilder, MessageFlags }, { t }, guard() (+1 more)
+Cohesion: 0.18
+Nodes (12): { applyMeta, optionText, guard }, config, execute(), { getPoints }, { makeEmbed, dateTimeStr }, { SlashCommandBuilder, MessageFlags }, { t }, getPoints() (+4 more)
 
 ### Community 45 - "core/utils.js"
 Cohesion: 0.22
@@ -294,46 +280,42 @@ Cohesion: 0.20
 Nodes (9): description, name, private, scripts, build, dev, preview, type (+1 more)
 
 ### Community 47 - "BotControl.jsx"
-Cohesion: 0.27
-Nodes (7): COLORS, parseAnsi(), fmtDuration(), BotControl(), DOT, LABEL, LogLine()
+Cohesion: 0.31
+Nodes (6): COLORS, parseAnsi(), fmtDuration(), BotControl(), DOT, LogLine()
 
-### Community 49 - "Config.jsx"
-Cohesion: 0.22
-Nodes (7): Field(), FeatureState(), Config(), FeatureDetail(), getPath(), ICONS, STATE_ORDER
-
-### Community 52 - "envFile.js"
-Cohesion: 0.52
-Nodes (6): detectEol(), parseEnvFile(), quote(), setEnvValue(), splitLines(), unquote()
+### Community 49 - "useI18n"
+Cohesion: 0.24
+Nodes (10): Brand(), LanguagePicker(), Field(), useI18n(), Config(), FeatureDetail(), getPath(), ICONS (+2 more)
 
 ### Community 54 - "api.js"
 Cohesion: 0.53
 Nodes (4): ApiError, logout(), readCookie(), request()
 
 ## Knowledge Gaps
-- **377 isolated node(s):** `{
+- **379 isolated node(s):** `{
   Collection, GatewayIntentBits, Events,
   ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,
-}`, `{ readdirSync }`, `{ join }`, `{ enabled }`, `{ t }` (+372 more)
+}`, `{ readdirSync }`, `{ join }`, `{ enabled }`, `{ t }` (+374 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `t()` connect `t` to `notifyRewards`, `connect4.js`, `logging.js`, `pointsManager.js`, `wordle.js`, `admin.js`, `i18n.js`, `blackjack.js`, `gameKit.js`, `commands/bot.js`, `slots.js`, `support.js`, `community.js`, `utility.js`, `minigames/bot.js`, `trivia.js`, `commandKit.js`, `minigames.js`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `BotSupervisor` connect `BotSupervisor` to `dashboard/config.js`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `getPath()` connect `i18n.js` to `t`, `core/config.js`, `wordle.js`, `trivia.js`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `t()` connect `t` to `notifyRewards`, `connect4.js`, `logging.js`, `pointsManager.js`, `gameColor`, `admin.js`, `i18n.js`, `blackjack.js`, `gameKit.js`, `commands/bot.js`, `community.js`, `utility.js`, `minigames/bot.js`, `trivia.js`, `commandKit.js`, `contextMenus.js`, `minigames.js`?**
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+- **Why does `getPath()` connect `i18n.js` to `t`, `core/config.js`, `gameColor`, `contextMenus.js`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `embed()` (e.g. with `execute()` and `execute()`) actually correct?**
   _`embed()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{
   Collection, GatewayIntentBits, Events,
   ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,
 }`, `{ readdirSync }`, `{ join }` to the rest of the system?**
-  _377 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _379 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `notifyRewards` be split into smaller, more focused modules?**
   _Cohesion score 0.1471861471861472 - nodes in this community are weakly interconnected._
 - **Should `pointsManager.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.12105263157894737 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13071895424836602 - nodes in this community are weakly interconnected._
+- **Should `index.js` be split into smaller, more focused modules?**
+  _Cohesion score 0.09247311827956989 - nodes in this community are weakly interconnected._
