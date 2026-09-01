@@ -137,9 +137,31 @@ async function deleteAccessRow(subjectType, subjectId) {
   return (await connect()).deleteAccessRow(subjectType, subjectId);
 }
 
+// -- announcement templates --------------------------------------------------
+//
+// Saved announcement texts. A template belongs to the person who wrote it;
+// `shared` decides whether the rest of the staff sees it at all. WHO MAY SEE
+// AND CHANGE ONE IS DECIDED IN THE ROUTE, not here: this layer stores rows.
+
+/** Every template. The route filters them down to what the caller may see. */
+async function listTemplates() {
+  return (await connect()).listTemplates();
+}
+
+/** Create or replace one, keyed by id. */
+async function setTemplate(row) {
+  return (await connect()).setTemplate(row);
+}
+
+/** @returns {Promise<boolean>} whether a row was actually removed. */
+async function deleteTemplate(id) {
+  return (await connect()).deleteTemplate(id);
+}
+
 module.exports = {
   connect, close, dialect,
   getMeta, setMeta,
   getBalance, addBalance, topBalances,
   getAccessRows, setAccessRow, deleteAccessRow,
+  listTemplates, setTemplate, deleteTemplate,
 };

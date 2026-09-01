@@ -442,6 +442,167 @@ const anonymous = async (method, url) => {
     assert.strictEqual((await res.json()).accent, '#123456');
   });
 
+  // ── announcements ──────────────────────────────────────────────────────────
+  section('H2) posting an announcement');
+
+  // The one call that leaves the machine. Everything up to it runs for real:
+  // the auth chain, the CSRF check, the permission gate, the channel lookup and
+  // the payload builder.
+  const posted = [];
+  discord.postMessage = async (channelId, payload) => {
+    posted.push({ channelId, payload });
+    return { id: '900000000000029999' };
+  };
+
+  await check('an announcement reaches the channel as the bot', async () => {
+    posted.length = 0;
+    const res = await client(OWNER)('POST', '/api/announce', {
+      channelId: FAKE(10), mode: 'embed', title: 'Maintenance', body: 'Back at six.', ping: 'here',
+    });
+    assert.strictEqual(res.status, 200, JSON.stringify(res.body));
+    assert.strictEqual(posted.length, 1);
+    assert.strictEqual(posted[0].channelId, FAKE(10));
+    assert.strictEqual(posted[0].payload.embeds[0].description, 'Back at six.');
+    assert.strictEqual(posted[0].payload.content, '@here');
+    assert.deepStrictEqual(posted[0].payload.allowed_mentions, { parse: ['everyone'] });
+    assert.match(res.body.url, /discord\.com\/channels\//);
+  });
+
+  await check('a channel outside this server is refused before anything is sent', async () => {
+    // The token can reach every channel of every server the bot is in. This
+    // panel is about ONE server, so the id is checked against that server's own
+    // channel list rather than taken on trust from the browser.
+    posted.length = 0;
+    const res = await client(OWNER)('POST', '/api/announce', { channelId: FAKE(99), body: 'x' });
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(posted.length, 0, 'it posted anyway');
+  });
+
+  await check('an empty message is refused, and nothing is sent', async () => {
+    posted.length = 0;
+    const res = await client(OWNER)('POST', '/api/announce', { channelId: FAKE(10), body: '  ' });
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(posted.length, 0);
+  });
+
+  await check('somebody without the permission cannot post', async () => {
+    // STAFF holds config.view and bot.control, which is exactly the case worth
+    // testing: signed in, allowed in the panel, and not allowed to do this.
+    posted.length = 0;
+    const res = await client(STAFF)('POST', '/api/announce', { channelId: FAKE(10), body: 'x' });
+    assert.strictEqual(res.status, 403);
+    assert.strictEqual(posted.length, 0);
+  });
+
+  await check("Discord refusing it is reported, not swallowed", async () => {
+    // The 403 that happens in practice: the bot is in the server and cannot
+    // write in that channel. A generic failure sends somebody hunting through
+    // the token instead of the channel permissions.
+    discord.postMessage = async () => {
+      throw new discord.DiscordApiError(403, { message: 'Missing Permissions' });
+    };
+    const res = await client(OWNER)('POST', '/api/announce', { channelId: FAKE(10), body: 'x' });
+    assert.strictEqual(res.status, 403);
+    assert.match(res.body.error, /Missing Permissions/);
+    assert.match(res.body.error, /#log/, 'the channel is not named in the error');
+  });
+
+  // ── announcement templates ─────────────────────────────────────────────────
+  section('H3) announcement templates');
+
+  // STAFF needs the permission for this stretch: the interesting checks are
+  // about two people with the same right seeing different lists.
+  //
+  // Granted on their USER row, not on the role. Section G gave STAFF a user row,
+  // and a user row REPLACES the role rows rather than adding to them, so a grant
+  // on the role would never reach them. That is the permission model working as
+  // designed, and it is easy to trip over from a test.
+  const grantStaff = (permissions) => db.setAccessRow({
+    subjectType: 'user', subjectId: STAFF, permissions, active: true, label: null,
+  });
+  await grantStaff(['access.manage', 'announce.post']);
+
+  let mine = null;
+  let theirs = null;
+
+  await check('a template is saved and comes back', async () => {
+    const res = await client(OWNER)('PUT', '/api/announce/templates', {
+      name: 'Maintenance', shared: false, mode: 'embed', title: 'Down', body: 'Back at six.',
+    });
+    assert.strictEqual(res.status, 200, JSON.stringify(res.body));
+    mine = res.body.template;
+    assert.strictEqual(mine.name, 'Maintenance');
+    assert.strictEqual(mine.shared, false);
+    assert.strictEqual(mine.body, 'Back at six.');
+    assert.ok(mine.id, 'no id was assigned');
+  });
+
+  await check('a private template is invisible to everybody else', async () => {
+    // The whole point of the flag. "Private" that leaks is worse than no flag
+    // at all, because somebody relied on it.
+    const res = await client(STAFF)('GET', '/api/announce/templates');
+    assert.strictEqual(res.status, 200);
+    assert.ok(!res.body.templates.some(x => x.id === mine.id), 'a private template leaked');
+  });
+
+  await check('sharing it makes it visible, and it is still not theirs to change', async () => {
+    await client(OWNER)('PUT', '/api/announce/templates', {
+      id: mine.id, name: 'Maintenance', shared: true, mode: 'embed', title: 'Down', body: 'Back at six.',
+    });
+    const res = await client(STAFF)('GET', '/api/announce/templates');
+    const seen = res.body.templates.find(x => x.id === mine.id);
+    assert.ok(seen, 'a shared template did not show up');
+    assert.strictEqual(seen.mine, false);
+    // Sharing hands over the USE of a template, never the right to rewrite it.
+    // Otherwise one person's saved text can be replaced under everybody who
+    // still relies on it.
+    assert.strictEqual(seen.canEdit, false);
+  });
+
+  await check('somebody else cannot overwrite or delete a shared template', async () => {
+    const write = await client(STAFF)('PUT', '/api/announce/templates', {
+      id: mine.id, name: 'Hijacked', shared: true, body: 'x',
+    });
+    assert.strictEqual(write.status, 403);
+    const remove = await client(STAFF)('DELETE', `/api/announce/templates/${mine.id}`);
+    assert.strictEqual(remove.status, 403);
+    const after = await client(OWNER)('GET', '/api/announce/templates');
+    assert.strictEqual(after.body.templates.find(x => x.id === mine.id).name, 'Maintenance');
+  });
+
+  await check('the guild owner can clear up a template somebody else left behind', async () => {
+    // Otherwise a template belonging to somebody who has left the server is
+    // stuck in everybody's list for good.
+    const made = await client(STAFF)('PUT', '/api/announce/templates', {
+      name: 'Theirs', shared: true, mode: 'text', body: 'x',
+    });
+    theirs = made.body.template;
+    const seen = (await client(OWNER)('GET', '/api/announce/templates')).body.templates
+      .find(x => x.id === theirs.id);
+    assert.strictEqual(seen.mine, false);
+    assert.strictEqual(seen.canEdit, true, 'the owner cannot touch it');
+    assert.strictEqual((await client(OWNER)('DELETE', `/api/announce/templates/${theirs.id}`)).status, 200);
+  });
+
+  await check('a template that could not be posted is not saved either', async () => {
+    // Validated through the very builder that will send it, so "it saved" and
+    // "it can be sent" cannot come apart.
+    assert.strictEqual((await client(OWNER)('PUT', '/api/announce/templates', {
+      name: 'Empty', body: '   ',
+    })).status, 400);
+    assert.strictEqual((await client(OWNER)('PUT', '/api/announce/templates', {
+      body: 'x',
+    })).status, 400, 'a template without a name was accepted');
+    assert.strictEqual((await client(OWNER)('PUT', '/api/announce/templates', {
+      name: 'Bad ping', body: 'x', ping: 'role',
+    })).status, 400, 'a role ping without a role was accepted');
+  });
+
+  await check('without the permission there are no templates at all', async () => {
+    await grantStaff(['access.manage']);
+    assert.strictEqual((await client(STAFF)('GET', '/api/announce/templates')).status, 403);
+  });
+
   // ── the tiles ──────────────────────────────────────────────────────────────
   section('I) the feature tiles');
 
@@ -624,6 +785,46 @@ const anonymous = async (method, url) => {
       }
     }
     assert.deepStrictEqual(bad, [], 'invalid declarations: ' + bad.join(' | '));
+  });
+
+  await check('every colour class in the source produces a rule in the built css', () => {
+    // The failure this catches has no symptom: a class naming a token that does
+    // not exist emits NOTHING, so the element renders unstyled and looks like a
+    // spacing bug rather than a typo. It happened here with "bg-warning", where
+    // the token is called --warn, and the warning box was simply invisible.
+    //
+    // Tailwind emits a rule for every class it recognises, so "does the built
+    // stylesheet contain it" is the whole test, and it needs no list of valid
+    // token names to be kept in step.
+    const dir = path.join(REPO, 'web', 'dist', 'assets');
+    const css = fs.readdirSync(dir).filter(f => f.endsWith('.css'))
+      .map(f => fs.readFileSync(path.join(dir, f), 'utf8')).join('\n');
+
+    const sources = [];
+    const walk = (d) => {
+      for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+        const full = path.join(d, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else if (/[.]jsx?$/.test(entry.name)) sources.push(full);
+      }
+    };
+    walk(path.join(REPO, 'web', 'src'));
+
+    const used = new Set();
+    for (const file of sources) {
+      const text = fs.readFileSync(file, 'utf8');
+      for (const m of text.matchAll(/\b(bg|text|border)-([a-z][a-z0-9]*(?:-[a-z0-9]+)*)\b/g)) {
+        used.add(m[1] + '-' + m[2]);
+      }
+    }
+    assert.ok(used.size > 40, 'the scan found suspiciously few classes: ' + used.size);
+
+    // Matched WITHOUT a leading dot. A class used only behind a variant is
+    // emitted as ".hover\:bg-accent" or ".[&>svg]\:text-current", so requiring
+    // ".bg-accent" reports five classes that are perfectly fine. The question
+    // that matters is whether Tailwind emitted anything for the name at all.
+    const missing = [...used].filter(cls => !css.includes(cls));
+    assert.deepStrictEqual(missing, [], 'no rule is emitted for: ' + missing.join(', '));
   });
 
   await check('the popup components keep the ceiling that lets them scroll', () => {

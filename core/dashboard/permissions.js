@@ -22,6 +22,7 @@ const PERMISSIONS = Object.freeze([
   'bot.control',     // start / stop / restart the bot process, read its log
   'points.view',     // the minigame leaderboard
   'points.manage',   // adjust a balance
+  'announce.post',   // post an announcement into a channel as the bot
   'access.manage',   // manage these permissions
 ]);
 
@@ -34,6 +35,7 @@ const PERMISSION_LABELS = Object.freeze({
   'bot.control':   { en: 'Control the bot',           de: 'Bot steuern' },
   'points.view':   { en: 'View points',               de: 'Punkte ansehen' },
   'points.manage': { en: 'Adjust points',             de: 'Punkte anpassen' },
+  'announce.post': { en: 'Post announcements',        de: 'Ankündigungen posten' },
   'access.manage': { en: 'Manage permissions',        de: 'Rechte verwalten' },
 });
 

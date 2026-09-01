@@ -19,6 +19,7 @@ const VIEW_TO_SEGMENT = {
   texts: 'texts',
   bot: 'bot',
   points: 'points',
+  announce: 'announce',
   access: 'permissions',
   settings: 'settings',
 };

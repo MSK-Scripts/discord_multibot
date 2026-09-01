@@ -1,11 +1,12 @@
 const {
   SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder,
-  EmbedBuilder, AttachmentBuilder, MessageFlags,
+  AttachmentBuilder, MessageFlags,
 } = require('discord.js');
 const { execFile } = require('child_process');
 const { join } = require('path');
 const { mkdirSync, writeFileSync, unlinkSync } = require('fs');
 const { nowStr } = require('../../../core/utils');
+const { buildMessage } = require('../../../core/messageComposer');
 const { applyMeta, guard } = require('../../../core/commandKit');
 const { t } = require('../../../core/i18n');
 const config = require('../../../core/config');
@@ -98,8 +99,12 @@ module.exports = [
       await submitted.deferReply({ flags: MessageFlags.Ephemeral });
 
       const text = submitted.fields.getTextInputValue('message_text');
+      // Built by the shared composer, so what this posts and what the
+      // dashboard's announcement screen posts are the same message.
+      const built = buildMessage({ mode: 'text', body: text });
+      if (!built.ok) return submitted.editReply({ content: built.error });
       try {
-        await interaction.channel.send(text);
+        await interaction.channel.send(built.payload);
       } catch (err) {
         console.error('[send_message]', err);
         return submitted.editReply({ content: t('admin.sendMessage.failed') });
@@ -146,16 +151,18 @@ module.exports = [
       const image     = submitted.fields.getTextInputValue('image');
       const footer    = submitted.fields.getTextInputValue('footer');
 
-      const embed = new EmbedBuilder().setColor(config.embedColor()).setTitle(title || null).setDescription(desc);
-      if (thumbnail) embed.setThumbnail(thumbnail);
-      if (image)     embed.setImage(image);
-      // An empty iconURL is an invalid-URL error from Discord, not a no-op, so
-      // an unbranded installation gets a footer without an icon rather than a
-      // command that always fails.
-      if (footer)    embed.setFooter(thumbUrl ? { text: footer, iconURL: thumbUrl } : { text: footer });
+      // Same composer as the dashboard's announcement screen. The empty-url
+      // trap lives in there now: an EMPTY iconURL is an invalid-URL error from
+      // Discord and not a no-op, so an unbranded installation would otherwise
+      // fail to post at all.
+      const built = buildMessage({
+        mode: 'embed', title, body: desc, thumbnail, image, footer,
+        guildName: interaction.guild.name,
+      });
+      if (!built.ok) return submitted.editReply({ content: built.error });
 
       try {
-        await interaction.channel.send({ embeds: [embed] });
+        await interaction.channel.send(built.payload);
       } catch (err) {
         console.error('[send_embed]', err);
         return submitted.editReply({ content: t('admin.sendEmbed.failed') });

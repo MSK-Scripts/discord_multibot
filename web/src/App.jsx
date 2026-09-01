@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   SlidersHorizontalIcon, MessagesSquareIcon, TerminalIcon, CoinsIcon,
-  ShieldCheckIcon, PaletteIcon, LogOutIcon, MenuIcon, LanguagesIcon,
+  ShieldCheckIcon, PaletteIcon, LogOutIcon, MenuIcon, LanguagesIcon, MegaphoneIcon,
 } from 'lucide-react';
 import { api, logout } from './api.js';
 import { useRouter, parseRoute, viewPath } from './router.js';
@@ -17,6 +17,7 @@ import Config from './views/Config.jsx';
 import Texts from './views/Texts.jsx';
 import BotControl from './views/BotControl.jsx';
 import Points from './views/Points.jsx';
+import Announce from './views/Announce.jsx';
 import Access from './views/Access.jsx';
 import Settings from './views/Settings.jsx';
 
@@ -30,6 +31,7 @@ const NAV = [
   { id: 'texts',    icon: MessagesSquareIcon,    permission: ['config.view', 'config.edit'] },
   { id: 'bot',      icon: TerminalIcon,          permission: 'bot.control' },
   { id: 'points',   icon: CoinsIcon,             permission: ['points.view', 'points.manage'] },
+  { id: 'announce', icon: MegaphoneIcon,         permission: 'announce.post' },
   { id: 'access',   icon: ShieldCheckIcon,       permission: 'access.manage' },
   { id: 'settings', icon: PaletteIcon,           permission: ['settings.view', 'settings.edit'] },
 ];
@@ -226,6 +228,7 @@ export default function App() {
           {view === 'texts' && <Texts me={me} />}
           {view === 'bot' && <BotControl me={me} />}
           {view === 'points' && <Points me={me} />}
+          {view === 'announce' && <Announce me={me} />}
           {view === 'access' && <Access me={me} />}
           {view === 'settings' && <Settings me={me} />}
         </main>

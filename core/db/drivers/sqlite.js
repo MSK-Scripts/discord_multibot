@@ -7,7 +7,7 @@
  * one it is talking to.
  */
 
-const { SCHEMA } = require('../schema');
+const { SCHEMA, templateValues } = require('../schema');
 
 function create({ file }) {
   let db = null;
@@ -117,6 +117,34 @@ function create({ file }) {
         .run(String(subjectType), String(subjectId));
       return info.changes > 0;
     },
+    // -- announcement templates -------------------------------------------
+    //
+    // Saved announcement texts. A template is its owner's; `shared` decides
+    // whether the rest of the staff sees it at all. In the database and not in
+    // config.jsonc for the same reason as the access rows: the dashboard writes
+    // it while it runs, and the bot reads config.jsonc at boot.
+
+    async listTemplates() {
+      return db.prepare('SELECT * FROM announcement_templates ORDER BY name COLLATE NOCASE').all()
+        .map(r => ({ ...r, shared: Number(r.shared) === 1 }));
+    },
+
+    async setTemplate(row) {
+      db.prepare(
+        `INSERT INTO announcement_templates (id, owner_id, name, shared, mode, title, body, thumbnail, image, footer, color, ping, role_id, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+           name = excluded.name, shared = excluded.shared, mode = excluded.mode,
+           title = excluded.title, body = excluded.body, thumbnail = excluded.thumbnail,
+           image = excluded.image, footer = excluded.footer, color = excluded.color,
+           ping = excluded.ping, role_id = excluded.role_id, updated_at = excluded.updated_at`,
+      ).run(...templateValues(row));
+    },
+
+    async deleteTemplate(id) {
+      return db.prepare('DELETE FROM announcement_templates WHERE id = ?').run(String(id)).changes > 0;
+    },
+
   };
 }
 

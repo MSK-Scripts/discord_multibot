@@ -13,7 +13,7 @@
  * balance. That is the same guarantee the other two drivers get for free.
  */
 
-const { SCHEMA } = require('../schema');
+const { SCHEMA, templateValues } = require('../schema');
 
 function create({ url }) {
   let pool = null;
@@ -138,6 +138,36 @@ function create({ url }) {
       );
       return result.affectedRows > 0;
     },
+    // -- announcement templates -------------------------------------------
+    //
+    // Saved announcement texts. A template is its owner's; `shared` decides
+    // whether the rest of the staff sees it at all. In the database and not in
+    // config.jsonc for the same reason as the access rows: the dashboard writes
+    // it while it runs, and the bot reads config.jsonc at boot.
+
+    async listTemplates() {
+      const [rows] = await pool.query('SELECT * FROM announcement_templates ORDER BY name');
+      return rows.map(r => ({ ...r, shared: Number(r.shared) === 1 }));
+    },
+
+    async setTemplate(row) {
+      await pool.query(
+        `INSERT INTO announcement_templates (id, owner_id, name, shared, mode, title, body, thumbnail, image, footer, color, ping, role_id, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           name = VALUES(name), shared = VALUES(shared), mode = VALUES(mode),
+           title = VALUES(title), body = VALUES(body), thumbnail = VALUES(thumbnail),
+           image = VALUES(image), footer = VALUES(footer), color = VALUES(color),
+           ping = VALUES(ping), role_id = VALUES(role_id), updated_at = VALUES(updated_at)`,
+        templateValues(row),
+      );
+    },
+
+    async deleteTemplate(id) {
+      const [result] = await pool.query('DELETE FROM announcement_templates WHERE id = ?', [String(id)]);
+      return result.affectedRows > 0;
+    },
+
   };
 }
 

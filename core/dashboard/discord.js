@@ -101,6 +101,20 @@ async function getGuildMember(guildId, userId) {
   }
 }
 
+/**
+ * Post a message to a channel AS THE BOT.
+ *
+ * The dashboard is the parent process and owns the token, so this works while
+ * the bot is stopped or crashed. Routing it through the child instead would
+ * make posting an announcement depend on the very thing somebody may be
+ * announcing an outage about.
+ *
+ * The payload comes from `announce.js` and always carries `allowed_mentions`.
+ */
+function postMessage(channelId, payload) {
+  return request(`/channels/${channelId}/messages`, { method: 'POST', body: payload });
+}
+
 async function getUser(userId) {
   try {
     return await request(`/users/${userId}`);
@@ -231,4 +245,5 @@ module.exports = {
   request, DiscordApiError, botToken,
   getGuild, getGuildRoles, getGuildChannels, getGuildMember, getUser,
   resolveMemberContext, getGuildLookups, resolveUsers,
+  postMessage,
 };

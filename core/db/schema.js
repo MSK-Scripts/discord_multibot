@@ -40,6 +40,22 @@ const SCHEMA = {
        updated_at   INTEGER NOT NULL DEFAULT 0,
        PRIMARY KEY (subject_type, subject_id)
      )`,
+    `CREATE TABLE IF NOT EXISTS announcement_templates (
+       id         TEXT PRIMARY KEY,
+       owner_id   TEXT NOT NULL,
+       name       TEXT NOT NULL,
+       shared     INTEGER NOT NULL DEFAULT 0,
+       mode       TEXT NOT NULL DEFAULT 'embed',
+       title      TEXT NOT NULL DEFAULT '',
+       body       TEXT NOT NULL DEFAULT '',
+       thumbnail  TEXT NOT NULL DEFAULT '',
+       image      TEXT NOT NULL DEFAULT '',
+       footer     TEXT NOT NULL DEFAULT '',
+       color      TEXT NOT NULL DEFAULT '',
+       ping       TEXT NOT NULL DEFAULT 'none',
+       role_id    TEXT NOT NULL DEFAULT '',
+       updated_at INTEGER NOT NULL DEFAULT 0
+     )`,
   ],
 
   mysql: [
@@ -59,6 +75,22 @@ const SCHEMA = {
        label        VARCHAR(191),
        updated_at   BIGINT NOT NULL DEFAULT 0,
        PRIMARY KEY (subject_type, subject_id)
+     )`,
+    `CREATE TABLE IF NOT EXISTS announcement_templates (
+       id         VARCHAR(191) NOT NULL PRIMARY KEY,
+       owner_id   VARCHAR(32) NOT NULL,
+       name       VARCHAR(191) NOT NULL,
+       shared     TINYINT NOT NULL DEFAULT 0,
+       mode       VARCHAR(16) NOT NULL DEFAULT 'embed',
+       title      TEXT,
+       body       TEXT,
+       thumbnail  TEXT,
+       image      TEXT,
+       footer     TEXT,
+       color      VARCHAR(16) NOT NULL DEFAULT '',
+       ping       VARCHAR(16) NOT NULL DEFAULT 'none',
+       role_id    VARCHAR(32) NOT NULL DEFAULT '',
+       updated_at BIGINT NOT NULL DEFAULT 0
      )`,
   ],
 
@@ -80,7 +112,51 @@ const SCHEMA = {
        updated_at   BIGINT NOT NULL DEFAULT 0,
        PRIMARY KEY (subject_type, subject_id)
      )`,
+    `CREATE TABLE IF NOT EXISTS announcement_templates (
+       id         TEXT PRIMARY KEY,
+       owner_id   TEXT NOT NULL,
+       name       TEXT NOT NULL,
+       shared     BOOLEAN NOT NULL DEFAULT FALSE,
+       mode       TEXT NOT NULL DEFAULT 'embed',
+       title      TEXT NOT NULL DEFAULT '',
+       body       TEXT NOT NULL DEFAULT '',
+       thumbnail  TEXT NOT NULL DEFAULT '',
+       image      TEXT NOT NULL DEFAULT '',
+       footer     TEXT NOT NULL DEFAULT '',
+       color      TEXT NOT NULL DEFAULT '',
+       ping       TEXT NOT NULL DEFAULT 'none',
+       role_id    TEXT NOT NULL DEFAULT '',
+       updated_at BIGINT NOT NULL DEFAULT 0
+     )`,
   ],
 };
 
-module.exports = { SCHEMA };
+/**
+ * The columns of `announcement_templates`, in the order the INSERTs above list
+ * them, and one row as a matching value list.
+ *
+ * WRITTEN ONCE, NEXT TO THE TABLE. Fourteen positional parameters repeated in
+ * three drivers is exactly the list where one of them silently ends up with
+ * `image` and `footer` the wrong way round, and nothing fails until somebody
+ * looks at a template on MariaDB.
+ *
+ * `boolean` is for Postgres, which wants a real boolean where the other two
+ * want 0 or 1.
+ */
+const TEMPLATE_COLUMNS = Object.freeze([
+  'id', 'owner_id', 'name', 'shared', 'mode', 'title', 'body',
+  'thumbnail', 'image', 'footer', 'color', 'ping', 'role_id', 'updated_at',
+]);
+
+function templateValues(row, boolean = false) {
+  const shared = row.shared === true;
+  return [
+    String(row.id), String(row.ownerId), String(row.name), boolean ? shared : (shared ? 1 : 0),
+    String(row.mode ?? 'embed'), String(row.title ?? ''), String(row.body ?? ''),
+    String(row.thumbnail ?? ''), String(row.image ?? ''), String(row.footer ?? ''),
+    String(row.color ?? ''), String(row.ping ?? 'none'), String(row.roleId ?? ''),
+    Date.now(),
+  ];
+}
+
+module.exports = { SCHEMA, TEMPLATE_COLUMNS, templateValues };

@@ -983,6 +983,147 @@ const nameOf = key => config.command(key).name;
     } finally { try { c2.destroy(); } catch { /* nothing to clean up */ } }
   });
 
+  // ------------------------------------------------------------ announcements
+  section('F4) the shared message composer');
+  {
+    const { buildMessage, LIMITS } = req('core/messageComposer');
+
+    check('a message is required, a title is not', () => {
+      assert.strictEqual(buildMessage({ body: '   ' }).ok, false);
+      assert.strictEqual(buildMessage({}).ok, false);
+      const out = buildMessage({ body: 'Server maintenance tonight.' });
+      assert.strictEqual(out.ok, true);
+      assert.strictEqual(out.payload.embeds[0].description, 'Server maintenance tonight.');
+      assert.strictEqual(out.payload.embeds[0].title, undefined, 'an empty title became a field');
+    });
+
+    check('nothing can ping unless it was asked for', () => {
+      // allowed_mentions is ALWAYS set, and its floor is nothing. Left off,
+      // Discord pings whatever the text happens to contain, so an @everyone
+      // pasted into the body would notify the whole server.
+      const out = buildMessage({ body: 'Hello @everyone <@&900000000000010005>', mode: 'text' });
+      assert.deepStrictEqual(out.payload.allowed_mentions, { parse: [] });
+    });
+
+    check('the ping is its own line of content, never the embed', () => {
+      // A mention INSIDE an embed is rendered and notifies nobody. An
+      // announcement that reaches no one while looking right is the failure
+      // this whole module exists for.
+      const out = buildMessage({ title: 'Down', body: 'Back at six.', ping: 'everyone' });
+      assert.strictEqual(out.payload.content, '@everyone');
+      assert.deepStrictEqual(out.payload.allowed_mentions, { parse: ['everyone'] });
+      assert.ok(!/@everyone/.test(out.payload.embeds[0].description));
+    });
+
+    check('@here rides on the everyone parse type, because there is no other', () => {
+      const out = buildMessage({ body: 'x', ping: 'here' });
+      assert.strictEqual(out.payload.content, '@here');
+      assert.deepStrictEqual(out.payload.allowed_mentions, { parse: ['everyone'] });
+    });
+
+    check('a role ping names exactly that role and opens nothing else', () => {
+      const id = FAKE(2);
+      const out = buildMessage({ body: 'x', ping: 'role', roleId: id });
+      assert.strictEqual(out.payload.content, `<@&${id}>`);
+      assert.deepStrictEqual(out.payload.allowed_mentions, { parse: [], roles: [id] });
+      // Without a role it must refuse rather than post something that pings
+      // nobody while the panel said it would.
+      assert.strictEqual(buildMessage({ body: 'x', ping: 'role' }).ok, false);
+      assert.strictEqual(buildMessage({ body: 'x', ping: 'role', roleId: 'nope' }).ok, false);
+      assert.strictEqual(buildMessage({ body: 'x', ping: 'shout' }).ok, false);
+    });
+
+    check('plain text carries the ping above the message', () => {
+      const out = buildMessage({ body: 'Back at six.', ping: 'here', mode: 'text' });
+      assert.strictEqual(out.payload.content, '@here\n\nBack at six.');
+      assert.strictEqual(out.payload.embeds, undefined);
+    });
+
+    check("Discord's length limits are caught here, not by a 400 with no detail", () => {
+      assert.strictEqual(buildMessage({ body: 'x'.repeat(LIMITS.description + 1) }).ok, false);
+      assert.strictEqual(buildMessage({ body: 'x', title: 'T'.repeat(LIMITS.title + 1) }).ok, false);
+      assert.strictEqual(buildMessage({ body: 'x'.repeat(LIMITS.content + 1), mode: 'text' }).ok, false);
+      // The plain-text limit counts the ping line too, or a message just under
+      // 2000 characters is refused by Discord after the panel accepted it.
+      const justOver = buildMessage({ body: 'x'.repeat(LIMITS.content - 2), ping: 'here', mode: 'text' });
+      assert.strictEqual(justOver.ok, false);
+    });
+
+    check('an unbranded installation gets no empty thumbnail and no empty footer', () => {
+      // Same trap as makeEmbed: Discord refuses an EMPTY url rather than
+      // ignoring it, so every branded piece has to be left off on its own.
+      const out = buildMessage({ body: 'x' });
+      const embed = out.payload.embeds[0];
+      for (const key of ['thumbnail', 'footer']) {
+        if (embed[key] !== undefined) {
+          const url = embed[key].url ?? embed[key].icon_url ?? 'set';
+          assert.ok(url !== '', `${key} was included but empty`);
+        }
+      }
+      assert.strictEqual(typeof embed.color, 'number');
+    });
+
+    check('/send_message, /send_embed and the dashboard build the same message', () => {
+      // The whole reason this module exists. Two implementations of one message
+      // drift: a different footer, a missing thumbnail, another colour, and an
+      // embed posted from the panel stops looking like one posted from Discord.
+      const admin = stripComments(fs.readFileSync(path.join(REPO, 'bots/commands/commands/admin.js'), 'utf8'));
+      const routes = stripComments(fs.readFileSync(path.join(REPO, 'core/dashboard/routes.js'), 'utf8'));
+      assert.ok(/require\(.*messageComposer.*\)/.test(admin), 'admin.js does not use the composer');
+      assert.ok(/require\(.*messageComposer.*\)/.test(routes), 'the dashboard does not use the composer');
+      assert.strictEqual((admin.match(/buildMessage\(/g) ?? []).length, 2,
+        'both send commands should build through it, and only those two');
+      assert.ok(!/new EmbedBuilder/.test(admin), 'admin.js still assembles an embed of its own');
+      assert.ok(!fs.existsSync(path.join(REPO, 'core/dashboard/announce.js')),
+        'the dashboard-only copy of the builder is back');
+    });
+
+    check('the two modes are the two commands', () => {
+      const asText = buildMessage({ mode: 'text', body: 'Hello' });
+      assert.strictEqual(asText.payload.content, 'Hello');
+      assert.strictEqual(asText.payload.embeds, undefined, 'plain text grew an embed');
+
+      const asEmbed = buildMessage({ mode: 'embed', body: 'Hello', guildName: 'Test' });
+      assert.strictEqual(asEmbed.payload.content, undefined, 'an embed grew a content line');
+      assert.strictEqual(asEmbed.payload.embeds[0].description, 'Hello');
+      assert.strictEqual(buildMessage({ mode: 'carrier-pigeon', body: 'x' }).ok, false);
+    });
+
+    check('the embed fields are the ones /send_embed offers', () => {
+      const out = buildMessage({
+        mode: 'embed', title: 'T', body: 'B',
+        thumbnail: 'https://example.com/t.png',
+        image: 'https://example.com/i.png',
+        footer: 'Footer line',
+      });
+      const embed = out.payload.embeds[0];
+      assert.strictEqual(embed.title, 'T');
+      assert.strictEqual(embed.thumbnail.url, 'https://example.com/t.png');
+      assert.strictEqual(embed.image.url, 'https://example.com/i.png');
+      assert.strictEqual(embed.footer.text, 'Footer line');
+    });
+
+    check('an omitted field takes the default, an emptied one leaves the piece out', () => {
+      // The difference the modal already has: /send_embed PREFILLS the footer
+      // and the thumbnail, so clearing the field is how somebody says "without
+      // one". Passing '' and passing nothing must not mean the same thing.
+      const withDefaults = buildMessage({ mode: 'embed', body: 'x', guildName: 'My Server' });
+      assert.match(withDefaults.payload.embeds[0].footer.text, /My Server/);
+
+      const cleared = buildMessage({ mode: 'embed', body: 'x', guildName: 'My Server', footer: '', thumbnail: '' });
+      assert.strictEqual(cleared.payload.embeds[0].footer, undefined, 'an emptied footer came back');
+      assert.strictEqual(cleared.payload.embeds[0].thumbnail, undefined, 'an emptied thumbnail came back');
+    });
+
+    check('the route is gated by its own permission and nothing else', () => {
+      const src = stripComments(fs.readFileSync(path.join(REPO, 'core/dashboard/routes.js'), 'utf8'));
+      assert.ok(/api\.post\('\/announce', requirePermission\('announce\.post'\)/.test(src),
+        'the announce route is not gated by announce.post');
+      const { PERMISSIONS } = req('core/dashboard/permissions');
+      assert.ok(PERMISSIONS.includes('announce.post'), 'the permission is not in the frozen list');
+    });
+  }
+
   // ------------------------------------------------------------ points
   section('G) points system, database backed');
   {
@@ -1020,6 +1161,23 @@ const nameOf = key => config.command(key).name;
       assert.ok(sqlite.length >= 2, 'sqlite schema is suspiciously small');
       assert.deepStrictEqual(tablesOf(SCHEMA.mysql), sqlite, 'mysql differs');
       assert.deepStrictEqual(tablesOf(SCHEMA.postgres), sqlite, 'postgres differs');
+    });
+
+    check('the template table has the same columns in every dialect', () => {
+      // Fourteen positional parameters, three engines. A column in a different
+      // ORDER in one of them writes `footer` into `image`, and nothing fails
+      // until somebody opens a template on MariaDB.
+      const { SCHEMA, TEMPLATE_COLUMNS } = req('core/db/schema');
+      const columnsOf = (dialect) => {
+        const stmt = SCHEMA[dialect].find(x => x.includes('announcement_templates'));
+        return stmt.slice(stmt.indexOf('(') + 1)
+          .split(String.fromCharCode(10)).map(l => l.trim().split(/\s+/)[0])
+          .filter(c => /^[a-z_]+$/.test(c));
+      };
+      for (const dialect of ['sqlite', 'mysql', 'postgres']) {
+        assert.deepStrictEqual(columnsOf(dialect), [...TEMPLATE_COLUMNS],
+          dialect + ' does not match the column list the drivers bind against');
+      }
     });
 
     check('every statement is IF NOT EXISTS, because it runs on every start', () => {

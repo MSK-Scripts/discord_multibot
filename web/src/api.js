@@ -72,6 +72,11 @@ export const api = {
   points: (limit = 25) => request(`/points?limit=${limit}`),
   adjustPoints: (userId, delta) => request(`/points/${userId}`, { method: 'POST', body: { delta } }),
 
+  announce: (payload) => request('/announce', { method: 'POST', body: payload }),
+  templates: () => request('/announce/templates'),
+  saveTemplate: (row) => request('/announce/templates', { method: 'PUT', body: row }),
+  deleteTemplate: (id) => request(`/announce/templates/${id}`, { method: 'DELETE' }),
+
   access: () => request('/access'),
   saveAccess: (row) => request('/access', { method: 'PUT', body: row }),
   deleteAccess: (type, id) => request(`/access/${type}/${id}`, { method: 'DELETE' }),

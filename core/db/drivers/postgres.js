@@ -16,7 +16,7 @@
  * is one statement, and one statement is atomic by definition.
  */
 
-const { SCHEMA } = require('../schema');
+const { SCHEMA, templateValues } = require('../schema');
 
 function create({ url }) {
   let pool = null;
@@ -138,6 +138,36 @@ function create({ url }) {
       );
       return result.rowCount > 0;
     },
+    // -- announcement templates -------------------------------------------
+    //
+    // Saved announcement texts. A template is its owner's; `shared` decides
+    // whether the rest of the staff sees it at all. In the database and not in
+    // config.jsonc for the same reason as the access rows: the dashboard writes
+    // it while it runs, and the bot reads config.jsonc at boot.
+
+    async listTemplates() {
+      const { rows } = await pool.query('SELECT * FROM announcement_templates ORDER BY LOWER(name)');
+      return rows.map(r => ({ ...r, shared: r.shared === true }));
+    },
+
+    async setTemplate(row) {
+      await pool.query(
+        `INSERT INTO announcement_templates (id, owner_id, name, shared, mode, title, body, thumbnail, image, footer, color, ping, role_id, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+         ON CONFLICT (id) DO UPDATE SET
+           name = EXCLUDED.name, shared = EXCLUDED.shared, mode = EXCLUDED.mode,
+           title = EXCLUDED.title, body = EXCLUDED.body, thumbnail = EXCLUDED.thumbnail,
+           image = EXCLUDED.image, footer = EXCLUDED.footer, color = EXCLUDED.color,
+           ping = EXCLUDED.ping, role_id = EXCLUDED.role_id, updated_at = EXCLUDED.updated_at`,
+        templateValues(row, true),
+      );
+    },
+
+    async deleteTemplate(id) {
+      const result = await pool.query('DELETE FROM announcement_templates WHERE id = $1', [String(id)]);
+      return result.rowCount > 0;
+    },
+
   };
 }
 
