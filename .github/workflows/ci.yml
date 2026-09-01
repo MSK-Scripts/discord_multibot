@@ -1,4 +1,4 @@
-name: ✅ CI
+name: CI
 
 # Runs on every pull request and on pushes to main. Until this existed, pull
 # requests had no checks at all: release.yml only fires on v* tags and CodeQL
@@ -95,8 +95,7 @@ jobs:
               const { parseJsonc } = require('./core/jsonc');
               const src = require('fs').readFileSync(process.argv[1], 'utf8');
               const result = parseJsonc(src, process.argv[1]);
-              if (!result.ok) { console.error(result.lines.join('
-')); process.exit(1); }
+              if (!result.ok) { console.error(result.lines.join('')); process.exit(1); }
             " "$f"
           done
           echo "✅ All tracked JSONC files are valid."

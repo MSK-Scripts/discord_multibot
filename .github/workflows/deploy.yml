@@ -1,4 +1,4 @@
-name: 🚀 Deploy
+name: Deploy
 
 # On every push to main: run the CI gate first, then deploy to the Debian server
 # over SSH and restart the systemd unit. Can also be triggered manually via
