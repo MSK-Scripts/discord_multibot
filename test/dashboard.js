@@ -567,6 +567,50 @@ const anonymous = async (method, url) => {
     assert.strictEqual(resolve(bundles, 'de', 'en', 'app.title', {}), lookup(DE, 'app.title'));
   });
 
+  // ──────────────────────────────────────────────────────────────────────────
+  section('K) the built stylesheet');
+
+  await check('no declaration takes a bare custom-property name as its value', () => {
+    // "max-height: --radix-select-content-available-height" is not a value. The
+    // browser drops the whole declaration WITHOUT a warning, so the rule looks
+    // present in the source and does nothing on the page.
+    //
+    // It is the shape Tailwind v3 accepted and v4 does not: v3 read the bare
+    // name inside the brackets as shorthand for var(), v4 passes it through. The
+    // one that got through made every role and channel picker unusable, because
+    // the popup lost its ceiling, had nothing to overflow, and would not scroll.
+    // Anything past the bottom of the window was simply unreachable.
+    //
+    // Scanning the BUILT css is what makes this catchable: the source looks
+    // fine, and only the emitted declaration shows the mistake.
+    const dir = path.join(REPO, 'web', 'dist', 'assets');
+    const sheets = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.css')) : [];
+    assert.ok(sheets.length > 0, 'no built stylesheet in web/dist/assets');
+
+    const bad = [];
+    for (const file of sheets) {
+      const css = fs.readFileSync(path.join(dir, file), 'utf8');
+      for (const m of css.matchAll(/[{;]\s*([a-z-]+)\s*:\s*(--[a-zA-Z0-9-]+)\s*[;}]/g)) {
+        bad.push(`${file}: ${m[1]}: ${m[2]}`);
+      }
+    }
+    assert.deepStrictEqual(bad, [], 'invalid declarations: ' + bad.join(' | '));
+  });
+
+  await check('the popup components keep the ceiling that lets them scroll', () => {
+    // The pickers are the only way to choose a role or a channel, and a list
+    // longer than the window is the normal case on a real server. Radix
+    // publishes the space it measured; consuming it is what makes the list
+    // scrollable, so the rule has to exist and has to use var().
+    const dir = path.join(REPO, 'web', 'dist', 'assets');
+    const css = fs.readdirSync(dir).filter(f => f.endsWith('.css'))
+      .map(f => fs.readFileSync(path.join(dir, f), 'utf8')).join('\n');
+    for (const name of ['select', 'dropdown-menu']) {
+      const needle = `max-height:var(--radix-${name}-content-available-height)`;
+      assert.ok(css.includes(needle), `missing in the built css: ${needle}`);
+    }
+  });
+
   // ── done ───────────────────────────────────────────────────────────────────
   server.close();
   await db.close().catch(() => {});

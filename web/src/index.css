@@ -2,6 +2,24 @@
 @import "tw-animate-css";
 
 /*
+ * DO NOT SCAN THE PREVIOUS BUILD.
+ *
+ * Tailwind v4 finds classes by reading the project as plain text and skips what
+ * .gitignore skips. web/dist is COMMITTED here, so by default it was read too,
+ * and the stylesheet from the last build is full of class names: every one came
+ * back as a candidate and was emitted again. A class deleted from the source
+ * therefore never disappeared, it was resurrected from the file the previous
+ * build had written, forever.
+ *
+ * Measured: 64.77 kB with dist in scope, 53.16 kB after deleting dist and
+ * rebuilding. Eleven kilobytes of rules nothing referenced any more.
+ *
+ * It also quietly disarms any test that greps the built css for a rule, because
+ * the rule stays present after the source that produced it is gone.
+ */
+@source not "../dist";
+
+/*
  * The design language: dark, with a green accent. shadcn/ui token names are
  * mapped onto this palette so every component inherits it automatically. The
  * dashboard is dark only, so the dark palette lives directly in :root.

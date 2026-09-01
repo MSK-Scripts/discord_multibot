@@ -33,13 +33,34 @@ function SelectTrigger({ className, size = 'default', children, ...props }) {
   );
 }
 
+/**
+ * A Radix custom property must be wrapped in var() inside the square brackets.
+ *
+ * Radix measures the space below the trigger and publishes it as
+ * --radix-select-content-available-height. This element is the only thing that
+ * consumes it, and consuming it is what makes a long list scrollable: the
+ * content gets a ceiling, and the viewport below it is flex:1 with
+ * overflow:auto from Radix's own inline style, so the rest scrolls.
+ *
+ * Tailwind v3 accepted the bare property name in the brackets and expanded it
+ * to var(). v4 does not: it emits the name as the VALUE, which is not a value at
+ * all, so the browser drops the declaration silently. No warning, no error,
+ * max-height computes to none. The popup then grows to its full content height,
+ * has nothing to overflow, and every entry past the bottom of the window is
+ * unreachable. Measured here at 1002px tall inside a 720px window with 31 roles.
+ *
+ * Do not write the class names of that broken form in a comment either. The
+ * Tailwind scanner reads plain text and does not parse JavaScript, so a class
+ * name mentioned in prose is generated for real, and three dead invalid rules
+ * end up in the stylesheet.
+ */
 function SelectContent({ className, children, position = 'popper', ...props }) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
-          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-x-hidden overflow-y-auto rounded-md border shadow-md',
+          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 max-h-[var(--radix-select-content-available-height)] min-w-[8rem] origin-[var(--radix-select-content-transform-origin)] overflow-x-hidden overflow-y-auto rounded-md border shadow-md',
           position === 'popper' && 'data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1',
           className,
         )}
