@@ -1,83 +1,99 @@
 # /etc/systemd/system/multibot.service
 #
-# systemd-Unit für den MSK Scripts Discord Multi-Bot
+# systemd unit for the MSK Scripts Discord Multi-Bot
 # ────────────────────────────────────────────────────
-# Installation:
+# Installing it:
 #   sudo cp multibot.service /etc/systemd/system/
 #   sudo systemctl daemon-reload
 #   sudo systemctl enable --now multibot.service
 #
-# ACHTUNG: deploy.yml installiert diese Datei NICHT. Eine Aenderung hier
-# erreicht den Server erst durch das cp plus daemon-reload oben.
+# CAREFUL: deploy.yml does NOT install this file, and it is in that workflow's
+# paths-ignore, so a change here reaches the server only through the cp plus
+# daemon-reload above. Editing it and pushing does nothing on its own.
 #
-# Nützliche Befehle:
-#   sudo systemctl status  multibot.service     # Status anzeigen
-#   sudo systemctl restart multibot.service     # Neustart
-#   sudo systemctl stop    multibot.service     # Stoppen
-#   sudo journalctl -u multibot.service -f      # Live-Logs (journald)
-#   tail -f /opt/discord_multibot/multibot.log  # Datei-Log
+# Useful commands:
+#   sudo systemctl status  multibot.service   # what state is it in
+#   sudo systemctl restart multibot.service   # restart
+#   sudo systemctl stop    multibot.service   # stop
+#   sudo journalctl -u multibot.service -f    # live logs
+#
+# The logs are in journald and nowhere else: nothing in this project writes a
+# log FILE. A `tail -f multibot.log` hint stood here until 02.09.2026 and had
+# never pointed at anything.
 
 [Unit]
 Description=MSK Scripts Discord Multi-Bot
 Documentation=https://github.com/MSK-Scripts
-# Erst starten, wenn das Netzwerk vollständig verfügbar ist
+# Wait for the network to be fully up, not merely configured
 After=network-online.target
 Wants=network-online.target
-# Neustart, wenn der Service unerwartet endet
+
+# A CAP ON RESTARTS, not the restart itself: that is Restart= further down.
+# Five starts within two minutes and systemd gives up. The trap is what happens
+# next: once the budget is spent it refuses to start the unit EVEN AFTER the
+# broken code is gone, so the revert deploy looks like it failed too. deploy.yml
+# runs `systemctl reset-failed multibot` before every restart for that reason.
 StartLimitIntervalSec=120
 StartLimitBurst=5
 
 [Service]
-# ── Benutzer & Pfade ─────────────────────────────────────────────────────────
+# ── User and paths ───────────────────────────────────────────────────────────
 Type=simple
 User=discord
 Group=discord
 WorkingDirectory=/opt/discord_multibot
 
-# ── Umgebung ─────────────────────────────────────────────────────────────────
-# .env-Datei wird von python-dotenv automatisch geladen;
-# für systemd zusätzlich hier referenzieren (doppelte Absicherung).
+# ── Environment ──────────────────────────────────────────────────────────────
+# The bot reads .env itself through the `dotenv` npm package, so this line is
+# belt and braces rather than the only source. Note that systemd parses the file
+# more strictly than dotenv does, so a value that works for the bot can still be
+# rejected here.
 EnvironmentFile=/opt/discord_multibot/.env
 
-# ── Einstiegspunkt ───────────────────────────────────────────────────────────
-# dashboard.js ist der Supervisor: er startet main.js als KINDPROZESS und
-# daneben, wenn DASHBOARD_ENABLED=true gesetzt ist, das Webpanel. Das Panel muss
-# der Elternprozess sein, sonst kann es den Bot weder neu starten noch einen
-# Absturz ueberleben, und genau dann braucht man es.
+# ── Entry point ──────────────────────────────────────────────────────────────
+# dashboard.js is the supervisor: it runs main.js as a CHILD process and, when
+# DASHBOARD_ENABLED=true, serves the web panel next to it. The panel has to be
+# the parent, or it can neither restart the bot nor survive a crash, which is
+# exactly when somebody needs it.
 #
-# NIEMALS BEIDE GLEICHZEITIG. Wer daneben noch `node main.js` laufen laesst,
-# haengt zwei Bots an dasselbe Token und Discord wirft beide raus.
+# NEVER BOTH AT ONCE. A second unit, or a stray `node main.js`, puts two bots on
+# the same token and Discord kicks both.
 #
-# `node main.js` bleibt der schlichte Einstieg ohne Dashboard und laedt keine
-# Zeile des Webstacks. Wer das will, traegt es hier ein und laesst
-# DASHBOARD_ENABLED weg.
+# `node main.js` is still the plain entry point without the dashboard and does
+# not load a line of the web stack. To run that instead, put it here and leave
+# DASHBOARD_ENABLED unset.
 ExecStart=/usr/bin/node dashboard.js
 
-# ── Restart-Verhalten ─────────────────────────────────────────────────────────
-# Neustart bei jedem unerwarteten Exit (Absturz, OOM, etc.)
+# ── Restart behaviour ────────────────────────────────────────────────────────
+# Restart on any unexpected exit (crash, OOM kill, and so on), bounded by the
+# StartLimit above.
 Restart=on-failure
 RestartSec=10s
 
-# ── Logging ───────────────────────────────────────────────────────────────────
-# stdout/stderr an journald weiterleiten (journalctl -u multibot abrufbar)
+# ── Logging ──────────────────────────────────────────────────────────────────
+# stdout and stderr to journald, readable with `journalctl -u multibot`
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=multibot
 
-# ── Ressourcen & Sicherheit ───────────────────────────────────────────────────
-# Verhindert, dass der Bot Root-Rechte erlangen kann
+# ── Resources and hardening ──────────────────────────────────────────────────
+# The process can never gain privileges, whatever it execs
 NoNewPrivileges=true
-# Schränkt sichtbares Filesystem ein
+# Its own /tmp, and a read-only view of the rest of the system
 PrivateTmp=true
 ProtectSystem=strict
-# Erlaubt Schreibzugriff nur auf das Projektverzeichnis (Logs, data/)
+# Which is why the project directory has to be named explicitly: the bot writes
+# data/ there, and the dashboard writes SESSION_SECRET into .env on first start.
 ReadWritePaths=/opt/discord_multibot
 
-# Prozess nicht beenden, wenn er zu viel Speicher braucht (OOM-Killer)
+# Makes the kernel pick something else first when memory runs out. It does NOT
+# make the process immune to the OOM killer, it only moves it down the list.
 OOMScoreAdjust=-500
 
-# ── Graceful Shutdown ─────────────────────────────────────────────────────────
-# Gibt dem Bot 30 Sekunden für sauberes Beenden, bevor SIGKILL gesendet wird
+# ── Graceful shutdown ────────────────────────────────────────────────────────
+# 30 seconds to stop cleanly before SIGKILL. The supervisor needs them: it stops
+# the child bot on SIGTERM, and a bot that is killed instead keeps its gateway
+# session, so the next start forks a second one onto the same token.
 TimeoutStopSec=30
 
 [Install]
