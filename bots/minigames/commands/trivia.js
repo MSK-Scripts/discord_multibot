@@ -120,7 +120,7 @@ module.exports = {
       const diff    = question.difficulty;
       const outcome = correct ? 'win' : 'lose';
       const ptsDelta = getPts('trivia', diff, outcome);
-      const { old: oldPts, new: newPts } = addPoints(interaction.user.id, ptsDelta);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, ptsDelta);
 
       buttons.forEach((btn, idx) => {
         btn.setDisabled(true);

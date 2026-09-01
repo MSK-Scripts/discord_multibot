@@ -8,7 +8,7 @@ module.exports = {
 
   async execute(interaction) {
     const userId  = interaction.user.id;
-    const current = getPoints(userId);
+    const current = await getPoints(userId);
     const rewards = [...(getConfig().rewards ?? [])].sort((a, b) => a.points - b.points);
 
     let nextReward = null;

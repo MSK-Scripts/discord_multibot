@@ -193,7 +193,7 @@ module.exports = {
         if (result !== null) {
           const outcome = result === PLAYER ? 'win' : result === BOT ? 'lose' : 'draw';
           ptsDelta = getPts('tictactoe', difficulty, outcome);
-          const pts = addPoints(interaction.user.id, ptsDelta);
+          const pts = await addPoints(interaction.user.id, ptsDelta);
           oldPts = pts.old; newPts = pts.new;
         }
 

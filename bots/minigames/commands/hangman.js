@@ -105,7 +105,7 @@ module.exports = {
       let ptsDelta = 0, oldPts = 0, newPts = 0;
       if (result === 'won' || result === 'lost') {
         ptsDelta = getPts('hangman', result === 'won' ? 'win' : 'lose');
-        const pts = addPoints(interaction.user.id, ptsDelta);
+        const pts = await addPoints(interaction.user.id, ptsDelta);
         oldPts = pts.old; newPts = pts.new;
         row.components[0].setDisabled(true);
         collector.stop();

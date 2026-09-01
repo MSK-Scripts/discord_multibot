@@ -73,7 +73,7 @@ module.exports = {
       const finalReels       = spin();
       const { key, text }    = evaluate(finalReels);
       const ptsDelta         = getPts('slots', key);
-      const { old: oldPts, new: newPts } = addPoints(interaction.user.id, ptsDelta);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, ptsDelta);
       const mult             = evaluate(finalReels).mult;
       const color            = mult >= 20 ? 0xFEE75C : mult > 0 ? 0x57F287 : 0xED4245;
 

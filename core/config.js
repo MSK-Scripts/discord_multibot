@@ -10,10 +10,37 @@ const { mkdirSync } = require('fs');
 mkdirSync(DATA_DIR,   { recursive: true });
 mkdirSync(ASSETS_DIR, { recursive: true });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// NO IDS IN THE SOURCE.
+//
+// Every id used to have MSK's own value as a default right here: the guild, all
+// four staff roles, the self-assignable roles, the log and feedback channels. A
+// fresh clone therefore pointed at somebody else's server, and any of those
+// values silently kept working after being removed from a .env — which is the
+// worse half, because a missing setting looked like a working one.
+//
+// Now an unset id is the empty string. `hasAnyRole` does `roles.cache.has('')`
+// and answers false, so a missing role denies access rather than granting it,
+// and `unset` below lists what is missing so main.js can say so at boot.
+//
+// NOTHING HERE CALLS process.exit(). A half-configured bot should start and run
+// the parts that work: the alternative is that one forgotten channel id takes
+// the whole installation down, and on a server with Restart=on-failure that
+// becomes a crash loop nobody can read.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Ids that were asked for and are not set. Reported once, at boot. */
+const unset = [];
+
 // Discord snowflakes are 18-digit numbers that exceed Number.MAX_SAFE_INTEGER.
 // Always keep them as strings to avoid precision loss from parseInt / float64.
-function _id(key, def) {
-  return process.env[key] ? process.env[key].trim() : String(def);
+function _id(key) {
+  const value = process.env[key];
+  if (!value || !value.trim()) {
+    unset.push(key);
+    return '';
+  }
+  return value.trim();
 }
 
 function _str(key, def = '') {
@@ -21,20 +48,20 @@ function _str(key, def = '') {
 }
 
 const guild = {
-  ID:                      _id('GUILD_ID',                 '900394679634370640'),
-  LOG_CHANNEL_ID:          _id('LOG_CHANNEL_ID',           '900394680137699389'),
-  MEMBER_COUNT_CHANNEL_ID: _id('MEMBER_COUNT_CHANNEL_ID',  '1083912480503382119'),
-  FEEDBACK_CHANNEL_ID:     _id('FEEDBACK_CHANNEL_ID',      '953762590285234196'),
-  MEMBER_ROLE_ID:          _id('MEMBER_ROLE_ID',           '900395164470767616'),
-  FOUNDER_ROLE_ID:         _id('FOUNDER_ROLE_ID',          '900395567971180544'),
-  MANAGER_ROLE_ID:         _id('MANAGER_ROLE_ID',          '939633133119221790'),
-  DEVELOPER_ROLE_ID:       _id('DEVELOPER_ROLE_ID',        '1043875941472022548'),
-  GIVEAWAY_NOTIFY_ROLE_ID: _id('GIVEAWAY_NOTIFY_ROLE_ID',  '1051120654063251476'),
-  TEAM_ROLE_ID:            _id('TEAM_ROLE_ID',             '900395689182380073'),
-  GARAGE_ROLE_ID:          _id('GARAGE_ROLE_ID',           '1016399984226205798'),
-  HANDCUFFS_ROLE_ID:       _id('HANDCUFFS_ROLE_ID',        '988884703975178260'),
-  STORAGE_ROLE_ID:         _id('STORAGE_ROLE_ID',          '1264596340009340948'),
-  VEHICLEKEYS_ROLE_ID:     _id('VEHICLEKEYS_ROLE_ID',      '1281327553520468040'),
+  ID:                      _id('GUILD_ID'),
+  LOG_CHANNEL_ID:          _id('LOG_CHANNEL_ID'),
+  MEMBER_COUNT_CHANNEL_ID: _id('MEMBER_COUNT_CHANNEL_ID'),
+  FEEDBACK_CHANNEL_ID:     _id('FEEDBACK_CHANNEL_ID'),
+  MEMBER_ROLE_ID:          _id('MEMBER_ROLE_ID'),
+  FOUNDER_ROLE_ID:         _id('FOUNDER_ROLE_ID'),
+  MANAGER_ROLE_ID:         _id('MANAGER_ROLE_ID'),
+  DEVELOPER_ROLE_ID:       _id('DEVELOPER_ROLE_ID'),
+  GIVEAWAY_NOTIFY_ROLE_ID: _id('GIVEAWAY_NOTIFY_ROLE_ID'),
+  TEAM_ROLE_ID:            _id('TEAM_ROLE_ID'),
+  GARAGE_ROLE_ID:          _id('GARAGE_ROLE_ID'),
+  HANDCUFFS_ROLE_ID:       _id('HANDCUFFS_ROLE_ID'),
+  STORAGE_ROLE_ID:         _id('STORAGE_ROLE_ID'),
+  VEHICLEKEYS_ROLE_ID:     _id('VEHICLEKEYS_ROLE_ID'),
 };
 
 const database = {
@@ -50,7 +77,25 @@ const tokens = {
   MINIGAMES: _str('MINIGAMES_BOT_TOKEN'),
 };
 
-const EMBED_COLOR   = 0x5EB131;
-const THUMBNAIL_URL = "https://cdn.msk-scripts.de/brand/msk_logo.webp";
+/**
+ * What is missing, and whether that stops the bot from being useful.
+ *
+ * GUILD_ID is separated out because it is the one id nothing works without:
+ * commands are registered per guild, so an empty value means every command
+ * registration fails with a confusing permissions error rather than an obvious
+ * "you did not configure the server".
+ *
+ * @returns {{unset: string[], guildMissing: boolean}}
+ */
+function report() {
+  return { unset: [...unset], guildMissing: !guild.ID };
+}
 
-module.exports = { BASE_DIR, DATA_DIR, ASSETS_DIR, guild, database, tokens, EMBED_COLOR, THUMBNAIL_URL };
+const EMBED_COLOR   = 0x5EB131;
+const THUMBNAIL_URL = 'https://cdn.msk-scripts.de/brand/msk_logo.webp';
+
+module.exports = {
+  BASE_DIR, DATA_DIR, ASSETS_DIR,
+  guild, database, tokens, report,
+  EMBED_COLOR, THUMBNAIL_URL,
+};

@@ -248,7 +248,7 @@
       "file_type": "code",
       "norm_label": "addpoints()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L29"
+      "source_location": "L111"
     },
     {
       "id": "core_pointsmanager_getpts",
@@ -260,7 +260,7 @@
       "file_type": "code",
       "norm_label": "getpts()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L16"
+      "source_location": "L39"
     },
     {
       "id": "core_pointsmanager_notifyrewards",
@@ -272,7 +272,7 @@
       "file_type": "code",
       "norm_label": "notifyrewards()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L44"
+      "source_location": "L128"
     },
     {
       "id": "core_pointsmanager_pointsfooter",
@@ -284,7 +284,7 @@
       "file_type": "code",
       "norm_label": "pointsfooter()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L62"
+      "source_location": "L146"
     },
     {
       "id": "bots_commands_commands_community_execute",
@@ -292,11 +292,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/commands/commands/community.js",
       "source_location": "L11"
+    },
+    {
+      "id": "bots_commands_commands_minigames_execute",
+      "label": "execute()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "execute()",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L40"
+    },
+    {
+      "id": "bots_commands_commands_minigames_newround",
+      "label": "newRound()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "newround()",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L20"
     },
     {
       "id": "bots_commands_commands_support_execute",
@@ -304,23 +328,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/commands/commands/support.js",
       "source_location": "L61"
-    },
-    {
-      "id": "bots_commands_commands_utility_execute",
-      "label": "execute()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "execute()",
-      "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L12"
     },
     {
       "id": "bots_events_handlers_messagehandler_onmessage",
@@ -328,35 +340,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "onmessage()",
       "source_file": "bots/events/handlers/messageHandler.js",
       "source_location": "L7"
-    },
-    {
-      "id": "core_config_id",
-      "label": "_id()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "_id()",
-      "source_file": "core/config.js",
-      "source_location": "L15"
-    },
-    {
-      "id": "core_config_str",
-      "label": "_str()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "_str()",
-      "source_file": "core/config.js",
-      "source_location": "L19"
     },
     {
       "id": "core_utils_makeembed",
@@ -364,47 +352,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "makeembed()",
       "source_file": "core/utils.js",
       "source_location": "L13"
     },
     {
-      "id": "main_createregistry",
-      "label": "createRegistry()",
+      "id": "core_utils_readjson",
+      "label": "readJson()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
-      "norm_label": "createregistry()",
-      "source_file": "main.js",
-      "source_location": "L11"
+      "norm_label": "readjson()",
+      "source_file": "core/utils.js",
+      "source_location": "L31"
     },
     {
-      "id": "main_main",
-      "label": "main()",
+      "id": "core_utils_writejson",
+      "label": "writeJson()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "main.js",
-      "source_location": "L88"
-    },
-    {
-      "id": "main_rungroup",
-      "label": "runGroup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "rungroup()",
-      "source_file": "main.js",
-      "source_location": "L19"
+      "norm_label": "writejson()",
+      "source_file": "core/utils.js",
+      "source_location": "L39"
     },
     {
       "id": "bots_commands_bot_attach",
@@ -412,7 +388,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "attach()",
       "source_file": "bots/commands/bot.js",
@@ -424,7 +400,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "handlepersistentbutton()",
       "source_file": "bots/commands/bot.js",
@@ -436,7 +412,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "togglerole()",
       "source_file": "bots/commands/bot.js",
@@ -447,8 +423,8 @@
       "label": "attach()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "attach()",
       "source_file": "bots/events/bot.js",
@@ -459,8 +435,8 @@
       "label": "scheduleMemberCountUpdate()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "schedulemembercountupdate()",
       "source_file": "bots/events/bot.js",
@@ -471,12 +447,228 @@
       "label": "updateMemberCount()",
       "_callable": true,
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "updatemembercount()",
       "source_file": "bots/events/bot.js",
       "source_location": "L101"
+    },
+    {
+      "id": "core_config_id",
+      "label": "_id()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "_id()",
+      "source_file": "core/config.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "core_config_report",
+      "label": "report()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "report()",
+      "source_file": "core/config.js",
+      "source_location": "L90"
+    },
+    {
+      "id": "core_config_str",
+      "label": "_str()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "_str()",
+      "source_file": "core/config.js",
+      "source_location": "L46"
+    },
+    {
+      "id": "main_createregistry",
+      "label": "createRegistry()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "createregistry()",
+      "source_file": "main.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "main_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "main.js",
+      "source_location": "L90"
+    },
+    {
+      "id": "main_rungroup",
+      "label": "runGroup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "rungroup()",
+      "source_file": "main.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "bots_commands_commands_admin_execute",
+      "label": "execute()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "execute()",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "bots_commands_commands_admin_showmodal",
+      "label": "showModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "showmodal()",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_answermessage",
+      "label": "answerMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "answermessage()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L99"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_cloneembed",
+      "label": "cloneEmbed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "cloneembed()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L15"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_commentfeedback",
+      "label": "commentFeedback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "commentfeedback()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L49"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_editembed",
+      "label": "editEmbed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "editembed()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L141"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_editmessage",
+      "label": "editMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "editmessage()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L119"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_getcommands",
+      "label": "getCommands()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "getcommands()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L38"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_handleinteraction",
+      "label": "handleInteraction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "handleinteraction()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L185"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_showmodal",
+      "label": "showModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "showmodal()",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "core_utils_hasanyrole",
+      "label": "hasAnyRole()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "hasanyrole()",
+      "source_file": "core/utils.js",
+      "source_location": "L49"
+    },
+    {
+      "id": "core_utils_nowstr",
+      "label": "nowStr()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "nowstr()",
+      "source_file": "core/utils.js",
+      "source_location": "L6"
     },
     {
       "id": "bots_minigames_commands_eightball_execute",
@@ -513,6 +705,42 @@
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L21"
+    },
+    {
+      "id": "core_db_drivers_mysql_create",
+      "label": "create()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "create()",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "core_db_drivers_postgres_create",
+      "label": "create()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "create()",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "core_db_drivers_sqlite_create",
+      "label": "create()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "create()",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L12"
     },
     {
       "id": "bots_events_handlers_logging_channeltypename",
@@ -791,7 +1019,7 @@
       "source_location": "L352"
     },
     {
-      "id": "bots_commands_commands_minigames_execute",
+      "id": "bots_commands_commands_utility_execute",
       "label": "execute()",
       "_callable": true,
       "_origin": "ast",
@@ -799,20 +1027,8 @@
       "community_name": "pointsManager.js",
       "file_type": "code",
       "norm_label": "execute()",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L40"
-    },
-    {
-      "id": "bots_commands_commands_minigames_newround",
-      "label": "newRound()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "pointsManager.js",
-      "file_type": "code",
-      "norm_label": "newround()",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L20"
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L12"
     },
     {
       "id": "bots_minigames_commands_points_execute",
@@ -836,7 +1052,7 @@
       "file_type": "code",
       "norm_label": "getconfig()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L11"
+      "source_location": "L34"
     },
     {
       "id": "core_pointsmanager_getnewlyunlockedrewards",
@@ -848,7 +1064,7 @@
       "file_type": "code",
       "norm_label": "getnewlyunlockedrewards()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L39"
+      "source_location": "L123"
     },
     {
       "id": "core_pointsmanager_getpoints",
@@ -860,175 +1076,139 @@
       "file_type": "code",
       "norm_label": "getpoints()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L24"
+      "source_location": "L103"
     },
     {
-      "id": "core_utils_readjson",
-      "label": "readJson()",
+      "id": "core_pointsmanager_init",
+      "label": "init()",
       "_callable": true,
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "readjson()",
-      "source_file": "core/utils.js",
-      "source_location": "L31"
+      "norm_label": "init()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L63"
     },
     {
-      "id": "core_utils_writejson",
-      "label": "writeJson()",
+      "id": "core_pointsmanager_toppoints",
+      "label": "topPoints()",
       "_callable": true,
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "writejson()",
-      "source_file": "core/utils.js",
-      "source_location": "L39"
+      "norm_label": "toppoints()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L116"
     },
     {
-      "id": "bots_commands_commands_admin_execute",
-      "label": "execute()",
+      "id": "core_db_index_addbalance",
+      "label": "addBalance()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "execute()",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L23"
+      "norm_label": "addbalance()",
+      "source_file": "core/db/index.js",
+      "source_location": "L110"
     },
     {
-      "id": "bots_commands_commands_admin_showmodal",
-      "label": "showModal()",
+      "id": "core_db_index_close",
+      "label": "close()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "showmodal()",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L10"
+      "norm_label": "close()",
+      "source_file": "core/db/index.js",
+      "source_location": "L71"
     },
     {
-      "id": "bots_events_handlers_contextmenus_answermessage",
-      "label": "answerMessage()",
+      "id": "core_db_index_connect",
+      "label": "connect()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "answermessage()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L99"
+      "norm_label": "connect()",
+      "source_file": "core/db/index.js",
+      "source_location": "L47"
     },
     {
-      "id": "bots_events_handlers_contextmenus_cloneembed",
-      "label": "cloneEmbed()",
+      "id": "core_db_index_dialect",
+      "label": "dialect()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "cloneembed()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L15"
+      "norm_label": "dialect()",
+      "source_file": "core/db/index.js",
+      "source_location": "L79"
     },
     {
-      "id": "bots_events_handlers_contextmenus_commentfeedback",
-      "label": "commentFeedback()",
+      "id": "core_db_index_getbalance",
+      "label": "getBalance()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "commentfeedback()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L49"
+      "norm_label": "getbalance()",
+      "source_file": "core/db/index.js",
+      "source_location": "L98"
     },
     {
-      "id": "bots_events_handlers_contextmenus_editembed",
-      "label": "editEmbed()",
+      "id": "core_db_index_getmeta",
+      "label": "getMeta()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "editembed()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L141"
+      "norm_label": "getmeta()",
+      "source_file": "core/db/index.js",
+      "source_location": "L88"
     },
     {
-      "id": "bots_events_handlers_contextmenus_editmessage",
-      "label": "editMessage()",
+      "id": "core_db_index_setmeta",
+      "label": "setMeta()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "editmessage()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L119"
+      "norm_label": "setmeta()",
+      "source_file": "core/db/index.js",
+      "source_location": "L92"
     },
     {
-      "id": "bots_events_handlers_contextmenus_getcommands",
-      "label": "getCommands()",
+      "id": "core_db_index_topbalances",
+      "label": "topBalances()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "getcommands()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L38"
+      "norm_label": "topbalances()",
+      "source_file": "core/db/index.js",
+      "source_location": "L115"
     },
     {
-      "id": "bots_events_handlers_contextmenus_handleinteraction",
-      "label": "handleInteraction()",
+      "id": "core_db_url_parse",
+      "label": "parse()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "handleinteraction()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L185"
-    },
-    {
-      "id": "bots_events_handlers_contextmenus_showmodal",
-      "label": "showModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "showmodal()",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L8"
-    },
-    {
-      "id": "core_utils_hasanyrole",
-      "label": "hasAnyRole()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "hasanyrole()",
-      "source_file": "core/utils.js",
-      "source_location": "L49"
-    },
-    {
-      "id": "core_utils_nowstr",
-      "label": "nowStr()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "nowstr()",
-      "source_file": "core/utils.js",
-      "source_location": "L6"
+      "norm_label": "parse()",
+      "source_file": "core/db/url.js",
+      "source_location": "L28"
     },
     {
       "id": "test_harness_acheck",
@@ -1040,7 +1220,7 @@
       "file_type": "code",
       "norm_label": "acheck()",
       "source_file": "test/harness.js",
-      "source_location": "L39"
+      "source_location": "L57"
     },
     {
       "id": "test_harness_check",
@@ -1052,7 +1232,7 @@
       "file_type": "code",
       "norm_label": "check()",
       "source_file": "test/harness.js",
-      "source_location": "L35"
+      "source_location": "L53"
     },
     {
       "id": "test_harness_dispatch",
@@ -1064,7 +1244,7 @@
       "file_type": "code",
       "norm_label": "dispatch()",
       "source_file": "test/harness.js",
-      "source_location": "L207"
+      "source_location": "L225"
     },
     {
       "id": "test_harness_lasttext",
@@ -1076,7 +1256,7 @@
       "file_type": "code",
       "norm_label": "lasttext()",
       "source_file": "test/harness.js",
-      "source_location": "L198"
+      "source_location": "L216"
     },
     {
       "id": "test_harness_mockinteraction",
@@ -1088,7 +1268,7 @@
       "file_type": "code",
       "norm_label": "mockinteraction()",
       "source_file": "test/harness.js",
-      "source_location": "L159"
+      "source_location": "L177"
     },
     {
       "id": "test_harness_req",
@@ -1100,7 +1280,7 @@
       "file_type": "code",
       "norm_label": "req()",
       "source_file": "test/harness.js",
-      "source_location": "L31"
+      "source_location": "L49"
     },
     {
       "id": "test_harness_section",
@@ -1112,7 +1292,7 @@
       "file_type": "code",
       "norm_label": "section()",
       "source_file": "test/harness.js",
-      "source_location": "L43"
+      "source_location": "L61"
     },
     {
       "id": "test_harness_v",
@@ -1124,7 +1304,7 @@
       "file_type": "code",
       "norm_label": "v()",
       "source_file": "test/harness.js",
-      "source_location": "L47"
+      "source_location": "L65"
     },
     {
       "id": "bots_minigames_commands_tictactoe_aieasy",
@@ -1799,7 +1979,7 @@
       "label": "community.js",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "community.js",
       "source_file": "bots/commands/commands/community.js",
@@ -1810,7 +1990,7 @@
       "label": "{ guild: gcfg }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ guild: gcfg }",
       "source_file": "bots/commands/commands/community.js",
@@ -1821,7 +2001,7 @@
       "label": "{ makeEmbed, hasAnyRole }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ makeembed, hasanyrole }",
       "source_file": "bots/commands/commands/community.js",
@@ -1832,10 +2012,87 @@
       "label": "{ SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, messageflags }",
       "source_file": "bots/commands/commands/community.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_commands_commands_minigames",
+      "label": "minigames.js",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "minigames.js",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_commands_commands_minigames_data_dir_guild_gcfg",
+      "label": "{ DATA_DIR, guild: gcfg }",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "{ data_dir, guild: gcfg }",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "bots_commands_commands_minigames_flachwitze_file",
+      "label": "FLACHWITZE_FILE",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "flachwitze_file",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "bots_commands_commands_minigames_join",
+      "label": "{ join }",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "{ join }",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "bots_commands_commands_minigames_makeembed_hasanyrole_readjson_writejson",
+      "label": "{ makeEmbed, hasAnyRole, readJson, writeJson }",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "{ makeembed, hasanyrole, readjson, writejson }",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "bots_commands_commands_minigames_round",
+      "label": "round",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "round",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L30"
+    },
+    {
+      "id": "bots_commands_commands_minigames_slashcommandbuilder_messageflags",
+      "label": "{ SlashCommandBuilder, MessageFlags }",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "utils.js",
+      "file_type": "code",
+      "norm_label": "{ slashcommandbuilder, messageflags }",
+      "source_file": "bots/commands/commands/minigames.js",
       "source_location": "L1"
     },
     {
@@ -1843,7 +2100,7 @@
       "label": "support.js",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "support.js",
       "source_file": "bots/commands/commands/support.js",
@@ -1854,7 +2111,7 @@
       "label": "GUIDES",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "guides",
       "source_file": "bots/commands/commands/support.js",
@@ -1865,7 +2122,7 @@
       "label": "{ makeEmbed }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ makeembed }",
       "source_file": "bots/commands/commands/support.js",
@@ -1876,65 +2133,10 @@
       "label": "{ SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, messageflags }",
       "source_file": "bots/commands/commands/support.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_commands_commands_utility",
-      "label": "utility.js",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "utility.js",
-      "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_commands_commands_utility_getpoints",
-      "label": "{ getPoints }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ getpoints }",
-      "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "bots_commands_commands_utility_guild_gcfg",
-      "label": "{ guild: gcfg }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ guild: gcfg }",
-      "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "bots_commands_commands_utility_makeembed_hasanyrole",
-      "label": "{ makeEmbed, hasAnyRole }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ makeembed, hasanyrole }",
-      "source_file": "bots/commands/commands/utility.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "bots_commands_commands_utility_slashcommandbuilder_messageflags",
-      "label": "{ SlashCommandBuilder, MessageFlags }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ slashcommandbuilder, messageflags }",
-      "source_file": "bots/commands/commands/utility.js",
       "source_location": "L1"
     },
     {
@@ -1942,7 +2144,7 @@
       "label": "messageHandler.js",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "messagehandler.js",
       "source_file": "bots/events/handlers/messageHandler.js",
@@ -1953,7 +2155,7 @@
       "label": "{ guild: gcfg }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ guild: gcfg }",
       "source_file": "bots/events/handlers/messageHandler.js",
@@ -1964,106 +2166,18 @@
       "label": "{ makeEmbed }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ makeembed }",
       "source_file": "bots/events/handlers/messageHandler.js",
       "source_location": "L1"
     },
     {
-      "id": "core_config",
-      "label": "config.js",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "config.js",
-      "source_file": "core/config.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_config_assets_dir",
-      "label": "ASSETS_DIR",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "assets_dir",
-      "source_file": "core/config.js",
-      "source_location": "L7"
-    },
-    {
-      "id": "core_config_base_dir",
-      "label": "BASE_DIR",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "base_dir",
-      "source_file": "core/config.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "core_config_database",
-      "label": "database",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "database",
-      "source_file": "core/config.js",
-      "source_location": "L40"
-    },
-    {
-      "id": "core_config_guild",
-      "label": "guild",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "guild",
-      "source_file": "core/config.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "core_config_join",
-      "label": "{ join }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ join }",
-      "source_file": "core/config.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "core_config_mkdirsync",
-      "label": "{ mkdirSync }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ mkdirsync }",
-      "source_file": "core/config.js",
-      "source_location": "L9"
-    },
-    {
-      "id": "core_config_tokens",
-      "label": "tokens",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "tokens",
-      "source_file": "core/config.js",
-      "source_location": "L47"
-    },
-    {
       "id": "core_utils",
       "label": "utils.js",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "utils.js",
       "source_file": "core/utils.js",
@@ -2074,7 +2188,7 @@
       "label": "{ dirname }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ dirname }",
       "source_file": "core/utils.js",
@@ -2085,7 +2199,7 @@
       "label": "{ EMBED_COLOR, THUMBNAIL_URL }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ embed_color, thumbnail_url }",
       "source_file": "core/utils.js",
@@ -2096,7 +2210,7 @@
       "label": "{ EmbedBuilder }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ embedbuilder }",
       "source_file": "core/utils.js",
@@ -2107,62 +2221,18 @@
       "label": "{ readFileSync, writeFileSync, mkdirSync, renameSync }",
       "_origin": "ast",
       "community": 1,
-      "community_name": "Community Support Utilities",
+      "community_name": "utils.js",
       "file_type": "code",
       "norm_label": "{ readfilesync, writefilesync, mkdirsync, renamesync }",
       "source_file": "core/utils.js",
       "source_location": "L2"
     },
     {
-      "id": "main",
-      "label": "main.js",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "main.js",
-      "source_file": "main.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "main_botmodules",
-      "label": "botModules",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "botmodules",
-      "source_file": "main.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "main_client_events_rest_routes",
-      "label": "{ Client, Events, REST, Routes }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ client, events, rest, routes }",
-      "source_file": "main.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "main_tokens_guild_gcfg",
-      "label": "{ tokens, guild: gcfg }",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "Community Support Utilities",
-      "file_type": "code",
-      "norm_label": "{ tokens, guild: gcfg }",
-      "source_file": "main.js",
-      "source_location": "L3"
-    },
-    {
       "id": "bots_commands_bot",
       "label": "commands/bot.js",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "commands/bot.js",
       "source_file": "bots/commands/bot.js",
@@ -2173,7 +2243,7 @@
       "label": "{\r\n  Collection, GatewayIntentBits, Events,\r\n  ButtonStyle, ButtonBuilder, ActionRowBuilder, MessageFlags,\r\n}",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{\r\n  collection, gatewayintentbits, events,\r\n  buttonstyle, buttonbuilder, actionrowbuilder, messageflags,\r\n}",
       "source_file": "bots/commands/bot.js",
@@ -2184,7 +2254,7 @@
       "label": "{ guild: gcfg }",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{ guild: gcfg }",
       "source_file": "bots/commands/bot.js",
@@ -2195,7 +2265,7 @@
       "label": "intents",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "intents",
       "source_file": "bots/commands/bot.js",
@@ -2206,7 +2276,7 @@
       "label": "{ join }",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{ join }",
       "source_file": "bots/commands/bot.js",
@@ -2217,7 +2287,7 @@
       "label": "partials",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "partials",
       "source_file": "bots/commands/bot.js",
@@ -2228,7 +2298,7 @@
       "label": "{ readdirSync }",
       "_origin": "ast",
       "community": 11,
-      "community_name": "commands/bot.js",
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{ readdirsync }",
       "source_file": "bots/commands/bot.js",
@@ -2238,8 +2308,8 @@
       "id": "bots_events_bot",
       "label": "events/bot.js",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "events/bot.js",
       "source_file": "bots/events/bot.js",
@@ -2249,8 +2319,8 @@
       "id": "bots_events_bot_gatewayintentbits_partials_events_activitytype",
       "label": "{\r\n  GatewayIntentBits, Partials, Events, ActivityType,\r\n}",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{\r\n  gatewayintentbits, partials, events, activitytype,\r\n}",
       "source_file": "bots/events/bot.js",
@@ -2260,8 +2330,8 @@
       "id": "bots_events_bot_guild_gcfg",
       "label": "{ guild: gcfg }",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "{ guild: gcfg }",
       "source_file": "bots/events/bot.js",
@@ -2271,8 +2341,8 @@
       "id": "bots_events_bot_intents",
       "label": "intents",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "intents",
       "source_file": "bots/events/bot.js",
@@ -2282,12 +2352,287 @@
       "id": "bots_events_bot_partials",
       "label": "partials",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "events/bot.js",
+      "community": 11,
+      "community_name": "config.js",
       "file_type": "code",
       "norm_label": "partials",
       "source_file": "bots/events/bot.js",
       "source_location": "L17"
+    },
+    {
+      "id": "core_config",
+      "label": "config.js",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "config.js",
+      "source_file": "core/config.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_config_assets_dir",
+      "label": "ASSETS_DIR",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "assets_dir",
+      "source_file": "core/config.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "core_config_guild",
+      "label": "guild",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "guild",
+      "source_file": "core/config.js",
+      "source_location": "L50"
+    },
+    {
+      "id": "core_config_join",
+      "label": "{ join }",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "{ join }",
+      "source_file": "core/config.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "core_config_mkdirsync",
+      "label": "{ mkdirSync }",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "{ mkdirsync }",
+      "source_file": "core/config.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "core_config_tokens",
+      "label": "tokens",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "tokens",
+      "source_file": "core/config.js",
+      "source_location": "L74"
+    },
+    {
+      "id": "core_config_unset",
+      "label": "unset",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "unset",
+      "source_file": "core/config.js",
+      "source_location": "L33"
+    },
+    {
+      "id": "main",
+      "label": "main.js",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "main.js",
+      "source_file": "main.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "main_botmodules",
+      "label": "botModules",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "botmodules",
+      "source_file": "main.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "main_client_events_rest_routes",
+      "label": "{ Client, Events, REST, Routes }",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "{ client, events, rest, routes }",
+      "source_file": "main.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "main_db",
+      "label": "db",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "db",
+      "source_file": "main.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "main_points",
+      "label": "points",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "points",
+      "source_file": "main.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "main_tokens_guild_gcfg_report_configreport",
+      "label": "{ tokens, guild: gcfg, report: configReport }",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "config.js",
+      "file_type": "code",
+      "norm_label": "{ tokens, guild: gcfg, report: configreport }",
+      "source_file": "main.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "bots_commands_commands_admin",
+      "label": "admin.js",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "admin.js",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_commands_commands_admin_embed_color_thumbnail_url_database_guild_gcfg_data_dir",
+      "label": "{ EMBED_COLOR, THUMBNAIL_URL, database, guild: gcfg, DATA_DIR }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ embed_color, thumbnail_url, database, guild: gcfg, data_dir }",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L8"
+    },
+    {
+      "id": "bots_commands_commands_admin_execfile",
+      "label": "{ execFile }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ execfile }",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "bots_commands_commands_admin_hasanyrole_nowstr",
+      "label": "{ hasAnyRole, nowStr }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ hasanyrole, nowstr }",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "bots_commands_commands_admin_join",
+      "label": "{ join }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ join }",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "bots_commands_commands_admin_mkdirsync_writefilesync_unlinksync",
+      "label": "{ mkdirSync, writeFileSync, unlinkSync }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ mkdirsync, writefilesync, unlinksync }",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "bots_commands_commands_admin_slashcommandbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_embedbuilder_attachmentbuilder_messageflags",
+      "label": "{\r\n  SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, AttachmentBuilder, MessageFlags,\r\n}",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{\r\n  slashcommandbuilder, modalbuilder, textinputbuilder, textinputstyle, actionrowbuilder, embedbuilder, attachmentbuilder, messageflags,\r\n}",
+      "source_file": "bots/commands/commands/admin.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus",
+      "label": "contextMenus.js",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "contextmenus.js",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_contextmenucommandbuilder_applicationcommandtype_embedbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_messageflags",
+      "label": "{\r\n  ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder, ModalBuilder,\r\n  TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags,\r\n}",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{\r\n  contextmenucommandbuilder, applicationcommandtype, embedbuilder, modalbuilder,\r\n  textinputbuilder, textinputstyle, actionrowbuilder, messageflags,\r\n}",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_guild_gcfg_thumbnail_url",
+      "label": "{ guild: gcfg, THUMBNAIL_URL }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ guild: gcfg, thumbnail_url }",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "bots_events_handlers_contextmenus_nowstr_hasanyrole",
+      "label": "{ nowStr, hasAnyRole }",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "{ nowstr, hasanyrole }",
+      "source_file": "bots/events/handlers/contextMenus.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "core_config_database",
+      "label": "database",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "contextMenus.js",
+      "file_type": "code",
+      "norm_label": "database",
+      "source_file": "core/config.js",
+      "source_location": "L67"
     },
     {
       "id": "bots_minigames_commands_eightball",
@@ -2455,6 +2800,94 @@
       "source_location": "L1"
     },
     {
+      "id": "core_db_drivers_mysql",
+      "label": "mysql.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "mysql.js",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_db_drivers_mysql_schema",
+      "label": "{ SCHEMA }",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "{ schema }",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "core_db_drivers_postgres",
+      "label": "postgres.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "postgres.js",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_db_drivers_postgres_schema",
+      "label": "{ SCHEMA }",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "{ schema }",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "core_db_drivers_sqlite",
+      "label": "sqlite.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "sqlite.js",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_db_drivers_sqlite_schema",
+      "label": "{ SCHEMA }",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "{ schema }",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "core_db_schema",
+      "label": "schema.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "schema.js",
+      "source_file": "core/db/schema.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_db_schema_schema",
+      "label": "SCHEMA",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "mysql.js",
+      "file_type": "code",
+      "norm_label": "schema",
+      "source_file": "core/db/schema.js",
+      "source_location": "L19"
+    },
+    {
       "id": "bots_events_handlers_logging",
       "label": "logging.js",
       "_origin": "ast",
@@ -2499,80 +2932,58 @@
       "source_location": "L2"
     },
     {
-      "id": "bots_commands_commands_minigames",
-      "label": "minigames.js",
+      "id": "bots_commands_commands_utility",
+      "label": "utility.js",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "minigames.js",
-      "source_file": "bots/commands/commands/minigames.js",
+      "norm_label": "utility.js",
+      "source_file": "bots/commands/commands/utility.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_commands_commands_minigames_data_dir_guild_gcfg",
-      "label": "{ DATA_DIR, guild: gcfg }",
+      "id": "bots_commands_commands_utility_getpoints",
+      "label": "{ getPoints }",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "{ data_dir, guild: gcfg }",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "bots_commands_commands_minigames_flachwitze_file",
-      "label": "FLACHWITZE_FILE",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "pointsManager.js",
-      "file_type": "code",
-      "norm_label": "flachwitze_file",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "bots_commands_commands_minigames_join",
-      "label": "{ join }",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "pointsManager.js",
-      "file_type": "code",
-      "norm_label": "{ join }",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "bots_commands_commands_minigames_makeembed_hasanyrole_readjson_writejson",
-      "label": "{ makeEmbed, hasAnyRole, readJson, writeJson }",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "pointsManager.js",
-      "file_type": "code",
-      "norm_label": "{ makeembed, hasanyrole, readjson, writejson }",
-      "source_file": "bots/commands/commands/minigames.js",
+      "norm_label": "{ getpoints }",
+      "source_file": "bots/commands/commands/utility.js",
       "source_location": "L3"
     },
     {
-      "id": "bots_commands_commands_minigames_round",
-      "label": "round",
+      "id": "bots_commands_commands_utility_guild_gcfg",
+      "label": "{ guild: gcfg }",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "round",
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L30"
+      "norm_label": "{ guild: gcfg }",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L4"
     },
     {
-      "id": "bots_commands_commands_minigames_slashcommandbuilder_messageflags",
+      "id": "bots_commands_commands_utility_makeembed_hasanyrole",
+      "label": "{ makeEmbed, hasAnyRole }",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "{ makeembed, hasanyrole }",
+      "source_file": "bots/commands/commands/utility.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "bots_commands_commands_utility_slashcommandbuilder_messageflags",
       "label": "{ SlashCommandBuilder, MessageFlags }",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, messageflags }",
-      "source_file": "bots/commands/commands/minigames.js",
+      "source_file": "bots/commands/commands/utility.js",
       "source_location": "L1"
     },
     {
@@ -2609,15 +3020,15 @@
       "source_location": "L1"
     },
     {
-      "id": "core_config_data_dir",
-      "label": "DATA_DIR",
+      "id": "core_config_base_dir",
+      "label": "BASE_DIR",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "data_dir",
+      "norm_label": "base_dir",
       "source_file": "core/config.js",
-      "source_location": "L6"
+      "source_location": "L5"
     },
     {
       "id": "core_pointsmanager",
@@ -2639,7 +3050,7 @@
       "file_type": "code",
       "norm_label": "config_file",
       "source_file": "core/pointsManager.js",
-      "source_location": "L7"
+      "source_location": "L24"
     },
     {
       "id": "core_pointsmanager_data_dir_base_dir",
@@ -2650,7 +3061,18 @@
       "file_type": "code",
       "norm_label": "{ data_dir, base_dir }",
       "source_file": "core/pointsManager.js",
-      "source_location": "L3"
+      "source_location": "L19"
+    },
+    {
+      "id": "core_pointsmanager_db",
+      "label": "db",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "db",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L21"
     },
     {
       "id": "core_pointsmanager_join",
@@ -2661,7 +3083,18 @@
       "file_type": "code",
       "norm_label": "{ join }",
       "source_file": "core/pointsManager.js",
-      "source_location": "L1"
+      "source_location": "L17"
+    },
+    {
+      "id": "core_pointsmanager_legacy_file",
+      "label": "LEGACY_FILE",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "legacy_file",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L23"
     },
     {
       "id": "core_pointsmanager_messageflags",
@@ -2672,150 +3105,106 @@
       "file_type": "code",
       "norm_label": "{ messageflags }",
       "source_file": "core/pointsManager.js",
-      "source_location": "L2"
+      "source_location": "L18"
     },
     {
-      "id": "core_pointsmanager_points_file",
-      "label": "POINTS_FILE",
+      "id": "core_pointsmanager_readjson",
+      "label": "{ readJson }",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "points_file",
+      "norm_label": "{ readjson }",
       "source_file": "core/pointsManager.js",
+      "source_location": "L20"
+    },
+    {
+      "id": "core_config_data_dir",
+      "label": "DATA_DIR",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "data_dir",
+      "source_file": "core/config.js",
       "source_location": "L6"
     },
     {
-      "id": "core_pointsmanager_readjson_writejson",
-      "label": "{ readJson, writeJson }",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "pointsManager.js",
-      "file_type": "code",
-      "norm_label": "{ readjson, writejson }",
-      "source_file": "core/pointsManager.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "bots_commands_commands_admin",
-      "label": "admin.js",
+      "id": "core_db_index",
+      "label": "index.js",
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "admin.js",
-      "source_file": "bots/commands/commands/admin.js",
+      "norm_label": "index.js",
+      "source_file": "core/db/index.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_commands_commands_admin_embed_color_thumbnail_url_database_guild_gcfg_data_dir",
-      "label": "{ EMBED_COLOR, THUMBNAIL_URL, database, guild: gcfg, DATA_DIR }",
+      "id": "core_db_index_drivers",
+      "label": "DRIVERS",
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "{ embed_color, thumbnail_url, database, guild: gcfg, data_dir }",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L8"
+      "norm_label": "drivers",
+      "source_file": "core/db/index.js",
+      "source_location": "L37"
     },
     {
-      "id": "bots_commands_commands_admin_execfile",
-      "label": "{ execFile }",
+      "id": "core_db_index_parse",
+      "label": "{ parse }",
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "{ execfile }",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L4"
+      "norm_label": "{ parse }",
+      "source_file": "core/db/index.js",
+      "source_location": "L35"
     },
     {
-      "id": "bots_commands_commands_admin_hasanyrole_nowstr",
-      "label": "{ hasAnyRole, nowStr }",
+      "id": "core_db_url",
+      "label": "url.js",
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
-      "norm_label": "{ hasanyrole, nowstr }",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L7"
+      "norm_label": "url.js",
+      "source_file": "core/db/url.js",
+      "source_location": "L1"
     },
     {
-      "id": "bots_commands_commands_admin_join",
+      "id": "core_db_url_data_dir",
+      "label": "{ DATA_DIR }",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "{ data_dir }",
+      "source_file": "core/db/url.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "core_db_url_dialects",
+      "label": "DIALECTS",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "dialects",
+      "source_file": "core/db/url.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "core_db_url_join",
       "label": "{ join }",
       "_origin": "ast",
       "community": 4,
-      "community_name": "contextMenus.js",
+      "community_name": "index.js",
       "file_type": "code",
       "norm_label": "{ join }",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "bots_commands_commands_admin_mkdirsync_writefilesync_unlinksync",
-      "label": "{ mkdirSync, writeFileSync, unlinkSync }",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "{ mkdirsync, writefilesync, unlinksync }",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "bots_commands_commands_admin_slashcommandbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_embedbuilder_attachmentbuilder_messageflags",
-      "label": "{\r\n  SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, AttachmentBuilder, MessageFlags,\r\n}",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "{\r\n  slashcommandbuilder, modalbuilder, textinputbuilder, textinputstyle, actionrowbuilder, embedbuilder, attachmentbuilder, messageflags,\r\n}",
-      "source_file": "bots/commands/commands/admin.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_events_handlers_contextmenus",
-      "label": "contextMenus.js",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "contextmenus.js",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_events_handlers_contextmenus_contextmenucommandbuilder_applicationcommandtype_embedbuilder_modalbuilder_textinputbuilder_textinputstyle_actionrowbuilder_messageflags",
-      "label": "{\r\n  ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder, ModalBuilder,\r\n  TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags,\r\n}",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "{\r\n  contextmenucommandbuilder, applicationcommandtype, embedbuilder, modalbuilder,\r\n  textinputbuilder, textinputstyle, actionrowbuilder, messageflags,\r\n}",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_events_handlers_contextmenus_guild_gcfg_thumbnail_url",
-      "label": "{ guild: gcfg, THUMBNAIL_URL }",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "{ guild: gcfg, thumbnail_url }",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "bots_events_handlers_contextmenus_nowstr_hasanyrole",
-      "label": "{ nowStr, hasAnyRole }",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "{ nowstr, hasanyrole }",
-      "source_file": "bots/events/handlers/contextMenus.js",
-      "source_location": "L5"
+      "source_file": "core/db/url.js",
+      "source_location": "L12"
     },
     {
       "id": "test_harness",
@@ -2848,7 +3237,7 @@
       "file_type": "code",
       "norm_label": "client",
       "source_file": "test/harness.js",
-      "source_location": "L103"
+      "source_location": "L121"
     },
     {
       "id": "test_harness_commands",
@@ -2859,7 +3248,7 @@
       "file_type": "code",
       "norm_label": "commands",
       "source_file": "test/harness.js",
-      "source_location": "L109"
+      "source_location": "L127"
     },
     {
       "id": "test_harness_eventemitter",
@@ -2892,7 +3281,18 @@
       "file_type": "code",
       "norm_label": "failures",
       "source_file": "test/harness.js",
-      "source_location": "L34"
+      "source_location": "L52"
+    },
+    {
+      "id": "test_harness_fake_ids",
+      "label": "FAKE_IDS",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "harness.js",
+      "file_type": "code",
+      "norm_label": "fake_ids",
+      "source_file": "test/harness.js",
+      "source_location": "L39"
     },
     {
       "id": "test_harness_fs",
@@ -2914,7 +3314,7 @@
       "file_type": "code",
       "norm_label": "{ guild: gcfg }",
       "source_file": "test/harness.js",
-      "source_location": "L157"
+      "source_location": "L175"
     },
     {
       "id": "test_harness_intentset",
@@ -2925,7 +3325,7 @@
       "file_type": "code",
       "norm_label": "intentset",
       "source_file": "test/harness.js",
-      "source_location": "L86"
+      "source_location": "L104"
     },
     {
       "id": "test_harness_partialset",
@@ -2936,7 +3336,7 @@
       "file_type": "code",
       "norm_label": "partialset",
       "source_file": "test/harness.js",
-      "source_location": "L86"
+      "source_location": "L104"
     },
     {
       "id": "test_harness_path",
@@ -2958,7 +3358,7 @@
       "file_type": "code",
       "norm_label": "registry",
       "source_file": "test/harness.js",
-      "source_location": "L110"
+      "source_location": "L128"
     },
     {
       "id": "bots_minigames_commands_tictactoe",
@@ -3126,6 +3526,17 @@
       "source_location": "L10"
     },
     {
+      "id": "package_dependencies_better_sqlite3",
+      "label": "better-sqlite3",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "better-sqlite3",
+      "source_file": "package.json",
+      "source_location": "L11"
+    },
+    {
       "id": "package_dependencies_discord_js",
       "label": "discord.js",
       "_origin": "ast",
@@ -3134,7 +3545,7 @@
       "file_type": "code",
       "norm_label": "discord.js",
       "source_file": "package.json",
-      "source_location": "L11"
+      "source_location": "L12"
     },
     {
       "id": "package_dependencies_dotenv",
@@ -3145,7 +3556,7 @@
       "file_type": "code",
       "norm_label": "dotenv",
       "source_file": "package.json",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "id": "package_description",
@@ -3167,7 +3578,7 @@
       "file_type": "code",
       "norm_label": "engines",
       "source_file": "package.json",
-      "source_location": "L14"
+      "source_location": "L15"
     },
     {
       "id": "package_engines_node",
@@ -3178,7 +3589,7 @@
       "file_type": "code",
       "norm_label": "node",
       "source_file": "package.json",
-      "source_location": "L15"
+      "source_location": "L16"
     },
     {
       "id": "package_main",
@@ -3201,6 +3612,39 @@
       "norm_label": "name",
       "source_file": "package.json",
       "source_location": "L2"
+    },
+    {
+      "id": "package_optionaldependencies",
+      "label": "optionalDependencies",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "optionaldependencies",
+      "source_file": "package.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "package_optionaldependencies_mysql2",
+      "label": "mysql2",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "mysql2",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "package_optionaldependencies_pg",
+      "label": "pg",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "code",
+      "norm_label": "pg",
+      "source_file": "package.json",
+      "source_location": "L20"
     },
     {
       "id": "package_scripts",
@@ -3247,6 +3691,17 @@
       "source_location": "L3"
     },
     {
+      "id": "better_sqlite3",
+      "label": "better-sqlite3",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "concept",
+      "norm_label": "better-sqlite3",
+      "source_file": "package.json",
+      "source_location": "L11"
+    },
+    {
       "id": "discord_js",
       "label": "discord.js",
       "_origin": "ast",
@@ -3255,7 +3710,7 @@
       "file_type": "concept",
       "norm_label": "discord.js",
       "source_file": "package.json",
-      "source_location": "L11"
+      "source_location": "L12"
     },
     {
       "id": "dotenv",
@@ -3266,7 +3721,29 @@
       "file_type": "concept",
       "norm_label": "dotenv",
       "source_file": "package.json",
-      "source_location": "L12"
+      "source_location": "L13"
+    },
+    {
+      "id": "mysql2",
+      "label": "mysql2",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "concept",
+      "norm_label": "mysql2",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "pg",
+      "label": "pg",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "package.json",
+      "file_type": "concept",
+      "norm_label": "pg",
+      "source_file": "package.json",
+      "source_location": "L20"
     },
     {
       "id": "bots_minigames_commands_connect4",
@@ -3450,6 +3927,7 @@
     {
       "id": "_github_workflows_release_auto_release_workflow",
       "label": "Auto Release Workflow",
+      "_origin": "semantic",
       "author": null,
       "captured_at": null,
       "community": 15,
@@ -3464,6 +3942,7 @@
     {
       "id": "_github_workflows_release_concurrency_guard",
       "label": "Release Concurrency Guard",
+      "_origin": "semantic",
       "author": null,
       "captured_at": null,
       "community": 15,
@@ -3478,6 +3957,7 @@
     {
       "id": "_github_workflows_release_release_body_generation",
       "label": "Release Body Generation from Git History",
+      "_origin": "semantic",
       "author": null,
       "captured_at": null,
       "community": 15,
@@ -3492,6 +3972,7 @@
     {
       "id": "_github_workflows_release_tag_resolution",
       "label": "Tag Resolution and Optional Tag Creation",
+      "_origin": "semantic",
       "author": null,
       "captured_at": null,
       "community": 15,
@@ -3506,6 +3987,7 @@
     {
       "id": "readme_discord_multibot",
       "label": "Discord Multi-Bot",
+      "_origin": "semantic",
       "community": 10,
       "community_name": "Discord Multi-Bot README (DE)",
       "file_type": "document",
@@ -3516,6 +3998,7 @@
     {
       "id": "assets_msk_logo",
       "label": "MSK Scripts Logo",
+      "_origin": "semantic",
       "community": 10,
       "community_name": "Discord Multi-Bot README (DE)",
       "file_type": "image",
@@ -3526,6 +4009,7 @@
     {
       "id": "github_workflows_ci",
       "label": "CI Workflow",
+      "_origin": "semantic",
       "community": 17,
       "community_name": "CI Workflow",
       "file_type": "code",
@@ -3536,22 +4020,13 @@
     {
       "id": "github_workflows_deploy",
       "label": "Deploy Workflow",
+      "_origin": "semantic",
       "community": 17,
       "community_name": "CI Workflow",
       "file_type": "code",
       "norm_label": "deploy workflow",
       "rationale": "Handles SSH deployment and systemd service restarts on push to main.",
       "source_file": ".github/workflows/deploy.yml"
-    },
-    {
-      "id": "data_points_json",
-      "label": "points.json",
-      "community": 18,
-      "community_name": "points.json",
-      "file_type": "document",
-      "norm_label": "points.json",
-      "rationale": "Persistent storage for user points.",
-      "source_file": "data/points.json"
     }
   ],
   "links": [
@@ -5668,27 +6143,87 @@
       "weight": 1.0
     },
     {
-      "source": "core_pointsmanager_addpoints",
-      "target": "core_utils_readjson",
+      "source": "core_db_index_addbalance",
+      "target": "core_db_index_connect",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
-      "source_file": "core/pointsManager.js",
-      "source_location": "L30",
+      "source_file": "core/db/index.js",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index_connect",
+      "target": "core_db_url_parse",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/db/index.js",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index_getbalance",
+      "target": "core_db_index_connect",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/db/index.js",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index_getmeta",
+      "target": "core_db_index_connect",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/db/index.js",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index_setmeta",
+      "target": "core_db_index_connect",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/db/index.js",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index_topbalances",
+      "target": "core_db_index_connect",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/db/index.js",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
       "source": "core_pointsmanager_addpoints",
-      "target": "core_utils_writejson",
+      "target": "core_pointsmanager_init",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L35",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -5700,7 +6235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L12",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -5712,19 +6247,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L40",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
       "source": "core_pointsmanager_getpoints",
-      "target": "core_utils_readjson",
+      "target": "core_pointsmanager_init",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L25",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -5736,7 +6271,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L17",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_init",
+      "target": "core_utils_readjson",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -5748,7 +6295,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L45",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_toppoints",
+      "target": "core_pointsmanager_init",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -5772,7 +6331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "main.js",
-      "source_location": "L118",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -5784,7 +6343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "main.js",
-      "source_location": "L33",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -6580,6 +7139,66 @@
       "weight": 1.0
     },
     {
+      "source": "core_db_drivers_mysql",
+      "target": "core_db_schema_schema",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_postgres",
+      "target": "core_db_schema_schema",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_sqlite",
+      "target": "core_db_schema_schema",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_url_parse",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/index.js",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_config_data_dir",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/url.js",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "core_pointsmanager",
       "target": "core_config_base_dir",
       "relation": "imports",
@@ -6588,7 +7207,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "core/pointsManager.js",
-      "source_location": "L3",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -6600,7 +7219,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "core/pointsManager.js",
-      "source_location": "L3",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -6612,24 +7231,24 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "core/pointsManager.js",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "core_pointsmanager",
-      "target": "core_utils_writejson",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "core/pointsManager.js",
-      "source_location": "L4",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
       "source": "main",
       "target": "core_config_guild",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "main.js",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "core_config_report",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6652,6 +7271,18 @@
       "weight": 1.0
     },
     {
+      "source": "package_dependencies_better_sqlite3",
+      "target": "better_sqlite3",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
       "source": "package_dependencies_discord_js",
       "target": "discord_js",
       "relation": "imports",
@@ -6660,7 +7291,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "package.json",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -6672,7 +7303,31 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "package.json",
-      "source_location": "L12",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "package_optionaldependencies_mysql2",
+      "target": "mysql2",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "package_optionaldependencies_pg",
+      "target": "pg",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "package.json",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -7048,6 +7703,66 @@
       "weight": 1.0
     },
     {
+      "source": "core_db_drivers_mysql",
+      "target": "core_db_schema",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_postgres",
+      "target": "core_db_schema",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_sqlite",
+      "target": "core_db_schema",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_url",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/index.js",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_config",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/db/url.js",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "core_pointsmanager",
       "target": "core_config",
       "relation": "imports_from",
@@ -7056,7 +7771,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "core/pointsManager.js",
-      "source_location": "L3",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -7068,7 +7783,19 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "core/pointsManager.js",
-      "source_location": "L4",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_db_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -7093,6 +7820,30 @@
       "context": "import",
       "source_file": "main.js",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "core_pointsmanager",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "main.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "core_db_index",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "main.js",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -8890,39 +9641,6 @@
     },
     {
       "source": "core_config",
-      "target": "core_config_id",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "core/config.js",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
-      "source": "core_config",
-      "target": "core_config_str",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "core/config.js",
-      "source_location": "L19",
-      "weight": 1.0
-    },
-    {
-      "source": "core_config",
-      "target": "core_config_guild",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "core/config.js",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "core_config",
       "target": "core_config_join",
       "relation": "contains",
       "_origin": "ast",
@@ -8934,24 +9652,35 @@
     },
     {
       "source": "core_config",
-      "target": "core_config_database",
+      "target": "core_config_unset",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/config.js",
-      "source_location": "L40",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
       "source": "core_config",
-      "target": "core_config_tokens",
+      "target": "core_config_id",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/config.js",
-      "source_location": "L47",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "core_config",
+      "target": "core_config_str",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/config.js",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -8967,6 +9696,17 @@
     },
     {
       "source": "core_config",
+      "target": "core_config_guild",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/config.js",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "core_config",
       "target": "core_config_data_dir",
       "relation": "contains",
       "_origin": "ast",
@@ -8974,6 +9714,17 @@
       "confidence_score": 1.0,
       "source_file": "core/config.js",
       "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "core_config",
+      "target": "core_config_database",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/config.js",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -8989,6 +9740,17 @@
     },
     {
       "source": "core_config",
+      "target": "core_config_tokens",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/config.js",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "core_config",
       "target": "core_config_mkdirsync",
       "relation": "contains",
       "_origin": "ast",
@@ -8999,6 +9761,105 @@
       "weight": 1.0
     },
     {
+      "source": "core_db_drivers_mysql",
+      "target": "core_db_drivers_mysql_schema",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_postgres",
+      "target": "core_db_drivers_postgres_schema",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_sqlite",
+      "target": "core_db_drivers_sqlite_schema",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_parse",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/index.js",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_drivers",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/index.js",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_schema",
+      "target": "core_db_schema_schema",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/schema.js",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_db_url_join",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/url.js",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_db_url_data_dir",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/url.js",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_db_url_dialects",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/db/url.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
       "source": "core_pointsmanager",
       "target": "core_pointsmanager_join",
       "relation": "contains",
@@ -9006,7 +9867,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L1",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -9017,7 +9878,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L2",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -9028,40 +9889,40 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L3",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
       "source": "core_pointsmanager",
-      "target": "core_pointsmanager_getnewlyunlockedrewards",
+      "target": "core_pointsmanager_readjson",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L39",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
       "source": "core_pointsmanager",
-      "target": "core_pointsmanager_readjson_writejson",
+      "target": "core_pointsmanager_db",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L4",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
       "source": "core_pointsmanager",
-      "target": "core_pointsmanager_points_file",
+      "target": "core_pointsmanager_legacy_file",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L6",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -9072,7 +9933,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/pointsManager.js",
-      "source_location": "L7",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -9127,18 +9988,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "main.js",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "main",
-      "target": "main_rungroup",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "main.js",
-      "source_location": "L19",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -9154,7 +10004,18 @@
     },
     {
       "source": "main",
-      "target": "main_tokens_guild_gcfg",
+      "target": "main_rungroup",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "main.js",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_tokens_guild_gcfg_report_configreport",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9165,7 +10026,18 @@
     },
     {
       "source": "main",
-      "target": "main_botmodules",
+      "target": "main_points",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "main.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
+      "target": "main_db",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9176,13 +10048,24 @@
     },
     {
       "source": "main",
+      "target": "main_botmodules",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "main.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "main",
       "target": "main_main",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "main.js",
-      "source_location": "L88",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -9204,7 +10087,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "package.json",
-      "source_location": "L14",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "package",
+      "target": "package_optionaldependencies",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "package.json",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -9264,7 +10158,7 @@
     },
     {
       "source": "package_dependencies",
-      "target": "package_dependencies_discord_js",
+      "target": "package_dependencies_better_sqlite3",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9275,13 +10169,24 @@
     },
     {
       "source": "package_dependencies",
-      "target": "package_dependencies_dotenv",
+      "target": "package_dependencies_discord_js",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "package.json",
       "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_dotenv",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "package.json",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -9292,7 +10197,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "package.json",
-      "source_location": "L15",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "package_optionaldependencies",
+      "target": "package_optionaldependencies_mysql2",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "package_optionaldependencies",
+      "target": "package_optionaldependencies_pg",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "package.json",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -9319,13 +10246,35 @@
     },
     {
       "source": "test_harness",
+      "target": "test_harness_intentset",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_partialset",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
       "target": "test_harness_client",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L103",
+      "source_location": "L121",
       "weight": 1.0
     },
     {
@@ -9336,7 +10285,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L109",
+      "source_location": "L127",
       "weight": 1.0
     },
     {
@@ -9347,7 +10296,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L110",
+      "source_location": "L128",
       "weight": 1.0
     },
     {
@@ -9358,7 +10307,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L157",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -9369,7 +10318,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L159",
+      "source_location": "L177",
       "weight": 1.0
     },
     {
@@ -9380,18 +10329,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L198",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_dispatch",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L207",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -9403,6 +10341,17 @@
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
       "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_dispatch",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L225",
       "weight": 1.0
     },
     {
@@ -9451,40 +10400,7 @@
     },
     {
       "source": "test_harness",
-      "target": "test_harness_req",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L31",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_failures",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L34",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_check",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L35",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_acheck",
+      "target": "test_harness_fake_ids",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -9495,13 +10411,57 @@
     },
     {
       "source": "test_harness",
+      "target": "test_harness_req",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_failures",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_check",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_acheck",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
       "target": "test_harness_section",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L43",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -9512,29 +10472,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L47",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_intentset",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L86",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_partialset",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L86",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -9826,6 +10764,162 @@
       "weight": 1.0
     },
     {
+      "source": "core_config",
+      "target": "core_config_report",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/config.js",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_mysql",
+      "target": "core_db_drivers_mysql_create",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/drivers/mysql.js",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_postgres",
+      "target": "core_db_drivers_postgres_create",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/drivers/postgres.js",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_drivers_sqlite",
+      "target": "core_db_drivers_sqlite_create",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/drivers/sqlite.js",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_close",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_connect",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_dialect",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_getmeta",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_setmeta",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_addbalance",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_getbalance",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_index",
+      "target": "core_db_index_topbalances",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/index.js",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "core_db_url",
+      "target": "core_db_url_parse",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/db/url.js",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
       "source": "core_pointsmanager",
       "target": "core_pointsmanager_addpoints",
       "relation": "indirect_call",
@@ -9834,7 +10928,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -9846,7 +10940,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -9858,7 +10952,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -9870,7 +10964,43 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_init",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_toppoints",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_getnewlyunlockedrewards",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -9882,7 +11012,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -9894,7 +11024,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L67",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -9958,6 +11088,15 @@
       "weight": 1.0
     },
     {
+      "source": "github_workflows_deploy",
+      "target": "github_workflows_ci",
+      "relation": "calls",
+      "_origin": "semantic",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy.yml"
+    },
+    {
       "source": "_github_dependabot_dependabot_config",
       "target": "_github_dependabot_grouped_weekly_updates",
       "relation": "implements",
@@ -9966,6 +11105,39 @@
       "confidence_score": 1.0,
       "source_file": ".github/dependabot.yml",
       "source_location": "5-12",
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_release_auto_release_workflow",
+      "target": "_github_workflows_release_concurrency_guard",
+      "relation": "implements",
+      "_origin": "semantic",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/release.yml",
+      "source_location": "24-27",
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_release_auto_release_workflow",
+      "target": "_github_workflows_release_tag_resolution",
+      "relation": "implements",
+      "_origin": "semantic",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/release.yml",
+      "source_location": "36-83",
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_release_auto_release_workflow",
+      "target": "_github_workflows_release_release_body_generation",
+      "relation": "implements",
+      "_origin": "semantic",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/release.yml",
+      "source_location": "85-121",
       "weight": 1.0
     },
     {
@@ -10035,6 +11207,17 @@
       "weight": 1.0
     },
     {
+      "source": "_github_workflows_release_release_body_generation",
+      "target": "_github_workflows_release_tag_resolution",
+      "relation": "shares_data_with",
+      "_origin": "semantic",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/release.yml",
+      "source_location": "88",
+      "weight": 1.0
+    },
+    {
       "source": "security_private_disclosure_channel",
       "target": "_github_dependabot_grouped_weekly_updates",
       "relation": "conceptually_related_to",
@@ -10046,6 +11229,15 @@
       "weight": 1.0
     },
     {
+      "source": "readme_discord_multibot",
+      "target": "assets_msk_logo",
+      "relation": "references",
+      "_origin": "semantic",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "README.md"
+    },
+    {
       "source": "code_of_conduct_contributor_covenant",
       "target": "security_vulnerability_reporting_policy",
       "relation": "shares_data_with",
@@ -10055,62 +11247,6 @@
       "source_file": "SECURITY.md",
       "source_location": "7",
       "weight": 1.0
-    },
-    {
-      "source": "github_workflows_deploy",
-      "target": "github_workflows_ci",
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/deploy.yml"
-    },
-    {
-      "source": "_github_workflows_release_auto_release_workflow",
-      "target": "_github_workflows_release_concurrency_guard",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/release.yml",
-      "source_location": "24-27",
-      "weight": 1.0
-    },
-    {
-      "source": "_github_workflows_release_auto_release_workflow",
-      "target": "_github_workflows_release_tag_resolution",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/release.yml",
-      "source_location": "36-83",
-      "weight": 1.0
-    },
-    {
-      "source": "_github_workflows_release_auto_release_workflow",
-      "target": "_github_workflows_release_release_body_generation",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/release.yml",
-      "source_location": "85-121",
-      "weight": 1.0
-    },
-    {
-      "source": "_github_workflows_release_release_body_generation",
-      "target": "_github_workflows_release_tag_resolution",
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/release.yml",
-      "source_location": "88",
-      "weight": 1.0
-    },
-    {
-      "source": "readme_discord_multibot",
-      "target": "assets_msk_logo",
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "README.md"
     }
   ],
   "hyperedges": [
@@ -10143,5 +11279,5 @@
       "source_file": "SECURITY.md"
     }
   ],
-  "built_at_commit": "155b9bb0af98d3a53f50c747f63077f6edcd62d0"
+  "built_at_commit": "e1ecd65227e258234300b660a64e3a03f8767354"
 }

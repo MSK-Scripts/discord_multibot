@@ -28,6 +28,24 @@ const fs = require('fs');
 const REPO = process.argv[2] ?? path.join(__dirname, '..');
 process.chdir(REPO);
 
+// core/config.js no longer carries any ids: an unset one is the empty string,
+// because a default here means a fresh clone points at somebody else's server.
+// The harness therefore seeds its own fake snowflakes BEFORE anything requires
+// core/config, or every role gate would read '' and F0 would fail on a repo
+// that is perfectly fine.
+//
+// Only UNSET variables are filled, so a developer with a real .env still tests
+// against their own values.
+const FAKE_IDS = [
+  'GUILD_ID', 'LOG_CHANNEL_ID', 'MEMBER_COUNT_CHANNEL_ID', 'FEEDBACK_CHANNEL_ID',
+  'MEMBER_ROLE_ID', 'FOUNDER_ROLE_ID', 'MANAGER_ROLE_ID', 'DEVELOPER_ROLE_ID',
+  'GIVEAWAY_NOTIFY_ROLE_ID', 'TEAM_ROLE_ID', 'GARAGE_ROLE_ID', 'HANDCUFFS_ROLE_ID',
+  'STORAGE_ROLE_ID', 'VEHICLEKEYS_ROLE_ID',
+];
+FAKE_IDS.forEach((key, i) => {
+  if (!process.env[key]) process.env[key] = String(900000000000001000 + i);
+});
+
 const req = p => require(path.join(REPO, p));
 
 let pass = 0, fail = 0;
@@ -333,6 +351,124 @@ const dispatch = async i => {
     }
   }
 
+  // ------------------------------------------------------------ env template
+  section('F1) every env variable the code reads is in .env.example');
+  {
+    // .env.example is what a self-hoster copies. A setting that reaches the
+    // code without reaching the template is invisible: nobody can switch it on
+    // because nobody knows it exists. DATABASE_URL shipped exactly that way and
+    // was only caught by somebody asking where to configure the database.
+    //
+    // The scan has to know how config.js reads: not only process.env directly
+    // but also the _id() / _str() accessors. A pattern that misses those finds
+    // 2 of 23 variables and reports all clear.
+    const PATTERN = /process\.env\.([A-Z][A-Z0-9_]*)|process\.env\[['"]([A-Z][A-Z0-9_]*)|_(?:id|str)\(\s*['"]([A-Z][A-Z0-9_]*)/g;
+
+    // Comments are stripped first. Without that, the prose ABOVE this line
+    // counts as a usage and the check fails on a variable nobody reads. Only
+    // whole-line comments and block comments go, so a trailing comment after
+    // real code still gets scanned.
+    const stripComments = (src) => src
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .split('\n').filter(l => !l.trim().startsWith('//')).join('\n');
+
+    // Read by the code but deliberately NOT in the template, with the reason.
+    // An exemption is a decision somebody wrote down; a missing variable is one
+    // nobody noticed.
+    const NOT_IN_TEMPLATE = {
+      SKIP_NETWORK_TESTS: 'a switch for this harness, not a setting an installation has',
+    };
+
+    const envFiles = execSync('git ls-files "*.js"', { cwd: REPO }).toString().trim().split(/\s+/)
+      .filter(f => f && fs.existsSync(path.join(REPO, f)));
+    const envUsed = new Map();
+    for (const f of envFiles) {
+      const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
+      for (const m of src.matchAll(PATTERN)) {
+        const name = m[1] || m[2] || m[3];
+        if (!envUsed.has(name)) envUsed.set(name, f);
+      }
+    }
+
+    const template = fs.readFileSync(path.join(REPO, '.env.example'), 'utf8');
+
+    check('the scan actually found the variables', () => {
+      // Without a floor this passes by having gone blind: a pattern that
+      // matches nothing reports nothing missing.
+      assert.ok(envUsed.size >= 15, `only ${envUsed.size} env variables found, the scan broke`);
+    });
+
+    check('no variable is read without being in .env.example', () => {
+      const missing = [...envUsed.keys()]
+        .filter(n => !(n in NOT_IN_TEMPLATE))
+        .filter(n => !new RegExp('^' + n + '=', 'm').test(template));
+      assert.deepStrictEqual(missing, [], 'read by the code, absent from the template: '
+        + missing.map(n => n + ' (' + envUsed.get(n) + ')').join(', '));
+    });
+
+    check('an exemption still names a variable the code reads', () => {
+      const stale = Object.keys(NOT_IN_TEMPLATE).filter(n => !envUsed.has(n));
+      assert.deepStrictEqual(stale, [], 'exempt but nothing reads it any more: ' + stale.join(', '));
+    });
+  }
+
+  // ------------------------------------------------------------ no ids in source
+  section('F1b) no installation-specific ids in the tracked source');
+  {
+    // core/config.js used to carry MSK's own guild, channels and roles as
+    // defaults. A fresh clone therefore pointed at somebody else's server, and
+    // an id removed from a .env silently kept working, which is the worse half:
+    // a missing setting looked like a working one.
+    //
+    // A snowflake is 17 to 20 digits. Test files are excluded because their
+    // whole job is to make up ids.
+    const SNOWFLAKE = /\b\d{17,20}\b/g;
+
+    // Files that still carry ids, each with what has to happen to them. These
+    // are DEBT, not exemptions: the entry goes away when the file does.
+    const STILL_TO_DO = {
+      'bots/commands/commands/community.js':
+        'the /information panel names six channels and roles inline; they belong in .env',
+      'bots/events/handlers/messageHandler.js':
+        'the auto-reply contact is one hardcoded user id; belongs in .env',
+      'bots/minigames/points_config.json':
+        'the four reward role_ids; that file is settings, so they can stay there but must not be MSK-specific in the repo',
+    };
+
+    const tracked = execSync('git ls-files "*.js" "*.json"', { cwd: REPO }).toString().trim().split(/\s+/)
+      .filter(f => f && !f.startsWith('test/') && fs.existsSync(path.join(REPO, f)));
+
+    const offenders = [];
+    for (const f of tracked) {
+      const src = fs.readFileSync(path.join(REPO, f), 'utf8');
+      const found = [...new Set(src.match(SNOWFLAKE) || [])];
+      if (found.length) offenders.push({ file: f, ids: found });
+    }
+
+    check('the scan actually looked at the source', () => {
+      // A scan that reads nothing reports nothing.
+      assert.ok(tracked.length >= 10, `only ${tracked.length} files scanned`);
+    });
+
+    check('core/config.js carries no ids at all', () => {
+      // The point of the whole exercise, and the one file that must stay clean.
+      const bad = offenders.find(o => o.file === 'core/config.js');
+      assert.ok(!bad, 'core/config.js has ids again: ' + (bad ? bad.ids.join(', ') : ''));
+    });
+
+    check('no NEW file started carrying ids', () => {
+      const fresh = offenders.filter(o => !(o.file in STILL_TO_DO)).map(o => `${o.file} (${o.ids.join(', ')})`);
+      assert.deepStrictEqual(fresh, [], 'ids in the source:\n' + fresh.join('\n'));
+    });
+
+    check('the known-debt list still describes reality', () => {
+      // An entry left behind after the file was cleaned would quietly permit
+      // ids there again.
+      const stale = Object.keys(STILL_TO_DO).filter(f => !offenders.some(o => o.file === f));
+      assert.deepStrictEqual(stale, [], 'listed as debt but already clean: ' + stale.join(', '));
+    });
+  }
+
   // ------------------------------------------------------------ builders
   section('F) discord.js builders still behave');
   const { makeEmbed } = req('core/utils');
@@ -391,31 +527,196 @@ const dispatch = async i => {
   });
 
   // ------------------------------------------------------------ points
-  section('G) points system round trip');
-  const pm = req('core/pointsManager');
-  const pointsFile = path.join(REPO, 'data', 'points.json');
-  const hadFile = fs.existsSync(pointsFile);
-  const backup = hadFile ? fs.readFileSync(pointsFile) : null;
-  try {
-    check('points_config.json parses and has games + rewards', () => {
-      const cfg = pm.getConfig();
-      assert.ok(cfg.games && Object.keys(cfg.games).length, 'no games');
-      assert.ok(Array.isArray(cfg.rewards) && cfg.rewards.length, 'no rewards');
+  section('G) points system, database backed');
+  {
+    // A THROWAWAY DATABASE, set before anything connects. Without this the
+    // harness would write into data/multibot.db, and a test run would hand out
+    // points to a made-up user on the real installation.
+    process.env.DATABASE_URL = 'sqlite::memory:';
+
+    const dbUrl = req('core/db/url');
+    const { SCHEMA } = req('core/db/schema');
+
+    check('an unset DATABASE_URL means SQLite in data/', () => {
+      const target = dbUrl.parse('');
+      assert.strictEqual(target.driver, 'sqlite');
+      assert.match(target.file, /multibot\.db$/);
     });
-    check('getPts traverses the config', () => assert.strictEqual(typeof pm.getPts('dice', 'win'), 'number'));
-    check('addPoints round trips and never goes below zero', () => {
-      const id = '__harness_user__';
-      const a = pm.addPoints(id, 250);
-      assert.strictEqual(a.new, a.old + 250);
-      assert.strictEqual(pm.getPoints(id), a.new);
-      const b = pm.addPoints(id, -999999);
-      assert.strictEqual(b.new, 0);
+
+    check('mysql, mariadb and postgres URLs map to their drivers', () => {
+      assert.strictEqual(dbUrl.parse('mysql://u:p@h:3306/d').driver, 'mysql');
+      // mariadb is the same wire protocol, and a self-hoster writes whichever
+      // name their provider used.
+      assert.strictEqual(dbUrl.parse('mariadb://u:p@h/d').driver, 'mysql');
+      assert.strictEqual(dbUrl.parse('postgres://u:p@h:5432/d').driver, 'postgres');
+      assert.strictEqual(dbUrl.parse('postgresql://u@h/d').driver, 'postgres');
     });
-    check('writeJson wrote real JSON', () => JSON.parse(fs.readFileSync(pointsFile, 'utf8')));
-  } finally {
-    if (hadFile) fs.writeFileSync(pointsFile, backup);
-    else if (fs.existsSync(pointsFile)) fs.unlinkSync(pointsFile);
-    console.log('  ..   points.json restored (existed before: ' + hadFile + ')');
+
+    check('a URL it cannot use throws instead of falling back to SQLite', () => {
+      // A silent fallback writes to a local file while the operator sits in
+      // front of their MariaDB wondering why it stays empty.
+      for (const bad of ['nonsense', 'redis://h/0', 'mysql://h']) {
+        assert.throws(() => dbUrl.parse(bad), undefined, `accepted ${bad}`);
+      }
+    });
+
+    check('all three dialects define the same tables', () => {
+      // The three statement lists sit next to each other in schema.js so a
+      // missing table is visible. This is the check that says so out loud.
+      const tablesOf = (list) => list
+        .map(s => (s.match(/CREATE TABLE IF NOT EXISTS (\w+)/) || [])[1])
+        .filter(Boolean).sort();
+      const sqlite = tablesOf(SCHEMA.sqlite);
+      assert.ok(sqlite.length >= 2, 'sqlite schema is suspiciously small');
+      assert.deepStrictEqual(tablesOf(SCHEMA.mysql), sqlite, 'mysql differs');
+      assert.deepStrictEqual(tablesOf(SCHEMA.postgres), sqlite, 'postgres differs');
+    });
+
+    check('every statement is IF NOT EXISTS, because it runs on every start', () => {
+      // Getting this wrong is either a crash on the second boot or a silently
+      // reset installation.
+      for (const [dialect, list] of Object.entries(SCHEMA)) {
+        for (const statement of list) {
+          assert.match(statement, /IF NOT EXISTS/, `${dialect}: ${statement.slice(0, 40)}`);
+        }
+      }
+    });
+
+    check('the mysql and postgres drivers load and match the interface', () => {
+      // Constructed, never connected: that would need a live server. This
+      // proves the packages resolve and the three drivers agree on a shape,
+      // which is the part a typo actually breaks.
+      const sqlite = req('core/db/drivers/sqlite').create({ file: ':memory:' });
+      const mysql = req('core/db/drivers/mysql').create({ url: 'mysql://u@h/d' });
+      const pg = req('core/db/drivers/postgres').create({ url: 'postgres://u@h/d' });
+      const shape = (d) => Object.keys(d).filter(k => typeof d[k] === 'function').sort();
+      assert.deepStrictEqual(shape(mysql), shape(sqlite), 'mysql driver differs');
+      assert.deepStrictEqual(shape(pg), shape(sqlite), 'postgres driver differs');
+      assert.deepStrictEqual([sqlite.dialect, mysql.dialect, pg.dialect], ['sqlite', 'mysql', 'postgres']);
+    });
+
+    const pm = req('core/pointsManager');
+    const db = req('core/db');
+    const pointsFile = path.join(REPO, 'data', 'points.json');
+    const hadFile = fs.existsSync(pointsFile);
+    const backup = hadFile ? fs.readFileSync(pointsFile) : null;
+
+    try {
+      check('points_config.json parses and has games + rewards', () => {
+        const cfg = pm.getConfig();
+        assert.ok(cfg.games && Object.keys(cfg.games).length, 'no games');
+        assert.ok(Array.isArray(cfg.rewards) && cfg.rewards.length, 'no rewards');
+      });
+
+      check('getPts traverses the config', () => assert.strictEqual(typeof pm.getPts('dice', 'win'), 'number'));
+
+      check('getPts and pointsFooter stay synchronous', () => {
+        // They read SETTINGS, not state. Making them async too would put an
+        // await on every embed footer for no reason.
+        assert.strictEqual(typeof pm.getPts('dice', 'win'), 'number');
+        assert.strictEqual(typeof pm.pointsFooter(5, 10), 'string');
+      });
+
+      await acheck('the throwaway database is the one in use', async () => {
+        await db.connect();
+        assert.strictEqual(db.dialect(), 'sqlite');
+      });
+
+      await acheck('addPoints round trips and never goes below zero', async () => {
+        const id = '900000000000000099';
+        const a = await pm.addPoints(id, 250);
+        assert.strictEqual(a.new, a.old + 250);
+        assert.strictEqual(await pm.getPoints(id), a.new);
+        const b = await pm.addPoints(id, -999999);
+        assert.strictEqual(b.new, 0, 'a balance went negative');
+        assert.strictEqual(b.old, a.new, 'old is not the value that preceded the write');
+      });
+
+      await acheck('concurrent adds do not lose an update', async () => {
+        // THE reason this moved out of a JSON file. The old addPoints read the
+        // whole file, added in JavaScript and wrote it back; ten of those
+        // interleaving around an await left 10 instead of 100, and the last
+        // write silently won. The arithmetic now happens inside one SQL
+        // statement, so there is nothing to interleave.
+        const id = '900000000000000098';
+        await Promise.all(Array.from({ length: 10 }, () => pm.addPoints(id, 10)));
+        assert.strictEqual(await pm.getPoints(id), 100);
+      });
+
+      await acheck('an unknown user reads as zero, not as undefined', async () => {
+        assert.strictEqual(await pm.getPoints('900000000000000097'), 0);
+      });
+
+      await acheck('the leaderboard is ordered by balance', async () => {
+        await pm.addPoints('900000000000000096', 5);
+        const top = await pm.topPoints(3);
+        assert.ok(top.length >= 2);
+        for (let i = 1; i < top.length; i += 1) {
+          assert.ok(top[i - 1].balance >= top[i].balance, 'not sorted');
+        }
+      });
+
+      await acheck('meta survives a round trip and has a default', async () => {
+        assert.strictEqual(await db.getMeta('__nope__', 'fallback'), 'fallback');
+        await db.setMeta('__harness__', 'x');
+        await db.setMeta('__harness__', 'y');
+        assert.strictEqual(await db.getMeta('__harness__'), 'y', 'setMeta did not overwrite');
+      });
+
+      await acheck('re-applying the schema keeps the data', async () => {
+        // applySchema runs on every start. The failure mode of getting the
+        // IF NOT EXISTS wrong is a silently emptied installation, so this
+        // applies it a second time against the live connection and checks the
+        // rows are still there.
+        const before = await pm.getPoints('900000000000000098');
+        assert.ok(before > 0, 'nothing stored, the check would prove nothing');
+        const driver = await db.connect();
+        await driver.applySchema();
+        assert.strictEqual(await pm.getPoints('900000000000000098'), before);
+      });
+
+      await acheck('connecting twice does not swap the database out', async () => {
+        // With `:memory:` a second `new Database()` is a brand new EMPTY
+        // database. Found by a test of mine that meant to check something else.
+        const before = await pm.getPoints('900000000000000098');
+        const driver = await db.connect();
+        await driver.connect();
+        assert.strictEqual(await pm.getPoints('900000000000000098'), before);
+      });
+
+      check('every call site awaits addPoints and getPoints', () => {
+        // A forgotten await computes with a Promise: `{old, new}` becomes
+        // undefined and the footer prints NaN, with no error anywhere. Cheap
+        // to check, expensive to notice in production.
+        const offenders = [];
+        for (const rel of ['bots/commands/commands', 'bots/minigames/commands']) {
+          const dir = path.join(REPO, rel);
+          for (const name of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
+            const src = fs.readFileSync(path.join(dir, name), 'utf8');
+            for (const line of src.split('\n')) {
+              if (/\brequire\(/.test(line)) continue;
+              if (/(?<!await )\b(addPoints|getPoints)\s*\(/.test(line)) {
+                offenders.push(`${rel}/${name}: ${line.trim().slice(0, 60)}`);
+              }
+            }
+          }
+        }
+        assert.deepStrictEqual(offenders, [], 'unawaited call:\n' + offenders.join('\n'));
+      });
+
+      check('no minigame writes points.json any more', () => {
+        const dir = path.join(REPO, 'bots', 'minigames', 'commands');
+        for (const name of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
+          const src = fs.readFileSync(path.join(dir, name), 'utf8');
+          assert.ok(!src.includes('points.json'), `${name} still names points.json`);
+        }
+      });
+    } finally {
+      await db.close().catch(() => {});
+      if (hadFile) fs.writeFileSync(pointsFile, backup);
+      else if (fs.existsSync(pointsFile)) fs.unlinkSync(pointsFile);
+      console.log('  ..   points.json restored (existed before: ' + hadFile + '), in-memory database dropped');
+    }
   }
 
   // ------------------------------------------------------------ client

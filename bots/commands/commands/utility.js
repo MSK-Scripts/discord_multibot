@@ -43,7 +43,7 @@ module.exports = [
       const roles = member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r.toString()).join('\n');
       if (roles) embed.addFields({ name: 'Roles', value: roles, inline: false });
 
-      const points = getPoints(user.id);
+      const points = await getPoints(user.id);
       embed.addFields({ name: '🪙 Minigame Points', value: `**${points.toLocaleString()}**`, inline: false });
 
       if (user.avatarURL()) embed.setThumbnail(user.avatarURL());

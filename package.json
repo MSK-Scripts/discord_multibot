@@ -1,6 +1,6 @@
 {
   "name": "discord-multibot-js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MSK Scripts Discord Multi-Bot",
   "main": "main.js",
   "scripts": {
@@ -8,10 +8,15 @@
     "test": "node test/harness.js"
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "discord.js": "^14.27.0",
     "dotenv": "^17.4.2"
   },
   "engines": {
     "node": ">=24.0.0"
+  },
+  "optionalDependencies": {
+    "mysql2": "^3.24.2",
+    "pg": "^8.23.0"
   }
 }

@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { Client, Events, REST, Routes } = require('discord.js');
-const { tokens, guild: gcfg } = require('./core/config');
+const { tokens, guild: gcfg, report: configReport } = require('./core/config');
+const points = require('./core/pointsManager');
+const db = require('./core/db');
 
 const botModules = [
   { name: 'Commands Bot',  module: require('./bots/commands/bot'),  token: tokens.COMMANDS },
@@ -113,6 +115,33 @@ async function main() {
     else                    console.log(`    - ${group.map(g => g.name).join(' + ')} (shared token)`);
   }
   console.log('='.repeat(55));
+
+  // Say what is not configured, once, and keep going. A half-configured bot
+  // should run the parts that work: exiting here would turn one forgotten
+  // channel id into a crash loop under Restart=on-failure.
+  const cfg = configReport();
+  if (cfg.unset.length) {
+    console.warn(`[config] not set in .env (${cfg.unset.length}): ${cfg.unset.join(', ')}`);
+    console.warn('[config] features using those ids stay off. See .env.example.');
+  }
+  if (cfg.guildMissing) {
+    // Commands are registered per guild, so without this every registration
+    // fails with a permissions error that says nothing about the real cause.
+    console.error('[config] GUILD_ID is not set - no commands can be registered.');
+  }
+
+  // Storage first, and awaited: a broken DATABASE_URL, bad credentials or an
+  // unreachable host has to fail HERE, at boot, with a message somebody reads.
+  // Connecting lazily would push the failure into the first minigame somebody
+  // plays, where it surfaces as a dead interaction instead of an error.
+  // init() also runs the one-off import of data/points.json.
+  try {
+    await points.init();
+    console.log(`[main] storage ready (${db.dialect()})`);
+  } catch (err) {
+    console.error(`[main] storage unavailable: ${err.message}`);
+    throw err;
+  }
 
   const tasks = [];
   for (const [token, group] of byToken) tasks.push(runGroup(group, token));

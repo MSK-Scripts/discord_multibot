@@ -133,7 +133,7 @@ module.exports = {
         collector.stop();
         const outcome = result === 'player_win' ? 'win' : result === 'bot_win' ? 'lose' : 'draw';
         const ptsDelta = getPts('connect4', outcome);
-        const pts = addPoints(interaction.user.id, ptsDelta);
+        const pts = await addPoints(interaction.user.id, ptsDelta);
         await i.update({
           embeds: [buildEmbed(board, interaction.user, result, ptsDelta, pts.new)],
           components: buildComponents(board, true),

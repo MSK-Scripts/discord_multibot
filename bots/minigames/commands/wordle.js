@@ -142,7 +142,7 @@ module.exports = {
         gameOver   = true;
         const key  = won ? `${guesses.length}_try` : 'lose';
         ptsDelta   = getPts('wordle', key);
-        const pts  = addPoints(interaction.user.id, ptsDelta);
+        const pts  = await addPoints(interaction.user.id, ptsDelta);
         oldPts = pts.old; newPts = pts.new;
         row.components[0].setDisabled(true);
         collector.stop();

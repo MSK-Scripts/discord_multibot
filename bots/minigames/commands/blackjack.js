@@ -106,7 +106,7 @@ module.exports = {
       gameOver = true;
       const key     = ptsKey(outcome);
       const ptsDelta = getPts('blackjack', key);
-      const pts      = addPoints(interaction.user.id, ptsDelta);
+      const pts      = await addPoints(interaction.user.id, ptsDelta);
       const embed    = buildEmbed(pH, dH, outcome, dbl, ptsDelta, pts.new);
       await responder.update({ embeds: [embed], components: [buildButtons(false, true)] });
       await notifyRewards(responder, pts.old, pts.new);
@@ -118,7 +118,7 @@ module.exports = {
       const outcome  = resolve(pHand, dHand);
       const key      = ptsKey(outcome);
       const ptsDelta = getPts('blackjack', key);
-      const pts      = addPoints(interaction.user.id, ptsDelta);
+      const pts      = await addPoints(interaction.user.id, ptsDelta);
       await interaction.reply({
         embeds: [buildEmbed(pHand, dHand, outcome, false, ptsDelta, pts.new)],
         components: [buildButtons(false, true)],

@@ -32,7 +32,7 @@ module.exports = {
       const won    = choice === result;
 
       const pts_delta = getPts('flipcoin', won ? 'win' : 'lose');
-      const { old: oldPts, new: newPts } = addPoints(interaction.user.id, pts_delta);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, pts_delta);
 
       for (const btn of row.components) btn.setDisabled(true);
 

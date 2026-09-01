@@ -54,7 +54,7 @@ module.exports = {
       }
 
       const pts_delta = getPts('rps', outcome);
-      const { old: oldPts, new: newPts } = addPoints(interaction.user.id, pts_delta);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, pts_delta);
 
       for (const btn of row.components) btn.setDisabled(true);
 
