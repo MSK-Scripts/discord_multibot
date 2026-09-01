@@ -14,19 +14,18 @@ module.exports = [
       }
 
       const description = [
-        '**Welcome to the MSK Scripts Discord!**',
         "We're glad to have you here. Take a moment to explore the server and don't hesitate to reach out if you have any questions.\n",
         '**Channel Access**',
         'To gain access to all channels, please head over to <#901154918923120720>, read the rules carefully and confirm them. You will then automatically receive access to the full server.\n',
         '**Server Roles**',
-        '<@&900395427147436092> — Has purchased a product from our Tebex Shop',
-        '<@&953771038519459840> — Tests new scripts and updates prior to public release',
-        '<@&900396090208174130> — Experienced with Lua and assists members in <#939628758229471242>',
-        '<@&900396252724854844> — Responsible for maintaining order and enforcing the server rules\n',
+        '<@&900395427147436092>: Has purchased a product from our Tebex Shop',
+        '<@&953771038519459840>: Tests new scripts and updates prior to public release',
+        '<@&900396090208174130>: Experienced with Lua and assists members in <#939628758229471242>',
+        '<@&900396252724854844>: Responsible for maintaining order and enforcing the server rules\n',
         '**Invite Link**\nhttps://discord.gg/5hHSBRHvJE',
       ].join('\n');
 
-      const embed = makeEmbed({ description, guildName: interaction.guild.name });
+      const embed = makeEmbed({ title: 'Welcome to the MSK Scripts Discord!', description, guildName: interaction.guild.name });
       const row   = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setLabel('Website').setStyle(ButtonStyle.Link).setURL('https://www.msk-scripts.de/'),
         new ButtonBuilder().setLabel('Documentation').setStyle(ButtonStyle.Link).setURL('https://docu.msk-scripts.de/'),
@@ -54,8 +53,8 @@ module.exports = [
         '**2.** Spamming or flooding any channel with messages is not permitted.',
         '**3.** NSFW content of any kind is strictly prohibited.',
         '**4.** Treat all members with respect. Inappropriate or offensive language will not be tolerated.',
-        '**5.** Harassment, discrimination, or hate speech of any form — including but not limited to racism, sexism, transphobia, and homophobia — will result in an immediate ban.',
-        '**6.** Self-promotion, soliciting, advertising, or reselling — whether in channels or via DMs — is not allowed.',
+        '**5.** Harassment, discrimination, or hate speech of any form, including but not limited to racism, sexism, transphobia, and homophobia, will result in an immediate ban.',
+        '**6.** Self-promotion, soliciting, advertising, or reselling, whether in channels or via DMs, is not allowed.',
         '**7.** Please keep discussions on-topic and use the appropriate channels.',
         '**8.** Sharing links is only permitted if explicitly approved by a moderator.',
         '**9.** Avoid unnecessary @mentions of members or roles.',
@@ -66,7 +65,6 @@ module.exports = [
       const embed = makeEmbed({ title: 'Discord Rules', description, guildName: interaction.guild.name });
       const row   = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('rules_verification').setLabel('Verification').setStyle(ButtonStyle.Success).setEmoji('✅'),
-        new ButtonBuilder().setCustomId('rules_giveaway_notify').setLabel('Giveaway Notify').setStyle(ButtonStyle.Primary).setEmoji('🎁'),
       );
 
       await interaction.channel.send({ embeds: [embed], components: [row] });
@@ -92,10 +90,10 @@ module.exports = [
       ].join('\n');
 
       const embed = makeEmbed({ title: 'Script Roles', description, guildName: interaction.guild.name });
-      const row   = new ActionRowBuilder().addComponents(
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('rules_giveaway_notify').setLabel('Giveaway Notify').setStyle(ButtonStyle.Primary).setEmoji('🎁'),
         new ButtonBuilder().setCustomId('roles_garage').setLabel('Garage').setStyle(ButtonStyle.Success).setEmoji('⏰'),
         new ButtonBuilder().setCustomId('roles_handcuffs').setLabel('Handcuffs').setStyle(ButtonStyle.Success).setEmoji('⏰'),
-        new ButtonBuilder().setCustomId('roles_storage').setLabel('Storage').setStyle(ButtonStyle.Success).setEmoji('⏰'),
         new ButtonBuilder().setCustomId('roles_vehicle_keys').setLabel('Vehicle Keys').setStyle(ButtonStyle.Success).setEmoji('⏰'),
       );
 

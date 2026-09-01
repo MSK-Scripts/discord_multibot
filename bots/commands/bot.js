@@ -92,7 +92,6 @@ async function handlePersistentButton(interaction) {
     'rules_giveaway_notify': gcfg.GIVEAWAY_NOTIFY_ROLE_ID,
     'roles_garage':          gcfg.GARAGE_ROLE_ID,
     'roles_handcuffs':       gcfg.HANDCUFFS_ROLE_ID,
-    'roles_storage':         gcfg.STORAGE_ROLE_ID,
     'roles_vehicle_keys':    gcfg.VEHICLEKEYS_ROLE_ID,
   };
 
