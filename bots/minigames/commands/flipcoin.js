@@ -1,21 +1,24 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { makeEmbed }                        = require('../../../core/utils');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const { makeEmbed } = require('../../../core/utils');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('flipcoin')
-    .setDescription('Flip a coin – Heads or Tails?'),
+  key: 'flipcoin',
+  game: 'flipcoin',
+  data: applyMeta(new SlashCommandBuilder(), 'flipcoin'),
 
   async execute(interaction) {
     const embed = makeEmbed({
-      title:       '🪙 Flip a Coin',
-      description: `${interaction.user}, choose your side!`,
+      title:       t('games.flipcoin.title'),
+      description: t('games.flipcoin.choose', { user: String(interaction.user) }),
     });
 
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('flip_heads').setLabel('🪙 Heads').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('flip_tails').setLabel('🔙 Tails').setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('flip_heads').setLabel(t('games.flipcoin.headsButton')).setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('flip_tails').setLabel(t('games.flipcoin.tailsButton')).setStyle(ButtonStyle.Secondary),
     );
 
     await interaction.reply({ embeds: [embed], components: [row] });
@@ -29,17 +32,21 @@ module.exports = {
     collector.on('collect', async i => {
       const choice = i.customId === 'flip_heads' ? 'heads' : 'tails';
       const result = Math.random() < 0.5 ? 'heads' : 'tails';
-      const won    = choice === result;
+      const won = choice === result;
 
-      const pts_delta = getPts('flipcoin', won ? 'win' : 'lose');
-      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, pts_delta);
+      const delta = getPts('flipcoin', won ? 'win' : 'lose');
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
 
       for (const btn of row.components) btn.setDisabled(true);
 
       const resultEmbed = makeEmbed({
-        title:       '🪙 Flip a Coin',
-        description: `You chose: **${choice.charAt(0).toUpperCase() + choice.slice(1)}**\nResult:    **${result.charAt(0).toUpperCase() + result.slice(1)}**\n\n${won ? 'You won! 🎉' : 'You lost. 😔'}`,
-        footerText:  `Flip a Coin  •  ${pointsFooter(pts_delta, newPts)}`,
+        title: t('games.flipcoin.title'),
+        description: t('games.flipcoin.result', {
+          choice:  t(`games.flipcoin.${choice}`),
+          result:  t(`games.flipcoin.${result}`),
+          outcome: won ? t('games.flipcoin.won') : t('games.flipcoin.lost'),
+        }),
+        footerText: gameFooter('flipcoin', { delta, total: newPts }),
       });
 
       await i.update({ embeds: [resultEmbed], components: [row] });

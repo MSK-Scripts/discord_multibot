@@ -105,6 +105,39 @@ function create({ url }) {
       );
       return rows.map(r => ({ user_id: r.user_id, balance: Number(r.balance) }));
     },
+
+    // -- dashboard access -------------------------------------------------
+    //
+    // Who may open the web dashboard and what they may do there. Written by
+    // the dashboard while it runs, which is why it is a table and not a
+    // second config file the bot would also be reading at boot.
+
+    async getAccessRows() {
+      const [rows] = await pool.query('SELECT * FROM dashboard_access ORDER BY subject_type, subject_id');
+      return rows.map(r => ({ ...r, active: Number(r.active) === 1 }));
+    },
+
+    async setAccessRow({ subjectType, subjectId, permissions, active, label }) {
+      await pool.query(
+        `INSERT INTO dashboard_access (subject_type, subject_id, permissions, active, label, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           permissions = VALUES(permissions),
+           active      = VALUES(active),
+           label       = VALUES(label),
+           updated_at  = VALUES(updated_at)`,
+        [String(subjectType), String(subjectId), JSON.stringify(permissions ?? []),
+          active === false ? 0 : 1, label ?? null, Date.now()],
+      );
+    },
+
+    async deleteAccessRow(subjectType, subjectId) {
+      const [result] = await pool.query(
+        'DELETE FROM dashboard_access WHERE subject_type = ? AND subject_id = ?',
+        [String(subjectType), String(subjectId)],
+      );
+      return result.affectedRows > 0;
+    },
   };
 }
 

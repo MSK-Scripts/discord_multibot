@@ -1,116 +1,132 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
-const { join }    = require('path');
-const { makeEmbed, hasAnyRole, readJson, writeJson } = require('../../../core/utils');
-const { DATA_DIR, guild: gcfg } = require('../../../core/config');
+const { join } = require('path');
+const { makeEmbed, readJson, writeJson } = require('../../../core/utils');
+const { applyMeta, optionText, guard } = require('../../../core/commandKit');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
 
-const FLACHWITZE_FILE = join(DATA_DIR, 'flachwitze.json');
+const JOKES_FILE = join(config.DATA_DIR, 'flachwitze.json');
 
 // Guess-the-number round state. In memory only, resets on bot restart.
 //
-// The rate limit is the actual protection here, not the randomness source.
-// Once the search space is small enough to enumerate (1-100 by default), an
-// unlimited /rg lets anyone walk the whole range and collect the giveaway
-// reward. A stronger PRNG would not change that, a per-user budget does.
-const DEFAULT_MIN = 1;
-const DEFAULT_MAX = 100;
-
-const GUESS_COOLDOWN_MS     = 30_000;  // per user, between two guesses
-const MAX_GUESSES_PER_ROUND = 5;       // per user, until the next /random
+// THE RATE LIMIT IS THE PROTECTION HERE, NOT THE RANDOMNESS. Once the search
+// space is small enough to enumerate (1-100 by default), an unlimited /rg lets
+// anyone walk the whole range and collect the prize. A stronger PRNG would not
+// change that; a per-user budget does.
+const settings = () => ({
+  min:      Number(config.get('features.guessNumber.defaultMin', 1)) || 1,
+  max:      Number(config.get('features.guessNumber.defaultMax', 100)) || 100,
+  guesses:  Math.max(1, Number(config.get('features.guessNumber.maxGuessesPerRound', 5)) || 5),
+  cooldown: Math.max(0, Number(config.get('features.guessNumber.cooldownSeconds', 30)) || 0) * 1000,
+  note:     String(config.get('features.guessNumber.winNote', '') ?? '').trim(),
+});
 
 function newRound(min, max) {
   return {
     min,
     max,
-    secret:   Math.floor(Math.random() * (max - min + 1)) + min,
+    secret: Math.floor(Math.random() * (max - min + 1)) + min,
     // user ID -> { count, last }, dropped wholesale when a new round starts
     attempts: new Map(),
   };
 }
 
-let round = newRound(DEFAULT_MIN, DEFAULT_MAX);
+let round = null;
 
 module.exports = [
   {
-    data: new SlashCommandBuilder()
-      .setName('random')
-      .setDescription('Generiere eine Zufallszahl für das Ratespiel')
-      .addIntegerOption(o => o.setName('number1').setDescription('Untere Grenze').setRequired(true))
-      .addIntegerOption(o => o.setName('number2').setDescription('Obere Grenze').setRequired(true)),
+    key: 'random',
+    feature: 'guessNumber',
+    data: applyMeta(new SlashCommandBuilder(), 'random')
+      .addIntegerOption(o => o.setName('number1').setDescription(optionText('random', 'number1')).setRequired(true))
+      .addIntegerOption(o => o.setName('number2').setDescription(optionText('random', 'number2')).setRequired(true)),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.TEAM_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'random')) return;
 
       const n1 = interaction.options.getInteger('number1');
       const n2 = interaction.options.getInteger('number2');
+      if (n1 >= n2) return interaction.reply({ content: t('guess.invalidRange'), flags: MessageFlags.Ephemeral });
 
-      if (n1 >= n2) return interaction.reply({ content: '❌ number1 must be less than number2.', flags: MessageFlags.Ephemeral });
-
+      const s = settings();
       round = newRound(n1, n2);
 
       const embed = makeEmbed({
-        title:       '🔢 Guess the Number',
-        description: `I'm thinking of a number between **${n1}** and **${n2}**\nUse \`/rg <number>\` to guess the number!\n\n`
-                   + `Everyone gets **${MAX_GUESSES_PER_ROUND} guesses** this round, one every **${GUESS_COOLDOWN_MS / 1000} seconds**.`,
+        title: t('guess.title'),
+        description: t('guess.started', {
+          min: n1, max: n2,
+          command: config.command('rg').name,
+          guesses: s.guesses,
+          cooldown: Math.round(s.cooldown / 1000),
+        }),
       });
       await interaction.reply({ embeds: [embed] });
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('rg')
-      .setDescription('Guess the Number')
-      .addIntegerOption(o => o.setName('number').setDescription('Your guess').setRequired(true)),
+    key: 'rg',
+    feature: 'guessNumber',
+    data: applyMeta(new SlashCommandBuilder(), 'rg')
+      .addIntegerOption(o => o.setName('number').setDescription(optionText('rg', 'number')).setRequired(true)),
 
     async execute(interaction) {
-      const number = interaction.options.getInteger('number');
-      const now    = Date.now();
-      const state  = round.attempts.get(interaction.user.id) ?? { count: 0, last: 0 };
+      if (!await guard(interaction, 'rg')) return;
 
-      if (state.count >= MAX_GUESSES_PER_ROUND) {
+      const s = settings();
+      // The first round after a restart uses the configured range, so /rg works
+      // before anybody has run /random.
+      if (!round) round = newRound(s.min, s.max);
+
+      const number = interaction.options.getInteger('number');
+      const now = Date.now();
+      const state = round.attempts.get(interaction.user.id) ?? { count: 0, last: 0 };
+
+      if (state.count >= s.guesses) {
         return interaction.reply({
-          content: `❌ You have used all **${MAX_GUESSES_PER_ROUND}** guesses for this round. Wait until a team member starts a new one with \`/random\`.`,
-          flags:   MessageFlags.Ephemeral,
+          content: t('guess.outOfGuesses', { guesses: s.guesses, command: config.command('random').name }),
+          flags: MessageFlags.Ephemeral,
         });
       }
 
-      const waitMs = GUESS_COOLDOWN_MS - (now - state.last);
+      const waitMs = s.cooldown - (now - state.last);
       if (waitMs > 0) {
         return interaction.reply({
-          content: `⏳ Slow down. You can guess again in **${Math.ceil(waitMs / 1000)}s**.`,
-          flags:   MessageFlags.Ephemeral,
+          content: t('guess.cooldown', { seconds: Math.ceil(waitMs / 1000) }),
+          flags: MessageFlags.Ephemeral,
         });
       }
 
       if (number < round.min || number > round.max) {
-        // Does not burn a guess, it could never have been the answer anyway.
+        // Does not burn a guess: it could never have been the answer anyway.
         return interaction.reply({
-          content: `❌ Guess between **${round.min}** and **${round.max}**.`,
-          flags:   MessageFlags.Ephemeral,
+          content: t('guess.outOfRange', { min: round.min, max: round.max }),
+          flags: MessageFlags.Ephemeral,
         });
       }
 
       state.count += 1;
-      state.last   = now;
+      state.last = now;
       round.attempts.set(interaction.user.id, state);
 
       if (number === round.secret) {
+        const body = t('guess.correctBody', { user: String(interaction.user), number });
         const embed = makeEmbed({
-          title:       '✅ Correct Number!',
-          description: `${interaction.user} Number **${number}** is **correct**! 🎉\n\nOpen a giveaway ticket and request your desired script. **ONLY with screenshot!**`,
+          title: t('guess.correctTitle'),
+          description: s.note ? `${body}\n\n${s.note}` : body,
         });
         // New round over the same range, everyone's budget starts fresh.
         round = newRound(round.min, round.max);
         await interaction.reply({ embeds: [embed] });
       } else {
-        const left  = MAX_GUESSES_PER_ROUND - state.count;
-        const hint  = number < round.secret ? 'higher' : 'lower';
         const embed = makeEmbed({
-          title:       '❌ Wrong Number!',
-          description: `${interaction.user} Number **${number}** is **not** correct. Try **${hint}**.\n\n`
-                     + `Guesses left this round: **${left}**`,
+          title: t('guess.wrongTitle'),
+          description: t('guess.wrongBody', {
+            user: String(interaction.user),
+            number,
+            hint: number < round.secret ? t('guess.higher') : t('guess.lower'),
+            left: s.guesses - state.count,
+          }),
         });
         await interaction.reply({ embeds: [embed] });
       }
@@ -118,41 +134,44 @@ module.exports = [
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('flachwitz')
-      .setDescription('Füße hoch, der Witz kommt flach!'),
+    key: 'flachwitz',
+    feature: 'jokes',
+    data: applyMeta(new SlashCommandBuilder(), 'flachwitz'),
 
     async execute(interaction) {
-      const data = readJson(FLACHWITZE_FILE, {});
+      if (!await guard(interaction, 'flachwitz')) return;
+
+      const data = readJson(JOKES_FILE, {});
       const keys = Object.keys(data);
       if (!keys.length) {
-        return interaction.reply({ content: 'Noch keine Flachwitze vorhanden. Nutze `/add_flachwitz` um einen hinzuzufügen!', flags: MessageFlags.Ephemeral });
+        return interaction.reply({
+          content: t('jokes.empty', { command: config.command('add_flachwitz').name }),
+          flags: MessageFlags.Ephemeral,
+        });
       }
-      const key   = keys[Math.floor(Math.random() * keys.length)];
-      const embed = makeEmbed({ title: '🎤 Füße hoch, der Witz kommt flach!', description: data[key] });
-      await interaction.reply({ embeds: [embed] });
+      const key = keys[Math.floor(Math.random() * keys.length)];
+      await interaction.reply({ embeds: [makeEmbed({ title: t('jokes.title'), description: data[key] })] });
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('add_flachwitz')
-      .setDescription('Einen Flachwitz hinzufügen')
-      .addStringOption(o => o.setName('witz').setDescription('Wie lautet dein Flachwitz?').setRequired(true)),
+    key: 'add_flachwitz',
+    feature: 'jokes',
+    data: applyMeta(new SlashCommandBuilder(), 'add_flachwitz')
+      .addStringOption(o => o.setName('witz').setDescription(optionText('add_flachwitz', 'witz')).setRequired(true)),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.TEAM_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'add_flachwitz')) return;
 
-      const witz = interaction.options.getString('witz');
-      const data = readJson(FLACHWITZE_FILE, {});
-      const key  = String(Object.keys(data).length + 1);
-      data[key]  = witz;
-      writeJson(FLACHWITZE_FILE, data);
+      const joke = interaction.options.getString('witz');
+      const data = readJson(JOKES_FILE, {});
+      // Keyed by the highest existing number plus one rather than by the count,
+      // so a deleted entry cannot make a new one overwrite an old one.
+      const highest = Object.keys(data).reduce((max, k) => Math.max(max, Number(k) || 0), 0);
+      data[String(highest + 1)] = joke;
+      writeJson(JOKES_FILE, data);
 
-      const embed = makeEmbed({ title: '✅ Flachwitz hinzugefügt', description: witz });
-      await interaction.reply({ embeds: [embed] });
+      await interaction.reply({ embeds: [makeEmbed({ title: t('jokes.added'), description: joke })] });
     },
   },
 ];

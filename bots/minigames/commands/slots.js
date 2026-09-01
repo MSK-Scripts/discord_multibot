@@ -1,6 +1,11 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter, gameColor } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
 
+// The reel. Weights, not wording: how often a symbol shows up is the game's
+// maths, and changing it changes what a spin is worth.
 const SYMBOLS_WEIGHTED = [
   ...Array(30).fill('🍒'),
   ...Array(25).fill('🍋'),
@@ -11,42 +16,42 @@ const SYMBOLS_WEIGHTED = [
   ...Array(1).fill('7️⃣'),
 ];
 
-function spin() {
-  return Array.from({ length: 3 }, () => SYMBOLS_WEIGHTED[Math.floor(Math.random() * SYMBOLS_WEIGHTED.length)]);
-}
+const spin = () => Array.from({ length: 3 }, () => SYMBOLS_WEIGHTED[Math.floor(Math.random() * SYMBOLS_WEIGHTED.length)]);
 
 function evaluate(reels) {
   const [a, b, c] = reels;
   if (a === b && b === c) {
-    if (a === '7️⃣') return { mult: 50, key: 'jackpot',  text: '🎰 **JACKPOT!** 7️⃣7️⃣7️⃣ — **×50**!' };
-    if (a === '💎') return { mult: 20, key: 'mega_win', text: '💎 **MEGA WIN!** 💎💎💎 — **×20**!' };
-    if (a === '⭐') return { mult: 10, key: 'big_win',  text: '⭐ **BIG WIN!** ⭐⭐⭐ — **×10**!' };
-    return { mult: 5, key: 'win', text: `🎉 **WIN!** ${a}${b}${c} — **×5**!` };
+    if (a === '7️⃣') return { mult: 50, key: 'jackpot' };
+    if (a === '💎') return { mult: 20, key: 'mega_win' };
+    if (a === '⭐') return { mult: 10, key: 'big_win' };
+    return { mult: 5, key: 'win' };
   }
-  if (a === b || b === c || a === c) return { mult: 2, key: 'small_win', text: '🙂 **Small win!** Two matching symbols — **×2**!' };
-  return { mult: 0, key: 'no_match', text: '😔 **No match.** Better luck next time!' };
+  if (a === b || b === c || a === c) return { mult: 2, key: 'small_win' };
+  return { mult: 0, key: 'no_match' };
 }
 
-function buildEmbed(reels, resultText, color, ptsDelta = 0, total = 0) {
-  const display = reels.join('  |  ');
-  let footer = 'Slots  •  /slots to play';
-  if (ptsDelta !== 0) footer += `  •  ${pointsFooter(ptsDelta, total)}`;
+function buildEmbed(reels, resultText, color, delta = 0, total = 0) {
   return new EmbedBuilder()
-    .setTitle('🎰 Slot Machine')
-    .setDescription(`## ${display}\n\n${resultText}`)
+    .setTitle(t('games.slots.title'))
+    .setDescription(`## ${reels.join('  |  ')}\n\n${resultText}`)
     .setColor(color)
-    .setFooter({ text: footer });
+    .setFooter({ text: gameFooter('slots', { delta, total }) });
 }
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('slots').setDescription('Try your luck on the slot machine!'),
+  key: 'slots',
+  game: 'slots',
+  data: applyMeta(new SlashCommandBuilder(), 'slots'),
 
   async execute(interaction) {
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('slots_spin').setLabel('🎰 Spin!').setStyle(ButtonStyle.Success)
+      new ButtonBuilder().setCustomId('slots_spin').setLabel(t('games.slots.spinButton')).setStyle(ButtonStyle.Success),
     );
 
-    await interaction.reply({ embeds: [buildEmbed(['🎰', '🎰', '🎰'], 'Press **Spin** to start!', 0x5865F2)], components: [row] });
+    await interaction.reply({
+      embeds: [buildEmbed(['🎰', '🎰', '🎰'], t('games.slots.start'), gameColor('neutral'))],
+      components: [row],
+    });
     const reply = await interaction.fetchReply();
 
     const collector = reply.createMessageComponentCollector({
@@ -59,28 +64,38 @@ module.exports = {
     collector.on('collect', async i => {
       if (spinning) { await i.deferUpdate(); return; }
       spinning = true;
-      row.components[0].setDisabled(true).setLabel('⏳ Spinning...');
-      await i.update({ embeds: [buildEmbed(['❓', '❓', '❓'], 'Spinning...', 0xFEE75C)], components: [row] });
+      row.components[0].setDisabled(true).setLabel(t('games.slots.spinningButton'));
+      await i.update({
+        embeds: [buildEmbed(['❓', '❓', '❓'], t('games.slots.spinning'), gameColor('draw'))],
+        components: [row],
+      });
 
-      // Animation frames
+      // Animation frames. Purely cosmetic: the result is drawn afterwards.
       for (let f = 0; f < 4; f++) {
         await new Promise(r => setTimeout(r, 550));
-        const frame = spin();
-        await interaction.editReply({ embeds: [buildEmbed(frame, 'Spinning...', 0xFEE75C)] }).catch(() => {});
+        await interaction.editReply({
+          embeds: [buildEmbed(spin(), t('games.slots.spinning'), gameColor('draw'))],
+        }).catch(() => {});
       }
 
       await new Promise(r => setTimeout(r, 550));
-      const finalReels       = spin();
-      const { key, text }    = evaluate(finalReels);
-      const ptsDelta         = getPts('slots', key);
-      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, ptsDelta);
-      const mult             = evaluate(finalReels).mult;
-      const color            = mult >= 20 ? 0xFEE75C : mult > 0 ? 0x57F287 : 0xED4245;
+      const finalReels = spin();
+      // Evaluated ONCE. It used to be called twice, so the multiplier used for
+      // the colour came from a second evaluation of the same reels.
+      const { key, mult } = evaluate(finalReels);
+      const text = t(`games.slots.outcomes.${key}`, { symbols: finalReels.join('') });
 
-      row.components[0].setDisabled(false).setLabel('🎰 Spin again!');
+      const delta = getPts('slots', key);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
+      const color = gameColor(mult >= 20 ? 'draw' : mult > 0 ? 'win' : 'lose');
+
+      row.components[0].setDisabled(false).setLabel(t('games.slots.spinAgain'));
       spinning = false;
 
-      await interaction.editReply({ embeds: [buildEmbed(finalReels, text, color, ptsDelta, newPts)], components: [row] }).catch(() => {});
+      await interaction.editReply({
+        embeds: [buildEmbed(finalReels, text, color, delta, newPts)],
+        components: [row],
+      }).catch(() => {});
       await notifyRewards(i, oldPts, newPts);
     });
 

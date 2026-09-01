@@ -4,44 +4,66 @@
  *
  * TWO KINDS OF DATA, AND THEY LIVE IN DIFFERENT PLACES. The balances are STATE
  * and belong in the database. The point VALUES per game and the reward
- * thresholds are SETTINGS: they are set up once, want to be diffable and
- * repairable by hand, and stay in `points_config.json`. Mixing the two is how a
- * config change ends up needing a database migration.
+ * thresholds are SETTINGS and live in config/config.jsonc under
+ * `features.minigames`. Mixing the two is how a config change ends up needing a
+ * database migration.
+ *
+ * They used to sit in bots/minigames/points_config.json, which was TRACKED —
+ * so the four reward role ids in it were one installation's roles shipped to
+ * everybody. Working around that needed a REWARD_<TIER>_ROLE_ID env variable
+ * per tier, resolved by name at runtime and invisible to every check that looks
+ * for a literal. In the config file the role sits next to its threshold and the
+ * indirection is gone.
  *
  * `getPts()` and `pointsFooter()` are therefore synchronous — they only read
  * settings. `getPoints()` and `addPoints()` are ASYNC and every call site
- * awaits them. See the note in `core/db.js` for why the interface is async even
- * though better-sqlite3 is not.
+ * awaits them. See the note in core/db/index.js for why the interface is async
+ * even though better-sqlite3 is not.
  */
 
 const { join } = require('path');
 const { MessageFlags } = require('discord.js');
-const { DATA_DIR, BASE_DIR } = require('./config');
+const config = require('./config');
+const { t } = require('./i18n');
 const { readJson } = require('./utils');
 const db = require('./db');
 
-const LEGACY_FILE = join(DATA_DIR, 'points.json');
-const CONFIG_FILE = join(BASE_DIR, 'bots', 'minigames', 'points_config.json');
+const LEGACY_FILE = join(config.DATA_DIR, 'points.json');
 
 /** Marks the one-off import, so it never runs twice. */
 const IMPORTED_KEY = 'points_imported';
 
-let _configCache = null;
 let _ready = null;
 
 // ─── settings ────────────────────────────────────────────────────────────────
 
-function getConfig() {
-  if (!_configCache) _configCache = readJson(CONFIG_FILE, {});
-  return _configCache;
+/**
+ * What one outcome of one game is worth.
+ *
+ * Returns 0 for anything unknown rather than throwing: a game that gains an
+ * outcome the operator has not configured should pay nothing, not crash the
+ * interaction after the player already saw the result.
+ */
+function getPts(game, ...keys) {
+  let node = config.get(`features.minigames.points.${game}`, {});
+  for (const key of keys) {
+    node = (node && typeof node === 'object') ? node[key] : undefined;
+  }
+  return typeof node === 'number' && Number.isFinite(node) ? node : 0;
 }
 
-function getPts(game, ...keys) {
-  let cfg = (getConfig().games ?? {})[game] ?? {};
-  for (const key of keys) {
-    cfg = typeof cfg === 'object' ? (cfg[key] ?? 0) : 0;
-  }
-  return typeof cfg === 'number' ? cfg : 0;
+/** The reward tiers, lowest threshold first, with anything malformed dropped. */
+function rewards() {
+  const list = config.get('features.minigames.rewards', []);
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter(r => r && Number.isFinite(Number(r.points)))
+    .map(r => ({
+      points: Number(r.points),
+      label:  String(r.label ?? ''),
+      role:   String(r.role ?? ''),
+    }))
+    .sort((a, b) => a.points - b.points);
 }
 
 // ─── start-up ────────────────────────────────────────────────────────────────
@@ -121,35 +143,44 @@ async function topPoints(limit = 10) {
 // ─── rewards ─────────────────────────────────────────────────────────────────
 
 function getNewlyUnlockedRewards(old, next) {
-  const rewards = getConfig().rewards ?? [];
-  return rewards.filter(r => old < r.points && r.points <= next);
+  return rewards().filter(r => old < r.points && r.points <= next);
 }
 
 async function notifyRewards(interaction, old, next) {
-  const unlocked = getNewlyUnlockedRewards(old, next);
-  for (const reward of unlocked) {
-    if (reward.role_id && interaction.guild) {
-      const role = interaction.guild.roles.cache.get(String(reward.role_id));
+  for (const reward of getNewlyUnlockedRewards(old, next)) {
+    // A tier without a role is not a fault: the congratulation still goes out,
+    // there is simply nothing to hand over.
+    const roleId = config.roleId(reward.role);
+    if (roleId && interaction.guild) {
+      const role = interaction.guild.roles.cache.get(String(roleId));
       if (role) {
-        try { await interaction.member.roles.add(role); } catch {}
+        try { await interaction.member.roles.add(role); } catch { /* missing permission, not worth failing the game over */ }
       }
     }
     try {
       await interaction.followUp({
-        content: `🎉 **Reward unlocked!** You reached **${reward.points.toLocaleString()} points** and earned: **${reward.description}**!`,
+        content: t('points.rewardUnlocked', {
+          points: reward.points.toLocaleString(config.dateLocale()),
+          label:  reward.label,
+        }),
         flags: MessageFlags.Ephemeral,
       });
-    } catch {}
+    } catch { /* the interaction is gone; the points are already booked */ }
   }
 }
 
+/**
+ * The "+5 (Total: 120)" line under a game result. Returns an empty string when
+ * the footer is switched off, and every call site treats that as "no footer".
+ */
 function pointsFooter(amount, newTotal) {
+  if (config.get('features.minigames.showPointsFooter', true) === false) return '';
   const delta = amount > 0 ? `+${amount}` : amount < 0 ? String(amount) : '±0';
-  return `${delta} 🪙  (Total: ${newTotal.toLocaleString()} 🪙)`;
+  return t('points.footer', { delta, total: Number(newTotal ?? 0).toLocaleString(config.dateLocale()) });
 }
 
 module.exports = {
-  init, getConfig, getPts, getPoints, addPoints, topPoints,
+  init, getPts, rewards, getPoints, addPoints, topPoints,
   notifyRewards, pointsFooter, getNewlyUnlockedRewards,
   IMPORTED_KEY, LEGACY_FILE,
 };

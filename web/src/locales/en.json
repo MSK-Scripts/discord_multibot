@@ -1,0 +1,397 @@
+{
+  "$meta": { "name": "English" },
+
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "discard": "Discard",
+    "cancel": "Cancel",
+    "close": "Close",
+    "back": "Back",
+    "add": "Add",
+    "remove": "Remove",
+    "edit": "Edit",
+    "undo": "Undo",
+    "reset": "Reset",
+    "refresh": "Refresh",
+    "upload": "Upload",
+    "dismiss": "Dismiss",
+    "confirm": "Really?",
+    "none": "none",
+    "language": "Language",
+    "readOnly": "You may look at this but not change it.",
+    "restartHint": "Saved. Restart the bot for it to take effect.",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
+  },
+
+  "nav": {
+    "brand": "Multi-Bot",
+    "navigation": "Navigation",
+    "config": "Configuration",
+    "texts": "Messages",
+    "bot": "Bot control",
+    "points": "Points",
+    "access": "Permissions",
+    "settings": "Appearance"
+  },
+
+  "app": {
+    "title": "Multi-Bot Dashboard",
+    "serverOwner": "Server owner",
+    "permissionCount_one": "{count} permission",
+    "permissionCount_other": "{count} permissions",
+    "signOut": "Sign out",
+    "signIn": "Sign in with Discord",
+    "askAdmin": "Ask a server administrator for access."
+  },
+
+  "state": {
+    "ready": "Ready",
+    "incomplete": "Incomplete",
+    "off": "Off"
+  },
+
+  "config": {
+    "title": "Configuration",
+    "subtitle": "One tile per thing the bot does. Open one to change it.",
+    "rawEditor": "Raw editor",
+    "noConfigFile": "There is no config/config.jsonc yet, so the bot is running on the shipped defaults. Saving anything here creates the file.",
+    "guildMissing": "No server id is set, so no commands can be registered. Fill it in under “Roles and channels”.",
+    "lookupsUnavailable": "The role and channel pickers are unavailable: {error} You can still paste ids by hand.",
+    "lookupsUnavailableShort": "Pickers unavailable, paste ids by hand: {error}",
+    "incompleteBanner_one": "1 feature is switched on but not finished, so it is doing nothing.",
+    "incompleteBanner_other": "{count} features are switched on but not finished, so they are doing nothing.",
+    "missingCount_one": "1 setting missing",
+    "missingCount_other": "{count} settings missing",
+    "missingList": "Switched on, but still missing: {list}. Until then it does nothing.",
+    "postedBy": "posted by /{command}",
+    "enabledToggle": "{label} enabled",
+    "nothingElse": "Nothing else to configure here.",
+    "ownFile": "config.jsonc",
+    "shippedDefaults": "The shipped defaults"
+  },
+
+  "texts": {
+    "title": "Messages",
+    "subtitle": "Everything the bot says. {total} messages, {changed} changed.",
+    "search": "Search a key or a message…",
+    "onlyChanged": "Only changed",
+    "nothingMatches": "Nothing matches.",
+    "changed": "changed",
+    "unsaved": "unsaved",
+    "saveCount": "Save {count}",
+    "backToShipped": "Back to the shipped wording",
+    "listHint": "A list. Change it in the raw editor of config/texts.jsonc."
+  },
+
+  "bot": {
+    "title": "Bot control",
+    "live": "live",
+    "reconnecting": "reconnecting…",
+    "running": "Running",
+    "stopped": "Stopped",
+    "crashed": "Crashed",
+    "starting": "Starting…",
+    "stopping": "Stopping…",
+    "pid": "pid {pid}",
+    "uptime": "up {uptime}",
+    "start": "Start",
+    "restart": "Restart",
+    "stop": "Stop",
+    "update": "Pull and update",
+    "updating": "Updating…",
+    "updateHint": "git pull, npm install and a restart. Watch the console below.",
+    "actionTriggered": "{action} triggered.",
+    "actionFinished": "{action} finished.",
+    "consoleTitle": "Console",
+    "consoleHint": "The bot's own output, live. The last {max} lines are kept.",
+    "noOutput": "No output yet.",
+    "jumpToLatest": "Jump to latest"
+  },
+
+  "points": {
+    "title": "Points",
+    "adjustTitle": "Adjust a balance",
+    "adjustHint": "Added to what somebody already has, not set as a new total. A balance never goes below zero.",
+    "userId": "User id",
+    "userIdPlaceholder": "18-digit Discord id",
+    "amount": "Amount",
+    "add": "Add",
+    "subtract": "Subtract",
+    "leaderboardTitle": "Leaderboard",
+    "leaderboardHint": "The top {count} balances.",
+    "empty": "Nobody has any points yet.",
+    "colMember": "Member",
+    "colPoints": "Points",
+    "colAdjust": "Adjust",
+    "leftServer": "(left the server)"
+  },
+
+  "access": {
+    "title": "Permissions",
+    "overrideNotice": "An entry for a USER replaces that person's role entries instead of adding to them, which is how you take one permission away from somebody their role would otherwise grant it to. The server owner always has everything and cannot be locked out.",
+    "grantTitle": "Grant access",
+    "editTitle": "Edit an entry",
+    "grantHint": "Pick a role or paste a user id, then tick what they may do.",
+    "type": "Type",
+    "role": "Role",
+    "user": "User",
+    "userId": "User id",
+    "pickRole": "Pick a role",
+    "idPlaceholder": "18-digit Discord id",
+    "note": "Note",
+    "optional": "Optional",
+    "active": "Active",
+    "inactive": "inactive",
+    "grant": "Grant",
+    "update": "Update",
+    "listTitle": "Who has access",
+    "listCount_one": "1 entry.",
+    "listCount_other": "{count} entries.",
+    "empty": "Nobody but the server owner, who always has everything.",
+    "colSubject": "Subject",
+    "colPermissions": "Permissions",
+    "colChanged": "Changed",
+    "colActions": "Actions"
+  },
+
+  "settings": {
+    "title": "Appearance",
+    "accentTitle": "Accent colour",
+    "accentHint": "Re-themes the whole panel for everybody. It has nothing to do with the colour the bot uses in Discord, which lives in the bot's own branding settings.",
+    "colour": "Colour",
+    "notAHex": "That is not a hex colour.",
+    "accentSaved": "Accent saved.",
+    "accentReset": "Accent reset.",
+    "faviconTitle": "Favicon",
+    "faviconHint": "PNG or ICO, up to 256 KB. The type is read from the file itself, not from its name.",
+    "faviconCustom": "A custom favicon is in use.",
+    "faviconDefault": "The built-in favicon is in use.",
+    "faviconUpdated": "Favicon updated.",
+    "faviconReset": "Favicon reset."
+  },
+
+  "permissions": {
+    "config.view": "View configuration",
+    "config.edit": "Edit configuration",
+    "settings.view": "View dashboard settings",
+    "settings.edit": "Edit dashboard settings",
+    "bot.control": "Control the bot",
+    "points.view": "View points",
+    "points.manage": "Adjust points",
+    "access.manage": "Manage permissions"
+  },
+
+  "inputs": {
+    "notSet": "— not set —",
+    "pick": "Pick",
+    "id": "ID",
+    "pasteId": "Paste an id",
+    "addA": "Add a {what}",
+    "role": "role",
+    "channel": "channel",
+    "namedRole": "{name} (named role)",
+    "named": "{id} (named)",
+    "pickRole": "Pick a role",
+    "pickChannel": "Pick a channel",
+    "userId": "A Discord user id",
+    "colour": "Colour",
+    "nothingToSwitch": "Nothing to switch here.",
+    "newName": "A new name, e.g. moderator",
+    "addName": "Add a name",
+    "showStatus": "Show a status",
+    "statusText": "Text",
+    "statusEmpty": "Empty = no status at all",
+    "activityType": "Type",
+    "presence": "Presence",
+    "streamUrl": "Stream URL",
+    "addLink": "Add a link",
+    "linkLabel": "Label",
+    "addSection": "Add a section",
+    "heading": "Heading",
+    "sectionText": "Text. {channel} becomes a channel mention.",
+    "channelOptional": "Channel (optional)",
+    "addRoleLine": "Add a line",
+    "roleMeaning": "What this role means",
+    "addButton": "Add a button",
+    "emoji": "Emoji",
+    "buttonIdWarning": "Changing the id orphans buttons on panels you already posted.",
+    "addGuide": "Add a guide",
+    "guideMenuName": "Name in the menu",
+    "guideTitle": "Embed title",
+    "guideBody": "Body. Markdown works.",
+    "addTier": "Add a tier",
+    "roleOptional": "Role (optional)",
+    "filterCommands": "Filter commands…",
+    "restricted": "restricted",
+    "everyone": "everyone",
+    "shippedWording": "Empty = the shipped wording",
+    "menuName": "What Discord shows"
+  },
+
+  "features": {
+    "branding": {
+      "label": "Branding",
+      "description": "Name, colour, logo and the link buttons under every panel."
+    },
+    "presence": {
+      "label": "Bot status",
+      "description": "What each of the three bots shows under its name."
+    },
+    "roles": {
+      "label": "Roles and channels",
+      "description": "The roles and channels every other feature refers to by name."
+    },
+    "logging": {
+      "label": "Server logging",
+      "description": "Joins, bans, edits, deletions, roles, voice and invites."
+    },
+    "memberCount": {
+      "label": "Member counter",
+      "description": "Renames a channel to show how many members the server has."
+    },
+    "feedback": {
+      "label": "Feedback channel",
+      "description": "Turns a plain message into an embed staff can comment on."
+    },
+    "autoReply": {
+      "label": "Auto-reply",
+      "description": "Points people at a contact when they ask for them by name."
+    },
+    "information": {
+      "label": "Information panel",
+      "description": "The welcome panel posted by /information."
+    },
+    "rules": {
+      "label": "Rules panel",
+      "description": "The rules and the button that hands out the member role."
+    },
+    "roleMenu": {
+      "label": "Self-assign roles",
+      "description": "The button panel members use to pick their own roles."
+    },
+    "supportGuides": {
+      "label": "Help guides",
+      "description": "The canned answers /script_guides offers."
+    },
+    "guessNumber": {
+      "label": "Guess the number",
+      "description": "The /random and /rg giveaway game, with its rate limit."
+    },
+    "minigames": {
+      "label": "Minigames",
+      "description": "Twelve games, what each outcome pays and the reward tiers."
+    },
+    "jokes": {
+      "label": "Jokes",
+      "description": "/flachwitz and /add_flachwitz."
+    },
+    "userinfo": {
+      "label": "User info",
+      "description": "What /userinfo shows about a member."
+    },
+    "moderation": {
+      "label": "Moderation tools",
+      "description": "/clear, the message context menus and the database backup."
+    },
+    "commands": {
+      "label": "Commands",
+      "description": "Rename, switch off or restrict every slash command."
+    }
+  },
+
+  "fields": {
+    "branding.name": { "label": "Bot name", "help": "Empty uses the Discord server's own name." },
+    "branding.color": { "label": "Embed colour" },
+    "branding.thumbnailUrl": { "label": "Logo URL", "help": "Empty means no thumbnail and no footer icon." },
+    "branding.links": { "label": "Link buttons", "help": "Up to five. An entry without a URL is left out." },
+    "dateLocale": { "label": "Date format", "help": "e.g. de-DE or en-GB." },
+    "language": { "label": "Language" },
+
+    "presence.commands": { "label": "Commands bot" },
+    "presence.events": { "label": "Events bot" },
+    "presence.minigames": { "label": "Minigames bot" },
+
+    "roles": { "label": "Named roles" },
+    "channels.log": { "label": "Log channel" },
+    "channels.memberCount": { "label": "Member count channel" },
+    "channels.feedback": { "label": "Feedback channel" },
+
+    "features.logging.channelId": { "label": "Log channel", "help": "Empty uses the general log channel." },
+    "features.logging.events": { "label": "Which events" },
+    "features.logging.ignoreChannels": { "label": "Ignore these channels" },
+    "features.logging.ignoreUsers": { "label": "Ignore these users" },
+    "features.logging.colors": { "label": "Colours" },
+
+    "features.memberCount.channelId": { "label": "Channel" },
+    "features.memberCount.template": { "label": "Name template", "help": "{count} and {guild} are filled in." },
+    "features.memberCount.intervalMinutes": { "label": "Update every (minutes)", "help": "Discord allows two renames per ten minutes, so five is the floor." },
+
+    "features.feedback.channelId": { "label": "Channel" },
+    "features.feedback.deleteOriginal": { "label": "Delete the original message" },
+    "features.feedback.dmOnComment": { "label": "DM the author when it is commented" },
+
+    "features.autoReply.trigger": { "label": "Trigger word" },
+    "features.autoReply.contactId": { "label": "Contact" },
+    "features.autoReply.exemptRoles": { "label": "Roles that are skipped" },
+    "features.autoReply.caseSensitive": { "label": "Case sensitive" },
+
+    "features.information.title": { "label": "Title", "help": "Empty uses “Welcome to the … Discord!”." },
+    "features.information.intro": { "label": "Intro" },
+    "features.information.sections": { "label": "Sections" },
+    "features.information.roleListHeading": { "label": "Role list heading" },
+    "features.information.roleList": { "label": "Role legend" },
+    "features.information.inviteHeading": { "label": "Invite heading" },
+    "features.information.inviteUrl": { "label": "Invite link" },
+    "features.information.showLinkButtons": { "label": "Show the link buttons" },
+
+    "features.rules.title": { "label": "Title" },
+    "features.rules.intro": { "label": "Intro" },
+    "features.rules.rules": { "label": "Rules", "help": "Numbered automatically, in this order." },
+    "features.rules.consentText": { "label": "Consent sentence", "help": "{role} becomes the role mention." },
+    "features.rules.button.enabled": { "label": "Show the button" },
+    "features.rules.button.label": { "label": "Button label" },
+    "features.rules.button.emoji": { "label": "Button emoji" },
+    "features.rules.button.style": { "label": "Button style" },
+    "features.rules.button.grantsRole": { "label": "Role it grants" },
+    "features.rules.showLinkButtons": { "label": "Show the link buttons" },
+
+    "features.roleMenu.title": { "label": "Title" },
+    "features.roleMenu.description": { "label": "Description" },
+    "features.roleMenu.buttons": { "label": "Buttons" },
+    "features.roleMenu.confirmRemoval": { "label": "Ask before removing a role" },
+    "features.roleMenu.showLinkButtons": { "label": "Show the link buttons" },
+
+    "features.supportGuides.guides": { "label": "Guides" },
+    "features.supportGuides.showLinkButtons": { "label": "Show the link buttons" },
+
+    "features.guessNumber.defaultMin": { "label": "Lower bound" },
+    "features.guessNumber.defaultMax": { "label": "Upper bound" },
+    "features.guessNumber.maxGuessesPerRound": { "label": "Guesses per round", "help": "The rate limit, not the randomness, is what protects the prize." },
+    "features.guessNumber.cooldownSeconds": { "label": "Seconds between guesses" },
+    "features.guessNumber.winNote": { "label": "Added to the win message" },
+
+    "features.minigames.games": { "label": "Which games" },
+    "features.minigames.points": { "label": "Points per outcome" },
+    "features.minigames.rewards": { "label": "Reward tiers" },
+    "features.minigames.showPointsFooter": { "label": "Show the points footer" },
+    "features.minigames.trivia.useApi": { "label": "Pull trivia questions from opentdb.com", "help": "The API is English only. Switch it off when the bot runs in another language." },
+    "features.minigames.colors": { "label": "Colours" },
+
+    "features.userinfo.showAccountAge": { "label": "Account age" },
+    "features.userinfo.showJoinedAt": { "label": "Joined at" },
+    "features.userinfo.showRoles": { "label": "Roles" },
+    "features.userinfo.showPoints": { "label": "Minigame points" },
+
+    "features.clear.maxMessages": { "label": "Maximum messages per /clear", "help": "Discord refuses more than 100 per call, so this can only ever lower the ceiling." },
+    "features.contextMenus": { "label": "Message context menus" },
+    "features.backupDatabase.enabled": { "label": "Enable /backup_database", "help": "Needs mysqldump on the machine and the DB_* credentials in .env." },
+    "features.backupDatabase.channelId": { "label": "Where to post the dump" },
+    "features.backupDatabase.deleteLocalFile": { "label": "Delete the local file afterwards" },
+
+    "commands": { "label": "Commands" }
+  }
+}

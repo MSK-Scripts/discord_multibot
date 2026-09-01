@@ -1,7 +1,6 @@
-const {
-  GatewayIntentBits, Partials, Events, ActivityType,
-} = require('discord.js');
-const { guild: gcfg } = require('../../core/config');
+const { GatewayIntentBits, Partials, Events } = require('discord.js');
+const { presenceOptions } = require('../../core/utils');
+const config = require('../../core/config');
 
 const intents = [
   GatewayIntentBits.Guilds,
@@ -17,58 +16,65 @@ const intents = [
 const partials = [Partials.Channel, Partials.Message];
 
 function attach(client, registry) {
-  const logging        = require('./handlers/logging');
+  const logging = require('./handlers/logging');
   const messageHandler = require('./handlers/messageHandler');
-  const contextMenus   = require('./handlers/contextMenus');
+  const contextMenus = require('./handlers/contextMenus');
 
-  // Register context menu commands into the combined registry
-  for (const cmd of contextMenus.getCommands()) {
-    registry.addCommand(cmd);
-  }
+  for (const cmd of contextMenus.getCommands()) registry.addCommand(cmd);
 
   client.once(Events.ClientReady, async () => {
     console.log(`[Events Bot] Ready as ${client.user.tag}`);
-    client.user.setPresence({ activities: [{ name: 'MSK Scripts', type: ActivityType.Playing }], status: 'online' });
+
+    const guild = client.guilds.cache.get(String(config.guildId()));
+    const presence = presenceOptions('events', {
+      guild: guild?.name,
+      members: guild?.memberCount,
+    });
+    if (presence) client.user.setPresence(presence);
+
     await updateMemberCount(client);
   });
 
-  // Member events
-  client.on(Events.GuildMemberAdd,    m    => logging.onMemberJoin(m));
-  client.on(Events.GuildMemberRemove, m    => logging.onMemberRemove(m));
-  client.on(Events.GuildMemberUpdate, (b, a) => logging.onMemberUpdate(b, a));
-  client.on(Events.GuildBanAdd,       (g, u) => logging.onMemberBan(g, u));
-  client.on(Events.GuildBanRemove,    (g, u) => logging.onMemberUnban(g, u));
+  // ── Server event logging ──────────────────────────────────────────────────
+  // Each listener is attached only when its event is switched on, so a disabled
+  // event costs nothing at runtime rather than being filtered on every call.
+  if (config.featureEnabled('logging')) {
+    const on = (name) => config.get(`features.logging.events.${name}`, true) !== false;
 
-  // Message events
-  client.on(Events.MessageDelete,     msg  => logging.onMessageDelete(msg));
-  client.on(Events.MessageBulkDelete, msgs => logging.onBulkMessageDelete(msgs));
-  client.on(Events.MessageUpdate,     (b, a) => logging.onMessageEdit(b, a));
+    if (on('memberJoin'))   client.on(Events.GuildMemberAdd,    m => logging.onMemberJoin(m));
+    if (on('memberLeave') || on('memberKick')) client.on(Events.GuildMemberRemove, m => logging.onMemberRemove(m));
+    client.on(Events.GuildMemberUpdate, (b, a) => logging.onMemberUpdate(b, a));
+    if (on('memberBan'))    client.on(Events.GuildBanAdd,       (g, u) => logging.onMemberBan(g, u));
+    if (on('memberUnban'))  client.on(Events.GuildBanRemove,    (g, u) => logging.onMemberUnban(g, u));
 
-  // Channel events
-  client.on(Events.ChannelCreate, c => logging.onChannelCreate(c));
-  client.on(Events.ChannelDelete, c => logging.onChannelDelete(c));
-  client.on(Events.ChannelUpdate, (b, a) => logging.onChannelUpdate(b, a));
+    if (on('messageDelete'))     client.on(Events.MessageDelete,     msg => logging.onMessageDelete(msg));
+    if (on('messageBulkDelete')) client.on(Events.MessageBulkDelete, msgs => logging.onBulkMessageDelete(msgs));
+    if (on('messageEdit'))       client.on(Events.MessageUpdate,     (b, a) => logging.onMessageEdit(b, a));
 
-  // Role events
-  client.on(Events.GuildRoleCreate, r => logging.onRoleCreate(r));
-  client.on(Events.GuildRoleDelete, r => logging.onRoleDelete(r));
-  client.on(Events.GuildRoleUpdate, (b, a) => logging.onRoleUpdate(b, a));
+    if (on('channelCreate')) client.on(Events.ChannelCreate, c => logging.onChannelCreate(c));
+    if (on('channelDelete')) client.on(Events.ChannelDelete, c => logging.onChannelDelete(c));
+    if (on('channelUpdate')) client.on(Events.ChannelUpdate, (b, a) => logging.onChannelUpdate(b, a));
 
-  // Voice events
-  client.on(Events.VoiceStateUpdate, (b, a) => logging.onVoiceStateUpdate(b, a));
+    if (on('roleCreate')) client.on(Events.GuildRoleCreate, r => logging.onRoleCreate(r));
+    if (on('roleDelete')) client.on(Events.GuildRoleDelete, r => logging.onRoleDelete(r));
+    if (on('roleUpdate')) client.on(Events.GuildRoleUpdate, (b, a) => logging.onRoleUpdate(b, a));
 
-  // Invite events
-  client.on(Events.InviteCreate, i => logging.onInviteCreate(i));
-  client.on(Events.InviteDelete, i => logging.onInviteDelete(i));
+    client.on(Events.VoiceStateUpdate, (b, a) => logging.onVoiceStateUpdate(b, a));
 
-  // Member count update on join/leave (debounced, see below)
-  client.on(Events.GuildMemberAdd,    () => scheduleMemberCountUpdate(client));
-  client.on(Events.GuildMemberRemove, () => scheduleMemberCountUpdate(client));
+    if (on('inviteCreate')) client.on(Events.InviteCreate, i => logging.onInviteCreate(i));
+    if (on('inviteDelete')) client.on(Events.InviteDelete, i => logging.onInviteDelete(i));
+  }
 
-  // Messages
+  // ── Member count channel ──────────────────────────────────────────────────
+  if (config.featureEnabled('memberCount')) {
+    client.on(Events.GuildMemberAdd,    () => scheduleMemberCountUpdate(client));
+    client.on(Events.GuildMemberRemove, () => scheduleMemberCountUpdate(client));
+  }
+
+  // ── Plain messages ────────────────────────────────────────────────────────
   client.on(Events.MessageCreate, msg => messageHandler.onMessage(msg));
 
-  // Interactions (context menus only)
+  // ── Context menus ─────────────────────────────────────────────────────────
   client.on(Events.InteractionCreate, interaction => contextMenus.handleInteraction(interaction, client));
 }
 
@@ -79,17 +85,22 @@ function attach(client, registry) {
 //
 // Trailing debounce: the first event schedules a rename, further events during
 // the window are absorbed, and the rename that finally runs reads the current
-// member count. The displayed number lags by at most MEMBER_COUNT_INTERVAL_MS
-// but is always the real one.
-const MEMBER_COUNT_INTERVAL_MS = 5 * 60 * 1000;
+// member count. The displayed number lags by at most the interval but is always
+// the real one. The floor of 5 minutes is not a preference, it is the API limit.
+const MIN_INTERVAL_MS = 5 * 60 * 1000;
 
-let memberCountTimer   = null;
+let memberCountTimer = null;
 let memberCountLastRun = 0;
+
+function memberCountInterval() {
+  const minutes = Number(config.get('features.memberCount.intervalMinutes', 5));
+  return Math.max(MIN_INTERVAL_MS, (Number.isFinite(minutes) ? minutes : 5) * 60 * 1000);
+}
 
 function scheduleMemberCountUpdate(client) {
   if (memberCountTimer) return;  // a rename is already pending
 
-  const wait = Math.max(0, MEMBER_COUNT_INTERVAL_MS - (Date.now() - memberCountLastRun));
+  const wait = Math.max(0, memberCountInterval() - (Date.now() - memberCountLastRun));
   memberCountTimer = setTimeout(() => {
     memberCountTimer = null;
     updateMemberCount(client);
@@ -99,13 +110,24 @@ function scheduleMemberCountUpdate(client) {
 }
 
 async function updateMemberCount(client) {
+  if (!config.featureEnabled('memberCount')) return;
   memberCountLastRun = Date.now();
 
-  const guild   = client.guilds.cache.get(String(gcfg.ID));
-  const channel = client.channels.cache.get(String(gcfg.MEMBER_COUNT_CHANNEL_ID));
-  if (guild && channel) {
-    await channel.setName(`𝑴𝒆𝒎𝒃𝒆𝒓𝒔: ${guild.memberCount}`).catch(console.error);
-  }
+  const guild = client.guilds.cache.get(String(config.guildId()));
+  const channelId = config.channelId(config.get('features.memberCount.channelId', ''), 'memberCount');
+  const channel = channelId ? client.channels.cache.get(String(channelId)) : null;
+  if (!guild || !channel) return;
+
+  const template = String(config.get('features.memberCount.template', 'Members: {count}') ?? '');
+  const name = template
+    .replace(/\{count\}/g, String(guild.memberCount))
+    .replace(/\{guild\}/g, guild.name)
+    .trim();
+  // Discord rejects an empty channel name, and a template that renders to
+  // nothing is a configuration mistake, not a reason to fail every five minutes.
+  if (!name) return;
+
+  await channel.setName(name.slice(0, 100)).catch(console.error);
 }
 
 module.exports = { intents, partials, attach };

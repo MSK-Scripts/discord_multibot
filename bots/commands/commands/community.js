@@ -1,105 +1,242 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags } = require('discord.js');
-const { makeEmbed, hasAnyRole } = require('../../../core/utils');
-const { guild: gcfg }           = require('../../../core/config');
+const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, MessageFlags } = require('discord.js');
+const { makeEmbed, linkRow, buttonStyle } = require('../../../core/utils');
+const { applyMeta, guard } = require('../../../core/commandKit');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
+
+/**
+ * The three panels a server posts once and leaves standing: the welcome
+ * information, the rules with their verification button, and the self-assign
+ * role menu.
+ *
+ * ALL THREE ARE BUILT FROM THE CONFIG, TEXT AND ALL. They used to be written
+ * out here — ten rules naming one shop, six channel and role ids, four buttons
+ * with hardcoded role names — which meant a fresh clone posted somebody else's
+ * server rules to its own members.
+ *
+ * A LINE WHOSE ID IS UNSET IS LEFT OUT, never rendered. An unresolved `<@&123>`
+ * shows up as a raw number to every reader, which looks like a bug in the bot
+ * rather than a setting somebody has not filled in yet.
+ */
+
+/** Post the panel into the current channel and confirm ephemerally. */
+async function postPanel(interaction, { embed, components, confirmation }) {
+  await interaction.channel.send({ embeds: [embed], components });
+  await interaction.reply({ content: confirmation, flags: MessageFlags.Ephemeral });
+  setTimeout(() => interaction.deleteReply().catch(() => {}), 2000);
+}
+
+// ─── /information ─────────────────────────────────────────────────────────────
+
+function informationEmbed(interaction) {
+  const cfg = config.get('features.information', {});
+  const lines = [];
+
+  const intro = String(cfg.intro ?? '').trim();
+  if (intro) lines.push(intro, '');
+
+  for (const section of Array.isArray(cfg.sections) ? cfg.sections : []) {
+    const text = String(section?.text ?? '').trim();
+    if (!text) continue;
+
+    // A section that WANTS a channel and has none is dropped whole: its
+    // sentence is built around the mention, so without it the text is a
+    // fragment pointing nowhere.
+    const wantsChannel = text.includes('{channel}');
+    const channel = config.channelId(section?.channel ?? '');
+    if (wantsChannel && !channel) continue;
+
+    const heading = String(section?.heading ?? '').trim();
+    if (heading) lines.push(`**${heading}**`);
+    lines.push(text.replace(/\{channel\}/g, `<#${channel}>`), '');
+  }
+
+  const roleLines = (Array.isArray(cfg.roleList) ? cfg.roleList : [])
+    .map(entry => ({ id: config.roleId(entry?.role ?? ''), text: String(entry?.text ?? '').trim() }))
+    .filter(entry => entry.id && entry.text)
+    .map(entry => `<@&${entry.id}>: ${entry.text}`);
+
+  if (roleLines.length) {
+    const heading = String(cfg.roleListHeading ?? '').trim();
+    if (heading) lines.push(`**${heading}**`);
+    lines.push(...roleLines, '');
+  }
+
+  const invite = String(cfg.inviteUrl ?? '').trim();
+  if (invite) {
+    const heading = String(cfg.inviteHeading ?? '').trim();
+    lines.push(heading ? `**${heading}**\n${invite}` : invite);
+  }
+
+  const description = lines.join('\n').trim();
+  if (!description) return null;
+
+  // The server's own name when nothing is branded, which reads correctly
+  // everywhere instead of welcoming people to somebody else's Discord.
+  const brand = config.brandName() || interaction.guild.name;
+  const title = String(cfg.title ?? '').trim() || t('panels.information.defaultTitle', { brand });
+
+  return makeEmbed({ title, description, guildName: interaction.guild.name });
+}
+
+// ─── /rules ───────────────────────────────────────────────────────────────────
+
+function rulesEmbed(interaction) {
+  const cfg = config.get('features.rules', {});
+  const lines = [];
+
+  const intro = String(cfg.intro ?? '').trim();
+  if (intro) lines.push(intro, '');
+
+  const rules = (Array.isArray(cfg.rules) ? cfg.rules : [])
+    .map(r => String(r ?? '').trim())
+    .filter(Boolean);
+  // Numbered from the position in the list, so inserting a rule renumbers the
+  // rest on its own and the text never has to carry its own number.
+  rules.forEach((text, index) => lines.push(t('panels.rules.ruleLine', { number: index + 1, text })));
+
+  const grantsRole = config.roleId(cfg.button?.grantsRole ?? '');
+  const consent = String(cfg.consentText ?? '').trim();
+  // The consent sentence names the role it grants. Without a role there is
+  // nothing to consent TO, so it is left out rather than promising a mention
+  // that would render as a raw id.
+  if (consent && grantsRole && cfg.button?.enabled !== false) {
+    lines.push('', consent.replace(/\{role\}/g, `<@&${grantsRole}>`));
+  }
+
+  const description = lines.join('\n').trim();
+  if (!description) return null;
+
+  return makeEmbed({
+    title: String(cfg.title ?? '').trim(),
+    description,
+    guildName: interaction.guild.name,
+  });
+}
+
+function rulesComponents() {
+  const cfg = config.get('features.rules', {});
+  const rows = [];
+
+  const button = cfg.button ?? {};
+  if (button.enabled !== false && config.roleId(button.grantsRole ?? '')) {
+    const b = new ButtonBuilder()
+      .setCustomId('rules_verification')
+      .setLabel(String(button.label ?? '').trim() || 'Verify')
+      .setStyle(buttonStyle(button.style));
+    const emoji = String(button.emoji ?? '').trim();
+    if (emoji) b.setEmoji(emoji);
+    rows.push(new ActionRowBuilder().addComponents(b));
+  }
+
+  if (cfg.showLinkButtons) rows.push(...linkRow());
+  return rows;
+}
+
+// ─── /roles ───────────────────────────────────────────────────────────────────
+
+/**
+ * The self-assign buttons, five per row.
+ *
+ * `id` is what Discord sends back on a click, so it is prefixed once here and
+ * matched the same way in bot.js. A button whose role does not resolve is left
+ * out: it would render fine and then fail on the first press.
+ */
+function roleMenuButtons() {
+  return (config.get('features.roleMenu.buttons', []) || [])
+    .map(b => ({
+      id:    String(b?.id ?? '').trim(),
+      label: String(b?.label ?? '').trim(),
+      emoji: String(b?.emoji ?? '').trim(),
+      style: b?.style,
+      role:  config.roleId(b?.role ?? ''),
+    }))
+    .filter(b => b.id && b.label && b.role)
+    .slice(0, 25);
+}
+
+function roleMenuComponents() {
+  const rows = [];
+  const buttons = roleMenuButtons();
+
+  for (let i = 0; i < buttons.length; i += 5) {
+    const row = new ActionRowBuilder();
+    for (const b of buttons.slice(i, i + 5)) {
+      const builder = new ButtonBuilder()
+        .setCustomId(`rolemenu_${b.id}`)
+        .setLabel(b.label)
+        .setStyle(buttonStyle(b.style));
+      if (b.emoji) builder.setEmoji(b.emoji);
+      row.addComponents(builder);
+    }
+    rows.push(row);
+  }
+
+  if (config.get('features.roleMenu.showLinkButtons', false)) rows.push(...linkRow());
+  return rows;
+}
 
 module.exports = [
   {
-    data: new SlashCommandBuilder()
-      .setName('information')
-      .setDescription('Information Message with URL Buttons'),
+    key: 'information',
+    data: applyMeta(new SlashCommandBuilder(), 'information'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
+      if (!await guard(interaction, 'information')) return;
+
+      const embed = informationEmbed(interaction);
+      if (!embed) {
+        return interaction.reply({ content: t('panels.nothingToPost'), flags: MessageFlags.Ephemeral });
       }
 
-      const description = [
-        "We're glad to have you here. Take a moment to explore the server and don't hesitate to reach out if you have any questions.\n",
-        '**Channel Access**',
-        'To gain access to all channels, please head over to <#901154918923120720>, read the rules carefully and confirm them. You will then automatically receive access to the full server.\n',
-        '**Server Roles**',
-        '<@&900395427147436092>: Has purchased a product from our Tebex Shop',
-        '<@&953771038519459840>: Tests new scripts and updates prior to public release',
-        '<@&900396090208174130>: Experienced with Lua and assists members in <#939628758229471242>',
-        '<@&900396252724854844>: Responsible for maintaining order and enforcing the server rules\n',
-        '**Invite Link**\nhttps://discord.gg/5hHSBRHvJE',
-      ].join('\n');
-
-      const embed = makeEmbed({ title: 'Welcome to the MSK Scripts Discord!', description, guildName: interaction.guild.name });
-      const row   = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel('Website').setStyle(ButtonStyle.Link).setURL('https://www.msk-scripts.de/'),
-        new ButtonBuilder().setLabel('Documentation').setStyle(ButtonStyle.Link).setURL('https://docu.msk-scripts.de/'),
-        new ButtonBuilder().setLabel('Github').setStyle(ButtonStyle.Link).setURL('https://github.com/MSK-Scripts'),
-      );
-
-      await interaction.channel.send({ embeds: [embed], components: [row] });
-      await interaction.reply({ content: 'Information was successfully sent to this channel.', flags: MessageFlags.Ephemeral });
-      setTimeout(() => interaction.deleteReply().catch(() => {}), 2000);
+      await postPanel(interaction, {
+        embed,
+        components: config.get('features.information.showLinkButtons', true) ? linkRow() : [],
+        confirmation: t('panels.sentInformation'),
+      });
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('rules')
-      .setDescription('Rules Message with Reaction Buttons'),
+    key: 'rules',
+    data: applyMeta(new SlashCommandBuilder(), 'rules'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
+      if (!await guard(interaction, 'rules')) return;
+
+      const embed = rulesEmbed(interaction);
+      if (!embed) {
+        return interaction.reply({ content: t('panels.nothingToPost'), flags: MessageFlags.Ephemeral });
       }
 
-      const description = [
-        '**1.** All communication must be conducted in German or English only.',
-        '**2.** Spamming or flooding any channel with messages is not permitted.',
-        '**3.** NSFW content of any kind is strictly prohibited.',
-        '**4.** Treat all members with respect. Inappropriate or offensive language will not be tolerated.',
-        '**5.** Harassment, discrimination, or hate speech of any form, including but not limited to racism, sexism, transphobia, and homophobia, will result in an immediate ban.',
-        '**6.** Self-promotion, soliciting, advertising, or reselling, whether in channels or via DMs, is not allowed.',
-        '**7.** Please keep discussions on-topic and use the appropriate channels.',
-        '**8.** Sharing links is only permitted if explicitly approved by a moderator.',
-        '**9.** Avoid unnecessary @mentions of members or roles.',
-        `**10.** All digital products provided by MSK Scripts are licensed, not sold. Redistribution, resale, or unauthorized sharing of any of our products is strictly forbidden.\n`,
-        `By clicking the button below, you confirm that you have read and agreed to the rules above and will receive the <@&${gcfg.MEMBER_ROLE_ID}> role.`,
-      ].join('\n');
-
-      const embed = makeEmbed({ title: 'Discord Rules', description, guildName: interaction.guild.name });
-      const row   = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('rules_verification').setLabel('Verification').setStyle(ButtonStyle.Success).setEmoji('✅'),
-      );
-
-      await interaction.channel.send({ embeds: [embed], components: [row] });
-      await interaction.reply({ content: 'Rules were successfully sent to this channel.', flags: MessageFlags.Ephemeral });
-      setTimeout(() => interaction.deleteReply().catch(() => {}), 2000);
+      await postPanel(interaction, {
+        embed,
+        components: rulesComponents(),
+        confirmation: t('panels.sentRules'),
+      });
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('roles')
-      .setDescription('Roles Message with Script Notification Buttons'),
+    key: 'roles',
+    data: applyMeta(new SlashCommandBuilder(), 'roles'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.MANAGER_ROLE_ID, gcfg.FOUNDER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
+      if (!await guard(interaction, 'roles')) return;
+
+      const components = roleMenuComponents();
+      if (!components.length) {
+        return interaction.reply({ content: t('panels.nothingToPost'), flags: MessageFlags.Ephemeral });
       }
 
-      const description = [
-        '**Script Update Notifications**',
-        'Select the scripts you own to receive notifications whenever a new update is released.\n',
-        'Click a button to add or remove the corresponding role at any time.',
-      ].join('\n');
+      const cfg = config.get('features.roleMenu', {});
+      const embed = makeEmbed({
+        title:       String(cfg.title ?? '').trim(),
+        description: String(cfg.description ?? '').trim(),
+        guildName:   interaction.guild.name,
+      });
 
-      const embed = makeEmbed({ title: 'Script Roles', description, guildName: interaction.guild.name });
-      const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('rules_giveaway_notify').setLabel('Giveaway Notify').setStyle(ButtonStyle.Primary).setEmoji('🎁'),
-        new ButtonBuilder().setCustomId('roles_garage').setLabel('Garage').setStyle(ButtonStyle.Success).setEmoji('⏰'),
-        new ButtonBuilder().setCustomId('roles_handcuffs').setLabel('Handcuffs').setStyle(ButtonStyle.Success).setEmoji('⏰'),
-        new ButtonBuilder().setCustomId('roles_vehicle_keys').setLabel('Vehicle Keys').setStyle(ButtonStyle.Success).setEmoji('⏰'),
-      );
-
-      await interaction.channel.send({ embeds: [embed], components: [row] });
-      await interaction.reply({ content: 'Roles message was successfully sent to this channel.', flags: MessageFlags.Ephemeral });
-      setTimeout(() => interaction.deleteReply().catch(() => {}), 2000);
+      await postPanel(interaction, { embed, components, confirmation: t('panels.sentRoles') });
     },
   },
 ];

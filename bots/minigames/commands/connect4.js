@@ -1,5 +1,8 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter, gameColor } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
 
 const ROWS = 6, COLS = 7;
 const EMPTY = 0, PLAYER = 1, BOT = 2;
@@ -79,33 +82,41 @@ function buildComponents(board, gameOver) {
   return rows;
 }
 
-function buildEmbed(board, player, result, ptsDelta = 0, total = 0) {
+function buildEmbed(board, player, result, delta = 0, total = 0) {
   const boardStr = renderBoard(board);
-  let footer = 'Connect 4  •  /connect4 to play again';
-  if (ptsDelta !== 0) footer += `  •  ${pointsFooter(ptsDelta, total)}`;
 
-  let title, desc, color;
+  let title, body, color;
   if (result === 'player_win') {
-    [title, desc, color] = ['🏆 You win!', `${player} connected four ${P_EMOJI}!`, 0x57F287];
+    title = t('games.connect4.winTitle');
+    body  = t('games.connect4.winBody', { player: String(player), emoji: P_EMOJI });
+    color = gameColor('win');
   } else if (result === 'bot_win') {
-    [title, desc, color] = ['🤖 Bot wins!', `The bot connected four ${B_EMOJI}. Better luck next time!`, 0xED4245];
+    title = t('games.connect4.loseTitle');
+    body  = t('games.connect4.loseBody', { emoji: B_EMOJI });
+    color = gameColor('lose');
   } else if (result === 'draw') {
-    [title, desc, color] = ['🤝 Draw!', 'The board is full. No winner!', 0xFEE75C];
+    title = t('games.connect4.drawTitle');
+    body  = t('games.connect4.drawBody');
+    color = gameColor('draw');
   } else {
-    title = '🔵 Connect Four';
-    desc  = `${P_EMOJI} ${player} vs ${B_EMOJI} Bot\nYour turn — choose a column!`;
-    color = 0x5865F2;
+    title = t('games.connect4.title');
+    body  = t('games.connect4.intro', { player: String(player), playerEmoji: P_EMOJI, botEmoji: B_EMOJI });
+    color = gameColor('neutral');
   }
 
   return new EmbedBuilder()
     .setTitle(title)
-    .setDescription(`${boardStr}\n\n${desc}`)
+    .setDescription(`${boardStr}
+
+${body}`)
     .setColor(color)
-    .setFooter({ text: footer });
+    .setFooter({ text: gameFooter('connect4', { delta, total }) });
 }
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('connect4').setDescription('Play Connect Four against the bot!'),
+  key: 'connect4',
+  game: 'connect4',
+  data: applyMeta(new SlashCommandBuilder(), 'connect4'),
 
   async execute(interaction) {
     const board = newBoard();
@@ -132,10 +143,10 @@ module.exports = {
         gameOver = true;
         collector.stop();
         const outcome = result === 'player_win' ? 'win' : result === 'bot_win' ? 'lose' : 'draw';
-        const ptsDelta = getPts('connect4', outcome);
-        const pts = await addPoints(interaction.user.id, ptsDelta);
+        const delta = getPts('connect4', outcome);
+        const pts = await addPoints(interaction.user.id, delta);
         await i.update({
-          embeds: [buildEmbed(board, interaction.user, result, ptsDelta, pts.new)],
+          embeds: [buildEmbed(board, interaction.user, result, delta, pts.new)],
           components: buildComponents(board, true),
         });
         await notifyRewards(i, pts.old, pts.new);

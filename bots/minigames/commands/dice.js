@@ -1,44 +1,50 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { applyMeta, optionText } = require('../../../core/commandKit');
+const { gameColor } = require('../../../core/gameKit');
+const { t } = require('../../../core/i18n');
+
+const SIDES = [4, 6, 8, 10, 12, 20, 100];
+const MAX_DICE = 10;
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('dice')
-    .setDescription('Roll one or more dice!')
-    .addIntegerOption(o =>
-      o.setName('sides').setDescription('Number of sides on the die').setRequired(true)
-        .addChoices(
-          { name: 'd4',   value: 4   },
-          { name: 'd6',   value: 6   },
-          { name: 'd8',   value: 8   },
-          { name: 'd10',  value: 10  },
-          { name: 'd12',  value: 12  },
-          { name: 'd20',  value: 20  },
-          { name: 'd100', value: 100 },
-        )
-    )
-    .addIntegerOption(o => o.setName('count').setDescription('How many dice to roll (1–10, default 1)').setRequired(false)),
+  key: 'dice',
+  game: 'dice',
+  data: applyMeta(new SlashCommandBuilder(), 'dice')
+    .addIntegerOption(o => o
+      .setName('sides')
+      .setDescription(optionText('dice', 'sides'))
+      .setRequired(true)
+      // The die names are notation, not words: d20 is d20 in every language.
+      .addChoices(...SIDES.map(s => ({ name: `d${s}`, value: s }))))
+    .addIntegerOption(o => o
+      .setName('count')
+      .setDescription(optionText('dice', 'count'))
+      .setRequired(false)),
 
   async execute(interaction) {
     const sides = interaction.options.getInteger('sides');
-    const count = Math.max(1, Math.min(interaction.options.getInteger('count') ?? 1, 10));
-    const dName = `d${sides}`;
+    const count = Math.max(1, Math.min(interaction.options.getInteger('count') ?? 1, MAX_DICE));
+    const die = `d${sides}`;
     const rolls = Array.from({ length: count }, () => Math.floor(Math.random() * sides) + 1);
     const total = rolls.reduce((a, b) => a + b, 0);
 
-    let desc;
+    let description;
     if (count === 1) {
-      desc = `🎲 You rolled a **${dName}** and got: **${rolls[0]}**`;
+      description = t('games.dice.single', { die, result: rolls[0] });
     } else {
-      desc = `🎲 You rolled **${count}x ${dName}**:\n${rolls.map(r => `\`${r}\``).join('  +  ')}\n\n**Total: ${total}**`;
-      if (total === count * sides) desc += '\n\n🔥 **Perfect roll!** All dice at maximum!';
-      else if (total === count)    desc += '\n\n💀 **Critical fail!** All dice at minimum!';
+      description = t('games.dice.multiple', {
+        count, die, total,
+        rolls: rolls.map(r => `\`${r}\``).join('  +  '),
+      });
+      if (total === count * sides) description += t('games.dice.perfect');
+      else if (total === count)    description += t('games.dice.criticalFail');
     }
 
     const embed = new EmbedBuilder()
-      .setTitle(`🎲 Dice Roll – ${count}x ${dName}`)
-      .setDescription(desc)
-      .setColor(0x5865F2)
-      .setFooter({ text: `Rolled by ${interaction.user.displayName}` });
+      .setTitle(t('games.dice.title', { count, die }))
+      .setDescription(description)
+      .setColor(gameColor('neutral'))
+      .setFooter({ text: t('games.dice.rolledBy', { name: interaction.user.displayName }) });
 
     await interaction.reply({ embeds: [embed] });
   },

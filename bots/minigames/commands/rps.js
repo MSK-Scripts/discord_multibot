@@ -1,33 +1,40 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter, gameColor } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
 
+// The rules of the game, not wording: `beats` is what decides the outcome, and
+// the emoji is the same in every language. The NAMES are in the catalogue.
 const CHOICES = {
   rock:     { emoji: '🪨', beats: 'scissors' },
   paper:    { emoji: '📄', beats: 'rock' },
-  scissors: { emoji: '✂️',  beats: 'paper' },
+  scissors: { emoji: '✂️', beats: 'paper' },
 };
 
-function result(player, bot) {
+function outcomeOf(player, bot) {
   if (player === bot) return 'draw';
   return CHOICES[player].beats === bot ? 'win' : 'lose';
 }
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('rps')
-    .setDescription('Play Rock Paper Scissors against the bot!'),
+  key: 'rps',
+  game: 'rps',
+  data: applyMeta(new SlashCommandBuilder(), 'rps'),
 
   async execute(interaction) {
     const row = new ActionRowBuilder().addComponents(
       ...Object.entries(CHOICES).map(([key, { emoji }]) =>
-        new ButtonBuilder().setCustomId(`rps_${key}`).setLabel(`${emoji} ${key.charAt(0).toUpperCase() + key.slice(1)}`).setStyle(ButtonStyle.Primary)
-      )
+        new ButtonBuilder()
+          .setCustomId(`rps_${key}`)
+          .setLabel(`${emoji} ${t(`games.rps.${key}`)}`)
+          .setStyle(ButtonStyle.Primary)),
     );
 
     const embed = new EmbedBuilder()
-      .setTitle('✂️ Rock Paper Scissors')
-      .setDescription(`${interaction.user}, make your choice!`)
-      .setColor(0x5865F2);
+      .setTitle(t('games.rps.title'))
+      .setDescription(t('games.rps.choose', { user: String(interaction.user) }))
+      .setColor(gameColor('neutral'));
 
     await interaction.reply({ embeds: [embed], components: [row] });
     const reply = await interaction.fetchReply();
@@ -38,29 +45,28 @@ module.exports = {
     });
 
     collector.on('collect', async i => {
-      const choice    = i.customId.replace('rps_', '');
+      const choice = i.customId.replace('rps_', '');
       const botChoice = Object.keys(CHOICES)[Math.floor(Math.random() * 3)];
-      const outcome   = result(choice, botChoice);
-      const pEmoji    = CHOICES[choice].emoji;
-      const bEmoji    = CHOICES[botChoice].emoji;
+      const outcome = outcomeOf(choice, botChoice);
 
-      let title, color, desc;
-      if (outcome === 'win') {
-        [title, color, desc] = ['🏆 You win!', 0x57F287, `Your **${pEmoji} ${choice}** beats the bot's **${bEmoji} ${botChoice}**!`];
-      } else if (outcome === 'lose') {
-        [title, color, desc] = ['💀 You lose!', 0xED4245, `The bot's **${bEmoji} ${botChoice}** beats your **${pEmoji} ${choice}**!`];
-      } else {
-        [title, color, desc] = ['🤝 Draw!', 0xFEE75C, `Both chose **${pEmoji} ${choice}**. No winner!`];
-      }
+      const vars = {
+        player:      t(`games.rps.${choice}`),
+        playerEmoji: CHOICES[choice].emoji,
+        bot:         t(`games.rps.${botChoice}`),
+        botEmoji:    CHOICES[botChoice].emoji,
+      };
+      const title = t(`games.rps.${outcome}Title`);
+      const body  = t(`games.rps.${outcome}Body`, vars);
+      const color = gameColor(outcome === 'win' ? 'win' : outcome === 'lose' ? 'lose' : 'draw');
 
-      const pts_delta = getPts('rps', outcome);
-      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, pts_delta);
+      const delta = getPts('rps', outcome);
+      const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
 
       for (const btn of row.components) btn.setDisabled(true);
 
       const resultEmbed = new EmbedBuilder()
-        .setTitle(title).setDescription(desc).setColor(color)
-        .setFooter({ text: `Rock Paper Scissors  •  /rps to play again  •  ${pointsFooter(pts_delta, newPts)}` });
+        .setTitle(title).setDescription(body).setColor(color)
+        .setFooter({ text: gameFooter('rps', { delta, total: newPts }) });
 
       await i.update({ embeds: [resultEmbed], components: [row] });
       await notifyRewards(i, oldPts, newPts);

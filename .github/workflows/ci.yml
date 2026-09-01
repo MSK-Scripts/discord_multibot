@@ -67,7 +67,15 @@ jobs:
       - name: Boot harness
         run: npm test
 
-      # points_config.json is read at runtime, a broken one takes the bot down.
+      # Starts the real dashboard on a loopback port and drives it over HTTP:
+      # the auth chain, the CSRF check, every permission gate and the config
+      # writer. Only the Discord calls are stubbed, because stubbing the
+      # permission layer would test the stub.
+      - name: Dashboard harness
+        run: npm run test:dashboard
+
+      # The locale catalogues are read at runtime and a broken one takes every
+      # message down with it.
       - name: Validate tracked JSON files
         run: |
           set -euo pipefail
@@ -75,6 +83,23 @@ jobs:
             node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$f"
           done
           echo "✅ All tracked JSON files are valid."
+
+      # The shipped defaults are JSONC, so plain JSON.parse would reject them
+      # over their own comments. Parsed with the bot's own parser, which is the
+      # point: a file this accepts must never be one the bot then refuses.
+      - name: Validate tracked JSONC files
+        run: |
+          set -euo pipefail
+          git ls-files '*.jsonc' | while read -r f; do
+            node -e "
+              const { parseJsonc } = require('./core/jsonc');
+              const src = require('fs').readFileSync(process.argv[1], 'utf8');
+              const result = parseJsonc(src, process.argv[1]);
+              if (!result.ok) { console.error(result.lines.join('
+')); process.exit(1); }
+            " "$f"
+          done
+          echo "✅ All tracked JSONC files are valid."
 
   audit:
     name: Dependency audit

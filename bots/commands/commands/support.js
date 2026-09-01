@@ -1,75 +1,80 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags } = require('discord.js');
-const { makeEmbed } = require('../../../core/utils');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { makeEmbed, linkRow } = require('../../../core/utils');
+const { applyMeta, optionText, guard } = require('../../../core/commandKit');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
 
-const GUIDES = {
-  documentation: {
-    title:       'Documentation',
-    description: '[Documentation](https://docu.msk-scripts.de/)',
-  },
-  msk_core_dependency: {
-    title:       'Support Guide for MSK Core Dependency',
-    description: '**You need `msk_core` to use our Scripts!**\nDownload it from [Github](https://github.com/MSK-Scripts/msk_core/releases/latest)',
-  },
-  change_notification: {
-    title:       'Support Guide for Changing Notifications',
-    description: 'Documentation: https://docu.msk-scripts.de/docs/miscellaneous/change-notifications',
-  },
-  garage: {
-    title:       'Support Guide for MSK Garage',
-    description: [
-      '1. Install [msk_core](https://github.com/MSK-Scripts/msk_core/releases/latest)',
-      '2. Update the script to the latest version!',
-      '3. Set `Config.Debug = true` and restart your Server',
-      '4. Do again what causes the issue',
-      '5. Send us screenshots from Client F8 Console and txAdmin Live Console',
-      '6. Send us your current `config.lua` and tell us which version you are using *(fxmanifest.lua)*',
-      '7. Send us your `owned_vehicles` table from database',
-    ].join('\n'),
-  },
-  handcuffs: {
-    title:       'Support Guide for MSK Handcuffs',
-    description: [
-      '**Documentation – Implement it into esx_policejob or jobs_creator**',
-      'Documentation: https://docu.msk-scripts.de/docs/msk_handcuffs/guides/\n',
-      '1. Install [msk_core](https://github.com/MSK-Scripts/msk_core/releases/latest)',
-      '2. Update the script to the latest version!',
-      '3. Set `Config.Debug = true` and restart your Server',
-      '4. Do again what causes the issue',
-      '5. Send us screenshots from Client F8 Console and txAdmin Live Console',
-      '6. Send us your current `config.lua` and tell us which version you are using *(fxmanifest.lua)*',
-    ].join('\n'),
-  },
-};
+/**
+ * Canned help pages.
+ *
+ * The five guides used to be written out here, complete with one company's
+ * product names and documentation links, so every installation of this bot
+ * offered help for scripts it has nothing to do with. They are
+ * `features.supportGuides.guides` now: a list of entries with a value, a menu
+ * name, a title and a body.
+ *
+ * The CHOICES are baked into the command when it is registered, which is what
+ * Discord stores. Adding a guide therefore needs a restart, the same as renaming
+ * a command does — the dashboard restarts the bot after a config change for
+ * exactly this reason.
+ */
+
+/** The configured guides, cleaned up and capped at Discord's 25 choices. */
+function guides() {
+  return (config.get('features.supportGuides.guides', []) || [])
+    .map(g => ({
+      value:       String(g?.value ?? '').trim().slice(0, 100),
+      name:        String(g?.name ?? '').trim().slice(0, 100),
+      title:       String(g?.title ?? '').trim(),
+      description: String(g?.description ?? '').trim(),
+    }))
+    .filter(g => g.value && g.name && g.description)
+    .slice(0, 25);
+}
+
+function buildData() {
+  const list = guides();
+  const builder = applyMeta(new SlashCommandBuilder(), 'script_guides');
+
+  return builder.addStringOption(option => {
+    option
+      .setName('script')
+      .setDescription(optionText('script_guides', 'script'))
+      .setRequired(true);
+    // No configured guides means no choices. The option stays free text rather
+    // than the command vanishing, so somebody who emptied the list by accident
+    // gets a message saying so instead of a command that is simply gone.
+    if (list.length) option.addChoices(...list.map(g => ({ name: g.name, value: g.value })));
+    return option;
+  });
+}
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('script_guides')
-    .setDescription('Help Guide for a specified Script')
-    .addStringOption(o =>
-      o.setName('script')
-        .setDescription('Choose the Script you want to get the Help Guide from')
-        .setRequired(true)
-        .addChoices(
-          { name: 'Documentation',        value: 'documentation' },
-          { name: 'Dependency: msk_core', value: 'msk_core_dependency' },
-          { name: 'change_notification',  value: 'change_notification' },
-          { name: 'msk_garage',           value: 'garage' },
-          { name: 'msk_handcuffs',        value: 'handcuffs' },
-        )
-    ),
+  key: 'script_guides',
+  feature: 'supportGuides',
+  data: buildData(),
 
   async execute(interaction) {
-    const key   = interaction.options.getString('script');
-    const guide = GUIDES[key];
-    if (!guide) return interaction.reply({ content: '❌ No guide found for this script.', flags: MessageFlags.Ephemeral });
+    if (!await guard(interaction, 'script_guides')) return;
 
-    const embed = makeEmbed({ title: guide.title, description: guide.description, guildName: interaction.guild.name });
-    const row   = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setLabel('Tebex').setStyle(ButtonStyle.Link).setURL('https://www.msk-scripts.de/'),
-      new ButtonBuilder().setLabel('Documentation').setStyle(ButtonStyle.Link).setURL('https://docu.msk-scripts.de/'),
-      new ButtonBuilder().setLabel('Github').setStyle(ButtonStyle.Link).setURL('https://github.com/MSK-Scripts'),
-    );
+    const list = guides();
+    if (!list.length) {
+      return interaction.reply({ content: t('panels.supportGuides.noneConfigured'), flags: MessageFlags.Ephemeral });
+    }
 
-    await interaction.reply({ embeds: [embed], components: [row] });
+    const key = interaction.options.getString('script');
+    const guide = list.find(g => g.value === key);
+    if (!guide) {
+      return interaction.reply({ content: t('panels.supportGuides.notFound'), flags: MessageFlags.Ephemeral });
+    }
+
+    const embed = makeEmbed({
+      title:       guide.title,
+      description: guide.description,
+      guildName:   interaction.guild.name,
+    });
+
+    const components = config.get('features.supportGuides.showLinkButtons', true) ? linkRow() : [];
+    await interaction.reply({ embeds: [embed], components });
   },
 };

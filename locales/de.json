@@ -1,0 +1,544 @@
+{
+  "_meta": {
+    "name": "Deutsch",
+    "code": "de"
+  },
+
+  "common": {
+    "noPermission": "❌ Dir fehlt die Rolle für diesen Befehl.",
+    "unexpectedError": "❌ Es ist ein unerwarteter Fehler aufgetreten.",
+    "featureDisabled": "❌ Diese Funktion ist abgeschaltet.",
+    "roleNotFound": "❌ Rolle nicht gefunden. Bitte wende dich an einen Admin.",
+    "none": "*keine*",
+    "removed": "*entfernt*",
+    "unknown": "Unbekannt",
+    "never": "Nie",
+    "unlimited": "∞",
+    "playAgain": "/{command} für eine neue Runde"
+  },
+
+  "commands": {
+    "ping":            { "description": "Antwortet mit Pong und der aktuellen Latenz" },
+    "userinfo":        { "description": "Informationen über ein Mitglied",
+                         "options": { "member": "Das Mitglied, über das du Infos willst" } },
+    "clear":           { "description": "Löscht eine bestimmte Anzahl Nachrichten",
+                         "options": { "amount": "Anzahl der Nachrichten (maximal {max})" } },
+    "information":     { "description": "Das Informationspanel mit Link-Buttons posten" },
+    "rules":           { "description": "Das Regelpanel mit Bestätigungsbutton posten" },
+    "roles":           { "description": "Das Panel für selbst wählbare Rollen posten" },
+    "script_guides":   { "description": "Eine Hilfeseite anzeigen",
+                         "options": { "script": "Wähle die Hilfeseite, die du sehen willst" } },
+    "backup_database": { "description": "Ein Datenbank-Backup erstellen" },
+    "send_message":    { "description": "Eine einfache Nachricht als Bot senden" },
+    "send_embed":      { "description": "Ein Embed als Bot senden" },
+    "random":          { "description": "Eine neue Runde Zahlenraten starten",
+                         "options": { "number1": "Untere Grenze", "number2": "Obere Grenze" } },
+    "rg":              { "description": "Rate die Zahl",
+                         "options": { "number": "Deine Vermutung" } },
+    "flachwitz":       { "description": "Füße hoch, der Witz kommt flach!" },
+    "add_flachwitz":   { "description": "Einen Flachwitz hinzufügen",
+                         "options": { "witz": "Wie lautet dein Flachwitz?" } },
+    "blackjack":       { "description": "Spiele Blackjack gegen den Dealer!" },
+    "connect4":        { "description": "Spiele Vier gewinnt gegen den Bot!" },
+    "dice":            { "description": "Würfle einen oder mehrere Würfel!",
+                         "options": { "sides": "Anzahl der Seiten des Würfels", "count": "Wie viele Würfel (1-10, Standard 1)" } },
+    "8ball":           { "description": "Stelle der magischen 8-Ball eine Ja-Nein-Frage!",
+                         "options": { "question": "Deine Ja-Nein-Frage" } },
+    "flipcoin":        { "description": "Wirf eine Münze - Kopf oder Zahl?" },
+    "hangman":         { "description": "Spiele eine Runde Galgenmännchen!" },
+    "points":          { "description": "Zeigt deine Punkte und den Fortschritt zu den Belohnungen!" },
+    "rps":             { "description": "Spiele Schere Stein Papier gegen den Bot!" },
+    "slots":           { "description": "Versuche dein Glück am einarmigen Banditen!" },
+    "tictactoe":       { "description": "Spiele Tic Tac Toe gegen den Bot!" },
+    "trivia":          { "description": "Beantworte eine zufällige Quizfrage!" },
+    "wordle":          { "description": "Errate das geheime Wort aus 5 Buchstaben in 6 Versuchen!" }
+  },
+
+  "panels": {
+    "sentInformation": "Die Information wurde in diesen Kanal gesendet.",
+    "sentRules": "Die Regeln wurden in diesen Kanal gesendet.",
+    "sentRoles": "Das Rollen-Panel wurde in diesen Kanal gesendet.",
+    "nothingToPost": "❌ Nichts zu posten: für dieses Panel ist noch kein Inhalt konfiguriert.",
+    "information": {
+      "defaultTitle": "Willkommen im Discord von {brand}!"
+    },
+    "rules": {
+      "ruleLine": "**{number}.** {text}"
+    },
+    "roleMenu": {
+      "added": "Die Rolle {role} wurde dir gegeben.",
+      "removed": "Die Rolle {role} wurde entfernt.",
+      "alreadyHave": "Du hast die Rolle {role} bereits.\nDiese Rolle kannst du nicht entfernen!",
+      "confirmQuestion": "Möchtest du die Rolle entfernen?",
+      "confirmButton": "Rolle entfernen",
+      "verifyRoleMissing": "❌ Die Verifizierungsrolle wurde nicht gefunden. Bitte wende dich an einen Admin."
+    },
+    "supportGuides": {
+      "notFound": "❌ Zu diesem Eintrag gibt es keine Hilfeseite.",
+      "noneConfigured": "❌ Es sind keine Hilfeseiten konfiguriert."
+    }
+  },
+
+  "utility": {
+    "ping": "🏓 Pong!\nLatenz: `{latency}ms`",
+    "userinfo": {
+      "title": "Userinfo für {username}",
+      "description": "Informationen über {mention}",
+      "accountCreated": "Account erstellt am",
+      "joinedServer": "Server betreten am",
+      "userId": "User-ID",
+      "roles": "Rollen",
+      "points": "🪙 Minigame-Punkte",
+      "notFound": "❌ Mitglied nicht gefunden oder nicht mehr auf diesem Server."
+    },
+    "clear": {
+      "tooMany": "❌ Du kannst nicht mehr als {max} Nachrichten auf einmal löschen.",
+      "tooFew": "❌ Die Anzahl muss mindestens 1 sein.",
+      "done": "✅ {count} Nachricht(en) gelöscht."
+    }
+  },
+
+  "admin": {
+    "backup": {
+      "failed": "❌ Das Backup ist fehlgeschlagen. Schau in die Server-Logs.",
+      "uploadFailed": "❌ Backup erstellt, aber der Upload ist fehlgeschlagen.",
+      "success": "Backup erfolgreich erstellt. ✅",
+      "logMessage": "Neues Backup erstellt am {date}",
+      "noChannel": "❌ Backup erstellt, aber es ist kein Log-Kanal konfiguriert."
+    },
+    "sendMessage": {
+      "modalTitle": "Nachricht senden",
+      "label": "Text",
+      "placeholder": "Text eingeben",
+      "failed": "❌ Die Nachricht konnte nicht gesendet werden. Prüfe meine Rechte in diesem Kanal.",
+      "success": "Die Nachricht wurde gesendet ✅"
+    },
+    "sendEmbed": {
+      "modalTitle": "Embed senden",
+      "labelTitle": "Titel",
+      "labelDescription": "Text",
+      "labelThumbnail": "Thumbnail",
+      "labelImage": "Bild",
+      "labelFooter": "Footer",
+      "placeholderTitle": "Titel eingeben",
+      "placeholderDescription": "Text eingeben",
+      "placeholderUrl": "URL eingeben",
+      "placeholderFooter": "Footer-Text eingeben",
+      "failed": "❌ Das Embed konnte nicht gesendet werden. Prüfe die URLs und meine Rechte in diesem Kanal.",
+      "success": "Das Embed wurde gesendet ✅"
+    }
+  },
+
+  "guess": {
+    "title": "🔢 Rate die Zahl",
+    "started": "Ich denke an eine Zahl zwischen **{min}** und **{max}**\nRate mit `/{command} <Zahl>`!\n\nJeder hat diese Runde **{guesses} Versuche**, einen alle **{cooldown} Sekunden**.",
+    "invalidRange": "❌ Die untere Grenze muss kleiner sein als die obere.",
+    "outOfGuesses": "❌ Du hast alle **{guesses}** Versuche dieser Runde verbraucht. Warte, bis das Team mit `/{command}` eine neue startet.",
+    "cooldown": "⏳ Nicht so schnell. Du kannst in **{seconds}s** wieder raten.",
+    "outOfRange": "❌ Rate zwischen **{min}** und **{max}**.",
+    "correctTitle": "✅ Richtige Zahl!",
+    "correctBody": "{user} Die Zahl **{number}** ist **richtig**! 🎉",
+    "wrongTitle": "❌ Falsche Zahl!",
+    "wrongBody": "{user} Die Zahl **{number}** ist **nicht** richtig. Versuch es **{hint}**.\n\nVerbleibende Versuche: **{left}**",
+    "higher": "höher",
+    "lower": "niedriger"
+  },
+
+  "jokes": {
+    "title": "🎤 Füße hoch, der Witz kommt flach!",
+    "empty": "Noch keine Flachwitze vorhanden. Nutze `/{command}`, um einen hinzuzufügen!",
+    "added": "✅ Flachwitz hinzugefügt"
+  },
+
+  "points": {
+    "footer": "{delta} 🪙  (Gesamt: {total} 🪙)",
+    "rewardUnlocked": "🎉 **Belohnung freigeschaltet!** Du hast **{points} Punkte** erreicht und bekommst: **{label}**!",
+    "title": "🪙 Punkte - {name}",
+    "current": "Aktuelle Punkte",
+    "rewards": "Belohnungen",
+    "noRewards": "*Noch keine Belohnungen konfiguriert.*",
+    "unlockedLine": "{label}  ✅  `{points} Pkt`",
+    "lockedLine": "{label}  🔒  `{points} Pkt` - **noch {remaining}!**",
+    "progressTo": "Fortschritt zu {label}",
+    "allUnlockedTitle": "🏆 Status",
+    "allUnlocked": "Du hast alle Belohnungen freigeschaltet!",
+    "footerHint": "Sammle Punkte, indem du Minigames spielst!"
+  },
+
+  "games": {
+    "blackjack": {
+      "title": "🃏 Blackjack",
+      "yourHand": "Deine Hand  ({value}{doubled})",
+      "dealerHand": "Hand des Dealers  ({value})",
+      "doubled": "  *(verdoppelt)*",
+      "hit": "🃏 Karte",
+      "stand": "✋ Halten",
+      "double": "✖️ Verdoppeln",
+      "label": "Blackjack",
+      "hintFooter": "Karte, Halten oder Verdoppeln",
+      "outcomes": {
+        "blackjack": "🃏 Blackjack! Du gewinnst 1,5x!",
+        "push_bj": "🤝 Beide Blackjack - unentschieden!",
+        "dealer_bj": "🤖 Blackjack für den Dealer - du verlierst!",
+        "bust": "💥 Überkauft! Du verlierst!",
+        "dealer_bust": "💥 Der Dealer überkauft sich - du gewinnst!",
+        "win": "🏆 Du gewinnst!",
+        "lose": "💀 Du verlierst!",
+        "push": "🤝 Unentschieden!"
+      }
+    },
+    "connect4": {
+      "title": "🔵 Vier gewinnt",
+      "intro": "{playerEmoji} {player} gegen {botEmoji} Bot\nDu bist dran - wähle eine Spalte!",
+      "winTitle": "🏆 Du gewinnst!",
+      "winBody": "{player} hat vier {emoji} in einer Reihe!",
+      "loseTitle": "🤖 Der Bot gewinnt!",
+      "loseBody": "Der Bot hat vier {emoji} in einer Reihe. Nächstes Mal klappt es!",
+      "drawTitle": "🤝 Unentschieden!",
+      "drawBody": "Das Feld ist voll. Kein Gewinner!",
+      "label": "Vier gewinnt"
+    },
+    "dice": {
+      "title": "🎲 Würfelwurf - {count}x {die}",
+      "single": "🎲 Du hast einen **{die}** geworfen: **{result}**",
+      "multiple": "🎲 Du hast **{count}x {die}** geworfen:\n{rolls}\n\n**Gesamt: {total}**",
+      "perfect": "\n\n🔥 **Perfekter Wurf!** Alle Würfel auf Maximum!",
+      "criticalFail": "\n\n💀 **Totalausfall!** Alle Würfel auf Minimum!",
+      "rolledBy": "Geworfen von {name}"
+    },
+    "eightball": {
+      "author": "🎱 Magische 8-Ball",
+      "question": "❓ Frage",
+      "answer": "🔮 Antwort",
+      "askedBy": "Gefragt von {name}",
+      "positive": [
+        "Ganz sicher.", "So ist es entschieden.", "Ohne jeden Zweifel.", "Ja, ganz bestimmt.",
+        "Darauf kannst du dich verlassen.", "So wie ich es sehe, ja.", "Sehr wahrscheinlich.",
+        "Die Aussichten sind gut.", "Ja.", "Alles deutet auf ja hin."
+      ],
+      "neutral": [
+        "Unklar, frag noch einmal.", "Frag später noch einmal.", "Das sage ich dir jetzt lieber nicht.",
+        "Kann ich gerade nicht vorhersagen.", "Konzentriere dich und frag noch einmal."
+      ],
+      "negative": [
+        "Verlass dich nicht darauf.", "Meine Antwort ist nein.", "Meine Quellen sagen nein.",
+        "Die Aussichten sind nicht gut.", "Sehr zweifelhaft."
+      ]
+    },
+    "flipcoin": {
+      "title": "🪙 Münzwurf",
+      "choose": "{user}, wähle deine Seite!",
+      "heads": "Kopf",
+      "tails": "Zahl",
+      "headsButton": "🪙 Kopf",
+      "tailsButton": "🔙 Zahl",
+      "result": "Du hast gewählt: **{choice}**\nErgebnis:   **{result}**\n\n{outcome}",
+      "label": "Münzwurf",
+      "won": "Gewonnen! 🎉",
+      "lost": "Verloren. 😔"
+    },
+    "hangman": {
+      "title": "🎯 Galgenmännchen",
+      "button": "🔤 Buchstabe raten",
+      "modalTitle": "Buchstabe raten",
+      "modalLabel": "Gib einen einzelnen Buchstaben ein",
+      "modalPlaceholder": "z. B. A",
+      "invalidLetter": "❌ Bitte gib einen gültigen Buchstaben ein (A-Z).",
+      "alreadyGuessed": "⚠️ **{letter}** hattest du schon!",
+      "gallows": "Galgen",
+      "word": "Wort",
+      "wrongLetters": "Falsche Buchstaben",
+      "wrongCount": "Fehlversuche: {wrong}/{max}",
+      "correctTitle": "✅ '{letter}' kommt im Wort vor!",
+      "wrongTitle": "❌ '{letter}' kommt nicht im Wort vor!",
+      "wonTitle": "🏆 Gewonnen!",
+      "lostTitle": "💀 Verloren!",
+      "words": [
+        "schmetterling", "tastatur", "bildschirm", "internet", "datenbank", "netzwerk", "algorithmus", "variable", "funktion", "bibliothek",
+        "schokolade", "elefant", "regenschirm", "krankenhaus", "kalender", "gebirge", "abenteuer", "rechner", "sprache", "geburtstag",
+        "fussball", "schatz", "weltall", "wohnung", "jahrmarkt", "dinosaurier", "feuerwerk", "erdkunde", "hamburger", "eisberg",
+        "qualle", "kaenguru", "irrgarten", "marathon", "zeitung", "orchester", "reisepass", "frage", "regenbogen", "brotzeit",
+        "telefon", "urlaub", "wasserfall", "xylophon", "gestern", "zeppelin", "nachbar", "fenster", "schluessel", "freundschaft",
+        "gewitter", "kuehlschrank", "werkzeug", "zwiebel", "strasse"
+      ],
+      "solution": "Das Wort war: {word}",
+      "label": "Galgenmännchen"
+    },
+    "rps": {
+      "title": "✂️ Schere Stein Papier",
+      "choose": "{user}, triff deine Wahl!",
+      "rock": "Stein",
+      "paper": "Papier",
+      "scissors": "Schere",
+      "winTitle": "🏆 Du gewinnst!",
+      "winBody": "Dein **{playerEmoji} {player}** schlägt **{botEmoji} {bot}** vom Bot!",
+      "loseTitle": "💀 Du verlierst!",
+      "loseBody": "**{botEmoji} {bot}** vom Bot schlägt dein **{playerEmoji} {player}**!",
+      "drawTitle": "🤝 Unentschieden!",
+      "drawBody": "Beide haben **{playerEmoji} {player}** gewählt. Kein Gewinner!",
+      "label": "Schere Stein Papier"
+    },
+    "slots": {
+      "title": "🎰 Einarmiger Bandit",
+      "start": "Drücke **Drehen**, um zu starten!",
+      "spinButton": "🎰 Drehen!",
+      "spinAgain": "🎰 Nochmal drehen!",
+      "spinning": "Dreht...",
+      "spinningButton": "⏳ Dreht...",
+      "label": "Slots",
+      "outcomes": {
+        "jackpot": "🎰 **JACKPOT!** 7️⃣7️⃣7️⃣ - **x50**!",
+        "mega_win": "💎 **MEGA-GEWINN!** 💎💎💎 - **x20**!",
+        "big_win": "⭐ **GROSSER GEWINN!** ⭐⭐⭐ - **x10**!",
+        "win": "🎉 **GEWINN!** {symbols} - **x5**!",
+        "small_win": "🙂 **Kleiner Gewinn!** Zwei gleiche Symbole - **x2**!",
+        "no_match": "😔 **Kein Treffer.** Nächstes Mal klappt es!"
+      }
+    },
+    "tictactoe": {
+      "title": "🎮 Tic Tac Toe",
+      "chooseTitle": "🎮 Tic Tac Toe - Schwierigkeit wählen",
+      "chooseBody": "Hallo {user}! Du spielst mit ❌.\n\nWähle eine Schwierigkeit:",
+      "easy": "🟢 Leicht",
+      "medium": "🟡 Mittel",
+      "hard": "🔴 Schwer",
+      "running": "Spieler: {player} ❌ gegen ⭕ Bot\nSchwierigkeit: {difficulty}\n\nDu bist dran!",
+      "winTitle": "🏆 Gewonnen!",
+      "winBody": "Gut gespielt, {player}! ❌\nSchwierigkeit: {difficulty}",
+      "loseTitle": "🤖 Der Bot gewinnt!",
+      "loseBody": "Nächstes Mal klappt es, {player}.\nSchwierigkeit: {difficulty}",
+      "drawTitle": "🤝 Unentschieden!",
+      "drawBody": "Diesmal kein Gewinner, {player}.\nSchwierigkeit: {difficulty}",
+      "label": "Tic Tac Toe"
+    },
+    "trivia": {
+      "title": "🧠 Quiz - {category}",
+      "body": "**{question}**\n\n{options}",
+      "difficulty": "Schwierigkeit",
+      "result": "Ergebnis",
+      "correct": "✅ **Richtig!** Gut gemacht!",
+      "wrong": "❌ **Falsch!** Die richtige Antwort war:\n**{answer}**",
+      "cooldown": "⏳ Nicht so schnell! Versuch es in **{seconds}s** noch einmal.",
+      "label": "Quiz",
+      "localQuestions": [
+        { "category": "Naturwissenschaft", "difficulty": "easy", "question": "Wie lautet das chemische Symbol für Wasser?", "correct": "H₂O", "wrong": ["O₂", "CO₂", "H₂"] },
+        { "category": "Naturwissenschaft", "difficulty": "easy", "question": "Wie viele Planeten hat unser Sonnensystem?", "correct": "8", "wrong": ["7", "9", "10"] },
+        { "category": "Naturwissenschaft", "difficulty": "medium", "question": "Wie schnell ist das Licht ungefähr, in km/s?", "correct": "300.000", "wrong": ["150.000", "450.000", "1.000.000"] },
+        { "category": "Naturwissenschaft", "difficulty": "medium", "question": "Welches Gas nehmen Pflanzen aus der Luft auf?", "correct": "Kohlendioxid", "wrong": ["Sauerstoff", "Stickstoff", "Wasserstoff"] },
+        { "category": "Naturwissenschaft", "difficulty": "hard", "question": "Welche Ordnungszahl hat Gold?", "correct": "79", "wrong": ["47", "82", "78"] },
+        { "category": "Naturwissenschaft", "difficulty": "hard", "question": "Welches Organell gilt als Kraftwerk der Zelle?", "correct": "Mitochondrium", "wrong": ["Zellkern", "Ribosom", "Golgi-Apparat"] },
+        { "category": "Erdkunde", "difficulty": "easy", "question": "Wie heißt die Hauptstadt von Frankreich?", "correct": "Paris", "wrong": ["London", "Berlin", "Madrid"] },
+        { "category": "Erdkunde", "difficulty": "easy", "question": "Welcher ist der größte Ozean der Erde?", "correct": "Pazifik", "wrong": ["Atlantik", "Indischer Ozean", "Nordpolarmeer"] },
+        { "category": "Erdkunde", "difficulty": "medium", "question": "Welches Land hat die meisten natürlichen Seen?", "correct": "Kanada", "wrong": ["Russland", "USA", "Finnland"] },
+        { "category": "Erdkunde", "difficulty": "hard", "question": "Welches ist der kleinste Staat der Welt?", "correct": "Vatikanstadt", "wrong": ["Monaco", "San Marino", "Liechtenstein"] },
+        { "category": "Geschichte", "difficulty": "easy", "question": "In welchem Jahr endete der Zweite Weltkrieg?", "correct": "1945", "wrong": ["1943", "1944", "1946"] },
+        { "category": "Geschichte", "difficulty": "easy", "question": "Wer war der erste Bundeskanzler der Bundesrepublik?", "correct": "Konrad Adenauer", "wrong": ["Willy Brandt", "Ludwig Erhard", "Kurt Georg Kiesinger"] },
+        { "category": "Geschichte", "difficulty": "medium", "question": "In welchem Jahr fiel die Berliner Mauer?", "correct": "1989", "wrong": ["1987", "1991", "1985"] },
+        { "category": "Technik", "difficulty": "easy", "question": "Wofür steht die Abkürzung 'CPU'?", "correct": "Central Processing Unit", "wrong": ["Central Power Unit", "Computer Processing Unit", "Core Processing Unit"] },
+        { "category": "Technik", "difficulty": "medium", "question": "Welche Programmiersprache hat Guido van Rossum entwickelt?", "correct": "Python", "wrong": ["Java", "Ruby", "Perl"] },
+        { "category": "Mathematik", "difficulty": "easy", "question": "Wie lautet Pi auf zwei Nachkommastellen?", "correct": "3,14", "wrong": ["3,12", "3,16", "3,41"] },
+        { "category": "Mathematik", "difficulty": "hard", "question": "Was ist die Ableitung von sin(x)?", "correct": "cos(x)", "wrong": ["-cos(x)", "tan(x)", "-sin(x)"] }
+      ]
+    },
+    "wordle": {
+      "title": "🟩 Wordle - {tries}/{max}",
+      "button": "💬 Wort raten",
+      "modalTitle": "Gib dein Wort ein",
+      "modalLabel": "Wort aus 5 Buchstaben",
+      "modalPlaceholder": "z. B. KRANZ",
+      "invalid": "❌ Bitte gib genau 5 Buchstaben ein.",
+      "words": [
+        "abend", "abtei", "acker", "adler", "affen", "ahnen", "aktie", "alarm", "alpen", "angel",
+        "anker", "apfel", "arena", "armut", "asche", "atlas", "augen", "autor", "baden", "banal",
+        "bande", "banjo", "basis", "bauch", "bauer", "beben", "beere", "beige", "beute", "biber",
+        "biene", "binde", "birke", "bison", "blatt", "blech", "blick", "blitz", "blume", "bogen",
+        "bombe", "boote", "braun", "braut", "breit", "brise", "brust", "buche", "bucht", "bunte",
+        "busch", "dachs", "damen", "dampf", "danke", "datei", "daten", "dauer", "decke", "degen",
+        "diele", "dinge", "dolch", "dosen", "draht", "drama", "dreck", "duett", "durst", "ebene",
+        "ecken", "eiche", "eifer", "eimer", "einer", "eisen", "elend", "elfen", "engel", "enkel",
+        "enten", "erbse", "erden", "ernte", "erste", "esche", "essen", "etage", "fabel", "faden",
+        "fahne", "falke", "falte", "farbe", "faser", "fauna", "feder", "fegen", "fehde", "feier",
+        "felge", "ferne", "feste", "feuer", "fibel", "filme", "finte", "firma", "fisch", "flach",
+        "flint", "floss", "flora", "folge", "forst", "forum", "frage", "frist", "frost", "fuchs",
+        "fugen", "funke", "gabel", "galle", "gasse", "gatte", "geber", "gebet", "geist", "gelee",
+        "gerte", "gicht", "glanz", "glatt", "gleis", "glied", "gnade", "gramm", "grase", "greif",
+        "gries", "groll", "gurke", "hafen", "hagel", "haken", "halle", "halme", "hanse", "harfe",
+        "harke", "hasel", "hasen", "haube", "hauch", "haupt", "hecke", "heide", "helle", "herde",
+        "hexen", "hilfe", "hobel", "honig", "hotel", "humor", "hunde", "hymne", "insel", "jacke",
+        "jagen", "jeans", "jubel", "juwel", "kabel", "kamel", "kamin", "kanal", "karte", "kasse",
+        "katze", "kegel", "kelle", "kerze", "kette", "kiste", "klang", "klaue", "klima", "knabe",
+        "kobra", "kohle", "komet", "konto", "kopie", "kraft", "kranz", "kreis", "kreuz", "krone",
+        "kugel", "kunde", "kunst", "kurve", "lampe", "lanze", "laser", "laute", "leber", "leder",
+        "lehre", "leser", "licht", "liebe", "linie", "linse", "liste", "locke", "lohne", "lotse",
+        "lunge", "lupen", "magen", "magie", "makel", "maler", "mange", "marke", "maske", "matte",
+        "mauer", "meise", "messe", "meter", "miete", "milch", "minze", "mitte", "model", "monat",
+        "moral", "motor", "mulde", "mumie", "musik", "mutig", "nabel", "nadel", "nagel", "nahme",
+        "narbe", "nasen", "natur", "nebel", "nerve", "nesse", "netze", "nixen", "noten", "nudel",
+        "oasen", "ohren", "onkel", "opfer", "orden", "organ", "orgel", "otter", "paket", "palme",
+        "panik", "panne", "pasta", "pause", "perle", "pfahl", "pfand", "pfeil", "pflug", "phase",
+        "pilot", "pirat", "pixel", "pizza", "platz", "preis", "probe", "prosa", "prunk", "pudel",
+        "pulli", "punkt", "puppe", "quark", "quirl", "radar", "ramme", "rasen", "raten", "raupe",
+        "recht", "regal", "regen", "reich", "reise", "rente", "rippe", "ritte", "robbe", "rodel",
+        "rolle", "rosen", "ruhig", "runde", "sache", "saele", "sahne", "saite", "salat", "samen",
+        "sarge", "sauna", "schaf", "schal", "scheu", "segel", "seide", "seife", "seile", "sekte",
+        "serie", "sicht", "siege", "silbe", "simse", "sinne", "sitte", "socke", "sohle", "sonne",
+        "spalt", "spatz", "speer", "spiel", "spule", "staat", "stadt", "stall", "stamm", "stand",
+        "stein", "stern", "stich", "stiel", "stier", "stirn", "stock", "stoff", "stolz", "stufe",
+        "stuhl", "sturm", "sucht", "suppe", "tafel", "taler", "tante", "tasse", "taube", "teich",
+        "teile", "tempo", "tenor", "thema", "tiger", "tinte", "tisch", "titel", "toast", "tonne",
+        "torte", "traum", "treue", "trupp", "tulpe", "turne", "uhren", "ulmen", "umzug", "ungar",
+        "union", "unrat", "unter", "vasen", "vater", "vogel", "volle", "wache", "waffe", "wagen",
+        "wahle", "walze", "wange", "wanne", "warte", "watte", "weber", "weide", "weile", "weise",
+        "welle", "wende", "werke", "werte", "wesen", "weste", "wette", "wiese", "wille", "winde",
+        "wirte", "witze", "woche", "wolke", "wunde", "wurst", "zange", "zaube", "zebra", "zeche",
+        "zeder", "zeile", "zelle", "zelte", "zenit", "ziege", "ziele", "zitat", "zopfe", "zunge",
+        "zwerg"
+      ],
+      "legend": "🟩 Richtig  🟨 Falsche Position  ⬛ Nicht im Wort",
+      "wonTitle": "🏆 Geschafft in {tries}/{max}!",
+      "wonBody": "Das Wort war **{word}**. Gut gemacht!",
+      "lostTitle": "💀 Verloren!",
+      "lostBody": "Das Wort war **{word}**. Nächstes Mal klappt es!",
+      "label": "Wordle"
+    }
+  },
+
+  "autoReply": {
+    "message": "Hey {user}, {contact} meldet sich gleich bei dir."
+  },
+
+  "feedback": {
+    "title": "Feedback",
+    "body": "**Feedback von** {user} ({name})\n\n{content}"
+  },
+
+  "contextMenus": {
+    "noPermission": "❌ Keine Berechtigung.",
+    "commentFeedback": {
+      "wrongChannel": "❌ Das geht nur im Feedback-Kanal.",
+      "noEmbed": "In dieser Nachricht ist kein Embed.",
+      "modalTitle": "Feedback kommentieren",
+      "label": "Nachricht",
+      "placeholder": "Kommentar eingeben",
+      "success": "Das Feedback wurde kommentiert ✅",
+      "commentBlock": "\n\n______\n**Kommentar** - von {user} ({name})\n{comment}",
+      "dmTitle": "📨 Dein Feedback wurde kommentiert!",
+      "dmCommentBy": "Kommentar von",
+      "dmComment": "Kommentar"
+    },
+    "answerMessage": {
+      "modalTitle": "Auf diese Nachricht antworten",
+      "label": "Nachricht",
+      "placeholder": "Text eingeben",
+      "success": "Die Antwort wurde gesendet ✅"
+    },
+    "editMessage": {
+      "modalTitle": "Diese Nachricht bearbeiten",
+      "label": "Nachricht",
+      "placeholder": "Text eingeben",
+      "success": "Die Nachricht wurde bearbeitet 🙂"
+    },
+    "editEmbed": {
+      "modalTitle": "Dieses Embed bearbeiten",
+      "noEmbed": "Diese Nachricht enthält kein Embed.",
+      "labelTitle": "Titel",
+      "labelDescription": "Text",
+      "labelThumbnail": "Thumbnail",
+      "labelImage": "Bild",
+      "labelFooter": "Footer",
+      "editedAt": "Bearbeitet am {date}",
+      "success": "Die Nachricht wurde bearbeitet 🙂"
+    }
+  },
+
+  "logging": {
+    "fields": {
+      "user": "Mitglied",
+      "id": "ID",
+      "accountAge": "Account-Alter",
+      "roles": "Rollen",
+      "author": "Autor",
+      "channel": "Kanal",
+      "type": "Typ",
+      "role": "Rolle",
+      "code": "Code",
+      "before": "Vorher",
+      "after": "Nachher",
+      "from": "Von",
+      "to": "Nach",
+      "content": "Inhalt",
+      "changes": "Änderungen",
+      "deleted": "Gelöscht",
+      "jumpTo": "Springe zu",
+      "maxUses": "Maximale Nutzungen",
+      "expires": "Läuft ab",
+      "until": "Bis",
+      "createdBy": "Erstellt von",
+      "deletedBy": "Gelöscht von",
+      "updatedBy": "Geändert von",
+      "kickedBy": "Gekickt von",
+      "bannedBy": "Gebannt von",
+      "unbannedBy": "Entbannt von",
+      "timedOutBy": "Timeout von",
+      "removedBy": "Entfernt von",
+      "addedBy": "Hinzugefügt von",
+      "attachments": "Anhänge ({count})",
+      "noTextContent": "*[kein Text]*",
+      "empty": "*[leer]*",
+      "messageLink": "[Nachricht]({url})",
+      "messageCount": "**{count}** Nachrichten",
+      "jumpChannel": "<#{id}>"
+    },
+    "memberJoin": { "title": "📥 Mitglied beigetreten" },
+    "memberLeave": { "title": "📤 Mitglied hat verlassen" },
+    "memberKick": { "title": "👢 Mitglied gekickt" },
+    "memberBan": { "title": "🔨 Mitglied gebannt" },
+    "memberUnban": { "title": "✅ Bann aufgehoben" },
+    "usernameChange": { "title": "✏️ Benutzername geändert" },
+    "nicknameChange": { "title": "📝 Nickname geändert" },
+    "memberTimeout": { "title": "⏱️ Timeout gesetzt" },
+    "memberTimeoutEnd": { "title": "✅ Timeout aufgehoben" },
+    "roleGiven": { "title": "🟢 Rolle vergeben" },
+    "roleRemoved": { "title": "🔴 Rolle entfernt" },
+    "messageDelete": { "title": "🗑️ Nachricht gelöscht" },
+    "messageBulkDelete": { "title": "🗑️ Mehrere Nachrichten gelöscht" },
+    "messageEdit": { "title": "✏️ Nachricht bearbeitet" },
+    "channelCreate": { "title": "📁 Kanal erstellt" },
+    "channelDelete": { "title": "🗑️ Kanal gelöscht" },
+    "channelUpdate": { "title": "✏️ Kanal geändert" },
+    "roleCreate": { "title": "🔑 Rolle erstellt" },
+    "roleDelete": { "title": "🗑️ Rolle gelöscht" },
+    "roleUpdate": { "title": "✏️ Rolle geändert" },
+    "voiceJoin": { "title": "🔊 Sprachkanal betreten" },
+    "voiceLeave": { "title": "🔇 Sprachkanal verlassen" },
+    "voiceMove": { "title": "🔀 Sprachkanal gewechselt" },
+    "voiceMute": { "title": "🔇 Server-stumm" },
+    "voiceUnmute": { "title": "🔊 Stummschaltung aufgehoben" },
+    "voiceDeafen": { "title": "🔕 Server-taub" },
+    "voiceUndeafen": { "title": "🔔 Taubschaltung aufgehoben" },
+    "inviteCreate": { "title": "🔗 Einladung erstellt" },
+    "inviteDelete": { "title": "🗑️ Einladung gelöscht" },
+    "changes": {
+      "name": "**Name:** `{before}` → `{after}`",
+      "channelName": "**Name:** `#{before}` → `#{after}`",
+      "topic": "**Thema:** {before} → {after}",
+      "slowmode": "**Slowmode:** `{before}s` → `{after}s`",
+      "nsfw": "**NSFW:** `{before}` → `{after}`",
+      "color": "**Farbe:** `#{before}` → `#{after}`",
+      "hoist": "**Getrennt angezeigt:** `{before}` → `{after}`",
+      "mentionable": "**Erwähnbar:** `{before}` → `{after}`",
+      "permissions": "**Rechte:**\n{list}",
+      "morePermissions": "\n… und {count} weitere"
+    },
+    "channelTypes": {
+      "text": "Text",
+      "voice": "Sprache",
+      "category": "Kategorie",
+      "announcement": "Ankündigung",
+      "forum": "Forum",
+      "stage": "Bühne",
+      "media": "Medien",
+      "unknown": "Unbekannt ({type})"
+    }
+  }
+}

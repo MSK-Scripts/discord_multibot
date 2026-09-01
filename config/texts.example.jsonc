@@ -1,0 +1,44 @@
+// ─────────────────────────────────────────────────────────────────────────────
+//  Your own wording — config/texts.jsonc
+// ─────────────────────────────────────────────────────────────────────────────
+//
+//  Everything the bot says lives in locales/en.json and locales/de.json. Those
+//  files are TRACKED IN GIT: an update ships new ones, so an edit you make
+//  there is either overwritten on the next deploy or turns the deploy into a
+//  merge conflict.
+//
+//  This file is yours. It is not tracked, it survives every update, and it only
+//  needs to contain the messages you actually want to say differently. The
+//  structure mirrors the locale files: copy the key you want to change, keep
+//  the nesting, drop everything else.
+//
+//  An override applies to EVERY language. If you run the bot in German and
+//  override "common.noPermission" here, that is what German speakers see too —
+//  which is what you want when the point is to say it your way rather than to
+//  translate it.
+//
+//  Placeholders in curly braces are filled in by the bot. Keep the ones you
+//  need; a placeholder you delete simply is not shown, and one you invent stays
+//  in the text as literal {braces}, which is a visible mistake rather than a
+//  silent one.
+//
+//  Copy this file to config/texts.jsonc to start. An empty object is valid and
+//  means "use the shipped wording for everything".
+//
+{
+  // Example — remove or replace. Both of these are real keys.
+  //
+  // "common": {
+  //   "noPermission": "⛔ Sorry, this one is staff only."
+  // },
+  //
+  // "points": {
+  //   "footer": "{delta} coins  (you now have {total})"
+  // },
+  //
+  // "games": {
+  //   "slots": {
+  //     "title": "🎰 Lucky Sevens"
+  //   }
+  // }
+}

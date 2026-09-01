@@ -1,47 +1,58 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { getConfig, getPoints } = require('../../../core/pointsManager');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameColor } = require('../../../core/gameKit');
+const { getPoints, rewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
+
+const BAR_WIDTH = 20;
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('points')
-    .setDescription('Show your current points and reward progress!'),
+  key: 'points',
+  game: 'points',
+  data: applyMeta(new SlashCommandBuilder(), 'points'),
 
   async execute(interaction) {
-    const userId  = interaction.user.id;
-    const current = await getPoints(userId);
-    const rewards = [...(getConfig().rewards ?? [])].sort((a, b) => a.points - b.points);
+    const locale = config.dateLocale();
+    const current = await getPoints(interaction.user.id);
+    const tiers = rewards();
 
     let nextReward = null;
-    const lines = rewards.map(r => {
-      if (current >= r.points) return `${r.description}  ✅  \`${r.points.toLocaleString()} pts\``;
-      const rem = r.points - current;
+    const lines = tiers.map(r => {
+      const points = r.points.toLocaleString(locale);
+      if (current >= r.points) return t('points.unlockedLine', { label: r.label, points });
       if (!nextReward) nextReward = r;
-      return `${r.description}  🔒  \`${r.points.toLocaleString()} pts\` — **${rem.toLocaleString()} to go!**`;
+      return t('points.lockedLine', {
+        label: r.label,
+        points,
+        remaining: (r.points - current).toLocaleString(locale),
+      });
     });
 
     const embed = new EmbedBuilder()
-      .setTitle(`🪙 Points – ${interaction.user.displayName}`)
-      .setColor(0xFEE75C)
+      .setTitle(t('points.title', { name: interaction.user.displayName }))
+      .setColor(gameColor('draw'))
       .setThumbnail(interaction.user.displayAvatarURL())
       .addFields(
-        { name: 'Current Points', value: `**${current.toLocaleString()} 🪙**`, inline: false },
-        { name: 'Rewards', value: lines.join('\n') || '*No rewards configured yet.*', inline: false },
+        { name: t('points.current'), value: `**${current.toLocaleString(locale)} 🪙**`, inline: false },
+        { name: t('points.rewards'), value: lines.join('\n') || t('points.noRewards'), inline: false },
       );
 
     if (nextReward) {
-      const BAR = 20;
-      const filled = Math.min(Math.floor((current / nextReward.points) * BAR), BAR);
-      const bar    = '█'.repeat(filled) + '░'.repeat(BAR - filled);
+      const filled = Math.max(0, Math.min(Math.floor((current / nextReward.points) * BAR_WIDTH), BAR_WIDTH));
+      const bar = '█'.repeat(filled) + '░'.repeat(BAR_WIDTH - filled);
       embed.addFields({
-        name:  `Progress to ${nextReward.description}`,
-        value: `\`${bar}\` ${current.toLocaleString()} / ${nextReward.points.toLocaleString()}`,
+        name:  t('points.progressTo', { label: nextReward.label }),
+        value: `\`${bar}\` ${current.toLocaleString(locale)} / ${nextReward.points.toLocaleString(locale)}`,
         inline: false,
       });
-    } else {
-      embed.addFields({ name: '🏆 Status', value: 'You have unlocked all rewards!', inline: false });
+    } else if (tiers.length) {
+      // Only when there was something to unlock. With no rewards configured at
+      // all, "you have unlocked everything" is a claim about nothing.
+      embed.addFields({ name: t('points.allUnlockedTitle'), value: t('points.allUnlocked'), inline: false });
     }
 
-    embed.setFooter({ text: 'Earn points by playing minigames! (8ball excluded)' });
+    embed.setFooter({ text: t('points.footerHint') });
     await interaction.reply({ embeds: [embed] });
   },
 };

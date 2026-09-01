@@ -1,15 +1,14 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require('discord.js');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const {
+  SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder,
+  ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags,
+} = require('discord.js');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter, gameColor } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t, tList } = require('../../../core/i18n');
 
-const WORDS = [
-  'python','discord','server','keyboard','monitor','internet','database','network','algorithm',
-  'variable','function','library','chocolate','elephant','umbrella','hospital','calendar','mountain',
-  'adventure','butterfly','computer','language','birthday','football','treasure','universe',
-  'apartment','carnival','dinosaur','firework','geography','hamburger','iceberg','jellyfish',
-  'kangaroo','labyrinth','marathon','newspaper','orchestra','passport','question','rainbow',
-  'sandwich','telephone','vacation','waterfall','xylophone','yesterday','zeppelin',
-];
-
+// The gallows. Drawing, not wording: it is the same picture in every language,
+// and the number of stages is what MAX_WRONG is derived from.
 const STAGES = [
   '```\n  ___\n |   |\n |\n |\n |\n |\n_|_\n```',
   '```\n  ___\n |   |\n |   O\n |\n |\n |\n_|_\n```',
@@ -21,44 +20,69 @@ const STAGES = [
 ];
 
 const MAX_WRONG = STAGES.length - 1;
+const FALLBACK_WORD = 'discord';
 
-function buildEmbed(game, result = '', char = '', ptsDelta = 0, total = 0) {
+/**
+ * The word list lives in the catalogue, not in the config: it is language, and
+ * a German server needs German words. Only letters a-z are kept, because that
+ * is what the guess input accepts — a word with an umlaut in it could never be
+ * solved.
+ */
+function pickWord() {
+  const words = tList('games.hangman.words').filter(w => /^[a-z]{3,}$/.test(w));
+  return words.length ? words[Math.floor(Math.random() * words.length)] : FALLBACK_WORD;
+}
+
+function buildEmbed(game, result = '', char = '') {
   const stage = STAGES[Math.min(game.wrong, MAX_WRONG)];
-  const displayWord = game.word.split('').map(c => game.guessed.has(c) ? c : '\\_').join(' ');
+  const displayWord = game.word.split('').map(c => (game.guessed.has(c) ? c : '\\_')).join(' ');
   const wrongLetters = [...game.guessed].filter(c => !game.word.includes(c)).sort().join(', ') || '—';
 
-  let title, color, footer;
+  let title, color, lead;
   if (result === 'won') {
-    [title, color, footer] = ['🏆 You won!', 0x57F287, `The word was: ${game.word.toUpperCase()}  •  ${pointsFooter(ptsDelta, total)}`];
+    title = t('games.hangman.wonTitle');
+    color = gameColor('win');
+    lead = t('games.hangman.solution', { word: game.word.toUpperCase() });
   } else if (result === 'lost') {
-    [title, color, footer] = ['💀 Game Over!', 0xED4245, `The word was: ${game.word.toUpperCase()}  •  ${pointsFooter(ptsDelta, total)}`];
+    title = t('games.hangman.lostTitle');
+    color = gameColor('lose');
+    lead = t('games.hangman.solution', { word: game.word.toUpperCase() });
   } else if (result === 'correct') {
-    [title, color, footer] = [`✅ '${char.toUpperCase()}' is in the word!`, 0x57F287, `Wrong guesses: ${game.wrong}/${MAX_WRONG}`];
+    title = t('games.hangman.correctTitle', { letter: char.toUpperCase() });
+    color = gameColor('win');
+    lead = t('games.hangman.wrongCount', { wrong: game.wrong, max: MAX_WRONG });
   } else if (result === 'wrong') {
-    [title, color, footer] = [`❌ '${char.toUpperCase()}' is not in the word!`, 0xED4245, `Wrong guesses: ${game.wrong}/${MAX_WRONG}`];
+    title = t('games.hangman.wrongTitle', { letter: char.toUpperCase() });
+    color = gameColor('lose');
+    lead = t('games.hangman.wrongCount', { wrong: game.wrong, max: MAX_WRONG });
   } else {
-    [title, color, footer] = ['🎯 Hangman', 0x5865F2, `Wrong guesses: ${game.wrong}/${MAX_WRONG}`];
+    title = t('games.hangman.title');
+    color = gameColor('neutral');
+    lead = t('games.hangman.wrongCount', { wrong: game.wrong, max: MAX_WRONG });
   }
+
+  const footer = `${lead}  •  ${gameFooter('hangman', { delta: game.delta, total: game.total })}`;
 
   return new EmbedBuilder()
     .setTitle(title).setColor(color)
     .addFields(
-      { name: 'Gallows',       value: stage,               inline: true },
-      { name: 'Word',          value: `\`${displayWord}\``, inline: false },
-      { name: 'Wrong Letters', value: wrongLetters,         inline: true },
+      { name: t('games.hangman.gallows'),      value: stage,                inline: true },
+      { name: t('games.hangman.word'),         value: `\`${displayWord}\``, inline: false },
+      { name: t('games.hangman.wrongLetters'), value: wrongLetters,         inline: true },
     )
-    .setFooter({ text: `${footer}  •  /hangman to play again` });
+    .setFooter({ text: footer });
 }
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('hangman').setDescription('Play a game of Hangman!'),
+  key: 'hangman',
+  game: 'hangman',
+  data: applyMeta(new SlashCommandBuilder(), 'hangman'),
 
   async execute(interaction) {
-    const word = WORDS[Math.floor(Math.random() * WORDS.length)];
-    const game = { word, guessed: new Set(), wrong: 0 };
+    const game = { word: pickWord(), guessed: new Set(), wrong: 0, delta: 0, total: 0 };
 
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('hm_guess').setLabel('🔤 Guess Letter').setStyle(ButtonStyle.Primary)
+      new ButtonBuilder().setCustomId('hm_guess').setLabel(t('games.hangman.button')).setStyle(ButtonStyle.Primary),
     );
 
     await interaction.reply({ embeds: [buildEmbed(game)], components: [row] });
@@ -70,12 +94,14 @@ module.exports = {
     });
 
     collector.on('collect', async i => {
-      // Show modal
-      const modal = new ModalBuilder().setCustomId(`hm_modal_${Date.now()}`).setTitle('Guess a Letter');
+      const modal = new ModalBuilder().setCustomId(`hm_modal_${Date.now()}`).setTitle(t('games.hangman.modalTitle'));
       modal.addComponents(
         new ActionRowBuilder().addComponents(
-          new TextInputBuilder().setCustomId('letter').setLabel('Enter a single letter').setPlaceholder('e.g. A').setStyle(TextInputStyle.Short).setMinLength(1).setMaxLength(1).setRequired(true)
-        )
+          new TextInputBuilder().setCustomId('letter')
+            .setLabel(t('games.hangman.modalLabel'))
+            .setPlaceholder(t('games.hangman.modalPlaceholder'))
+            .setStyle(TextInputStyle.Short).setMinLength(1).setMaxLength(1).setRequired(true),
+        ),
       );
       await i.showModal(modal);
 
@@ -84,35 +110,36 @@ module.exports = {
 
       const char = submitted.fields.getTextInputValue('letter').trim().toLowerCase();
       if (!/^[a-z]$/.test(char)) {
-        await submitted.reply({ content: '❌ Please enter a valid letter (A–Z).', flags: MessageFlags.Ephemeral });
-        return;
+        return submitted.reply({ content: t('games.hangman.invalidLetter'), flags: MessageFlags.Ephemeral });
       }
-
       if (game.guessed.has(char)) {
-        await submitted.reply({ content: `⚠️ You already guessed **${char.toUpperCase()}**!`, flags: MessageFlags.Ephemeral });
-        return;
+        return submitted.reply({
+          content: t('games.hangman.alreadyGuessed', { letter: char.toUpperCase() }),
+          flags: MessageFlags.Ephemeral,
+        });
       }
 
       game.guessed.add(char);
       let result;
-      if (char in Object.fromEntries([...game.word].map(c => [c, true])) || game.word.includes(char)) {
+      if (game.word.includes(char)) {
         result = [...game.word].every(c => game.guessed.has(c)) ? 'won' : 'correct';
       } else {
-        game.wrong++;
+        game.wrong += 1;
         result = game.wrong >= MAX_WRONG ? 'lost' : 'wrong';
       }
 
-      let ptsDelta = 0, oldPts = 0, newPts = 0;
+      let oldPts = 0;
       if (result === 'won' || result === 'lost') {
-        ptsDelta = getPts('hangman', result === 'won' ? 'win' : 'lose');
-        const pts = await addPoints(interaction.user.id, ptsDelta);
-        oldPts = pts.old; newPts = pts.new;
+        game.delta = getPts('hangman', result === 'won' ? 'win' : 'lose');
+        const pts = await addPoints(interaction.user.id, game.delta);
+        oldPts = pts.old;
+        game.total = pts.new;
         row.components[0].setDisabled(true);
         collector.stop();
       }
 
-      await submitted.update({ embeds: [buildEmbed(game, result, char, ptsDelta, newPts)], components: [row] });
-      if (result === 'won' || result === 'lost') await notifyRewards(submitted, oldPts, newPts);
+      await submitted.update({ embeds: [buildEmbed(game, result, char)], components: [row] });
+      if (result === 'won' || result === 'lost') await notifyRewards(submitted, oldPts, game.total);
     });
 
     collector.on('end', () => {

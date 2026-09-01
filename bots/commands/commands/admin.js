@@ -1,11 +1,14 @@
 const {
-  SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, AttachmentBuilder, MessageFlags,
+  SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder,
+  EmbedBuilder, AttachmentBuilder, MessageFlags,
 } = require('discord.js');
-const { execFile }      = require('child_process');
-const { join }          = require('path');
+const { execFile } = require('child_process');
+const { join } = require('path');
 const { mkdirSync, writeFileSync, unlinkSync } = require('fs');
-const { hasAnyRole, nowStr } = require('../../../core/utils');
-const { EMBED_COLOR, THUMBNAIL_URL, database, guild: gcfg, DATA_DIR } = require('../../../core/config');
+const { nowStr } = require('../../../core/utils');
+const { applyMeta, guard } = require('../../../core/commandKit');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
 
 async function showModal(interaction, title, inputs) {
   const modal = new ModalBuilder().setCustomId(`modal_${Date.now()}`).setTitle(title);
@@ -16,49 +19,55 @@ async function showModal(interaction, title, inputs) {
 
 module.exports = [
   {
-    data: new SlashCommandBuilder()
-      .setName('backup_database')
-      .setDescription('Backup Database [ONLY FOR FOUNDER ROLE]'),
+    key: 'backup_database',
+    feature: 'backupDatabase',
+    data: applyMeta(new SlashCommandBuilder(), 'backup_database'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'backup_database')) return;
 
-      const date       = new Date().toLocaleString('de-DE').replace(/[/:, ]/g, '-').slice(0, -1);
-      const backupDir  = join(DATA_DIR, 'backups');
+      const date = new Date().toLocaleString(config.dateLocale()).replace(/[/:, ]/g, '-').replace(/-+$/, '');
+      const backupDir = join(config.DATA_DIR, 'backups');
       mkdirSync(backupDir, { recursive: true });
-      const backupFile = join(backupDir, `${database.NAME}_${date}.sql`);
+      const backupFile = join(backupDir, `${config.database.NAME}_${date}.sql`);
 
       await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-      // Use execFile (not exec) to avoid shell injection with db credentials.
-      // Capture stdout and write it to the file manually.
+      // execFile, not exec: the database password is an argument here, and a
+      // shell in between would make it a string somebody can break out of.
       execFile(
         'mysqldump',
-        [`-h${database.HOST}`, `-u${database.USER}`, `-p${database.PASSWORD}`, database.NAME],
+        [`-h${config.database.HOST}`, `-u${config.database.USER}`, `-p${config.database.PASSWORD}`, config.database.NAME],
         { maxBuffer: 100 * 1024 * 1024 },
         async (err, stdout) => {
           if (err) {
             console.error('[backup_database]', err);
-            return interaction.editReply({ content: '❌ Backup failed. Check server logs.' });
+            return interaction.editReply({ content: t('admin.backup.failed') });
           }
           try {
             writeFileSync(backupFile, stdout, 'utf8');
-            const logChannel = interaction.guild.channels.cache.get(String(gcfg.LOG_CHANNEL_ID));
-            if (logChannel) {
-              await logChannel.send({
-                content: `New Backup created at ${date}`,
-                files: [new AttachmentBuilder(backupFile)],
-              });
+
+            const channelId = config.channelId(config.get('features.backupDatabase.channelId', ''), 'log');
+            const channel = channelId ? interaction.guild.channels.cache.get(String(channelId)) : null;
+            if (!channel) {
+              // The dump exists but nobody can reach it, which is worth saying
+              // out loud rather than reporting a success nothing came of.
+              return interaction.editReply({ content: t('admin.backup.noChannel') });
             }
-            await interaction.editReply({ content: 'Backup was successful. ✅' });
+
+            await channel.send({
+              content: t('admin.backup.logMessage', { date }),
+              files: [new AttachmentBuilder(backupFile)],
+            });
+            await interaction.editReply({ content: t('admin.backup.success') });
             setTimeout(() => interaction.deleteReply().catch(() => {}), 2000);
           } catch (uploadErr) {
             console.error('[backup_database] upload error:', uploadErr);
-            await interaction.editReply({ content: '❌ Backup created but upload failed.' });
+            await interaction.editReply({ content: t('admin.backup.uploadFailed') });
           } finally {
-            unlinkSync(backupFile);
+            if (config.get('features.backupDatabase.deleteLocalFile', true)) {
+              try { unlinkSync(backupFile); } catch { /* never written, or already gone */ }
+            }
           }
         },
       );
@@ -66,29 +75,26 @@ module.exports = [
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('send_message')
-      .setDescription('Send a Message'),
+    key: 'send_message',
+    data: applyMeta(new SlashCommandBuilder(), 'send_message'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'send_message')) return;
 
       const input = new TextInputBuilder()
         .setCustomId('message_text')
-        .setLabel('Description')
-        .setPlaceholder('Insert Text')
+        .setLabel(t('admin.sendMessage.label'))
+        .setPlaceholder(t('admin.sendMessage.placeholder'))
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true);
 
-      const submitted = await showModal(interaction, 'Send Message', [input]);
+      const submitted = await showModal(interaction, t('admin.sendMessage.modalTitle'), [input]);
       if (!submitted) return;
 
       // Acknowledge the modal submission immediately. A slow channel.send()
-      // would otherwise blow past Discord's 3s interaction deadline — the user
+      // would otherwise blow past Discord's 3s interaction deadline: the user
       // sees a generic "interaction failed" and our later reply() throws a
-      // silently-swallowed 10062.
+      // silently swallowed 10062.
       await submitted.deferReply({ flags: MessageFlags.Ephemeral });
 
       const text = submitted.fields.getTextInputValue('message_text');
@@ -96,33 +102,39 @@ module.exports = [
         await interaction.channel.send(text);
       } catch (err) {
         console.error('[send_message]', err);
-        return submitted.editReply({ content: '❌ Could not send the message. Check my permissions in this channel.' });
+        return submitted.editReply({ content: t('admin.sendMessage.failed') });
       }
-      await submitted.editReply({ content: 'The message was sent successfully ✅' });
+      await submitted.editReply({ content: t('admin.sendMessage.success') });
       setTimeout(() => submitted.deleteReply().catch(() => {}), 2000);
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('send_embed')
-      .setDescription('Send an Embed Message'),
+    key: 'send_embed',
+    data: applyMeta(new SlashCommandBuilder(), 'send_embed'),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.FOUNDER_ROLE_ID, gcfg.MANAGER_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'send_embed')) return;
 
-      const date = nowStr();
+      const thumbUrl = config.thumbnailUrl();
       const inputs = [
-        new TextInputBuilder().setCustomId('title').setLabel('Title').setPlaceholder('Insert Title').setStyle(TextInputStyle.Short).setRequired(false),
-        new TextInputBuilder().setCustomId('description').setLabel('Description').setPlaceholder('Insert Text').setStyle(TextInputStyle.Paragraph).setRequired(true),
-        new TextInputBuilder().setCustomId('thumbnail').setLabel('Thumbnail').setPlaceholder('Insert URL').setValue(THUMBNAIL_URL).setStyle(TextInputStyle.Short).setRequired(false),
-        new TextInputBuilder().setCustomId('image').setLabel('Image').setPlaceholder('Insert URL').setStyle(TextInputStyle.Short).setRequired(false),
-        new TextInputBuilder().setCustomId('footer').setLabel('Footer').setPlaceholder('Insert Footer Text').setValue(`© ${interaction.guild.name} • ${date}`).setStyle(TextInputStyle.Short).setRequired(false),
+        new TextInputBuilder().setCustomId('title').setLabel(t('admin.sendEmbed.labelTitle'))
+          .setPlaceholder(t('admin.sendEmbed.placeholderTitle')).setStyle(TextInputStyle.Short).setRequired(false),
+        new TextInputBuilder().setCustomId('description').setLabel(t('admin.sendEmbed.labelDescription'))
+          .setPlaceholder(t('admin.sendEmbed.placeholderDescription')).setStyle(TextInputStyle.Paragraph).setRequired(true),
+        new TextInputBuilder().setCustomId('thumbnail').setLabel(t('admin.sendEmbed.labelThumbnail'))
+          .setPlaceholder(t('admin.sendEmbed.placeholderUrl')).setStyle(TextInputStyle.Short).setRequired(false),
+        new TextInputBuilder().setCustomId('image').setLabel(t('admin.sendEmbed.labelImage'))
+          .setPlaceholder(t('admin.sendEmbed.placeholderUrl')).setStyle(TextInputStyle.Short).setRequired(false),
+        new TextInputBuilder().setCustomId('footer').setLabel(t('admin.sendEmbed.labelFooter'))
+          .setPlaceholder(t('admin.sendEmbed.placeholderFooter'))
+          .setValue(`© ${interaction.guild.name} • ${nowStr()}`).setStyle(TextInputStyle.Short).setRequired(false),
       ];
+      // Prefilled only when there IS a logo. setValue('') is not the same as
+      // leaving it out: it makes the field look answered with nothing in it.
+      if (thumbUrl) inputs[2].setValue(thumbUrl);
 
-      const submitted = await showModal(interaction, 'Send Embed', inputs);
+      const submitted = await showModal(interaction, t('admin.sendEmbed.modalTitle'), inputs);
       if (!submitted) return;
 
       // Acknowledge the modal submission immediately (see send_message above).
@@ -134,18 +146,21 @@ module.exports = [
       const image     = submitted.fields.getTextInputValue('image');
       const footer    = submitted.fields.getTextInputValue('footer');
 
-      const embed = new EmbedBuilder().setColor(EMBED_COLOR).setTitle(title || null).setDescription(desc);
+      const embed = new EmbedBuilder().setColor(config.embedColor()).setTitle(title || null).setDescription(desc);
       if (thumbnail) embed.setThumbnail(thumbnail);
       if (image)     embed.setImage(image);
-      if (footer)    embed.setFooter({ text: footer, iconURL: THUMBNAIL_URL });
+      // An empty iconURL is an invalid-URL error from Discord, not a no-op, so
+      // an unbranded installation gets a footer without an icon rather than a
+      // command that always fails.
+      if (footer)    embed.setFooter(thumbUrl ? { text: footer, iconURL: thumbUrl } : { text: footer });
 
       try {
         await interaction.channel.send({ embeds: [embed] });
       } catch (err) {
         console.error('[send_embed]', err);
-        return submitted.editReply({ content: '❌ Could not send the embed. Check the URLs and my permissions in this channel.' });
+        return submitted.editReply({ content: t('admin.sendEmbed.failed') });
       }
-      await submitted.editReply({ content: 'The embed was sent successfully ✅' });
+      await submitted.editReply({ content: t('admin.sendEmbed.success') });
       setTimeout(() => submitted.deleteReply().catch(() => {}), 2000);
     },
   },

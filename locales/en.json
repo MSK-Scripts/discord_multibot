@@ -1,0 +1,547 @@
+{
+  "_meta": {
+    "name": "English",
+    "code": "en"
+  },
+
+  "common": {
+    "noPermission": "❌ You do not have the required role for this command.",
+    "unexpectedError": "❌ An unexpected error occurred.",
+    "featureDisabled": "❌ This feature is switched off.",
+    "roleNotFound": "❌ Role not found. Please contact an admin.",
+    "none": "*none*",
+    "removed": "*removed*",
+    "unknown": "Unknown",
+    "never": "Never",
+    "unlimited": "∞",
+    "playAgain": "/{command} to play again"
+  },
+
+  "commands": {
+    "ping":            { "description": "Responds with Pong and the bot's current latency" },
+    "userinfo":        { "description": "Information about a specific user",
+                         "options": { "member": "The user you want info about" } },
+    "clear":           { "description": "Clears a specific amount of messages",
+                         "options": { "amount": "Number of messages to delete (max {max})" } },
+    "information":     { "description": "Post the information panel with link buttons" },
+    "rules":           { "description": "Post the rules panel with the verification button" },
+    "roles":           { "description": "Post the self-assignable role panel" },
+    "script_guides":   { "description": "Show a help guide",
+                         "options": { "script": "Choose the guide you want to see" } },
+    "backup_database": { "description": "Create a database backup" },
+    "send_message":    { "description": "Send a plain message as the bot" },
+    "send_embed":      { "description": "Send an embed as the bot" },
+    "random":          { "description": "Start a new round of Guess the Number",
+                         "options": { "number1": "Lower bound", "number2": "Upper bound" } },
+    "rg":              { "description": "Guess the number",
+                         "options": { "number": "Your guess" } },
+    "flachwitz":       { "description": "Tell a bad joke" },
+    "add_flachwitz":   { "description": "Add a bad joke",
+                         "options": { "witz": "The joke to add" } },
+    "blackjack":       { "description": "Play Blackjack against the dealer!" },
+    "connect4":        { "description": "Play Connect Four against the bot!" },
+    "dice":            { "description": "Roll one or more dice!",
+                         "options": { "sides": "Number of sides on the die", "count": "How many dice to roll (1-10, default 1)" } },
+    "8ball":           { "description": "Ask the Magic 8-Ball a yes/no question!",
+                         "options": { "question": "Your yes/no question" } },
+    "flipcoin":        { "description": "Flip a coin - Heads or Tails?" },
+    "hangman":         { "description": "Play a game of Hangman!" },
+    "points":          { "description": "Show your current points and reward progress!" },
+    "rps":             { "description": "Play Rock Paper Scissors against the bot!" },
+    "slots":           { "description": "Try your luck on the slot machine!" },
+    "tictactoe":       { "description": "Play TicTacToe against the bot!" },
+    "trivia":          { "description": "Answer a random multiple-choice trivia question!" },
+    "wordle":          { "description": "Guess the secret 5-letter word in 6 tries!" }
+  },
+
+  "panels": {
+    "sentInformation": "Information was successfully sent to this channel.",
+    "sentRules": "Rules were successfully sent to this channel.",
+    "sentRoles": "Roles message was successfully sent to this channel.",
+    "nothingToPost": "❌ Nothing to post: this panel has no content configured yet.",
+    "information": {
+      "defaultTitle": "Welcome to the {brand} Discord!"
+    },
+    "rules": {
+      "ruleLine": "**{number}.** {text}"
+    },
+    "roleMenu": {
+      "added": "Role {role} was added to you.",
+      "removed": "Role {role} was removed.",
+      "alreadyHave": "You already have the role {role}.\nYou cannot remove this role!",
+      "confirmQuestion": "Want to remove the role?",
+      "confirmButton": "Remove Role",
+      "verifyRoleMissing": "❌ Verification role not found. Please contact an admin."
+    },
+    "supportGuides": {
+      "notFound": "❌ No guide found for this entry.",
+      "noneConfigured": "❌ No guides are configured."
+    }
+  },
+
+  "utility": {
+    "ping": "🏓 Pong!\nLatency: `{latency}ms`",
+    "userinfo": {
+      "title": "Userinfo for {username}",
+      "description": "Information about {mention}",
+      "accountCreated": "Account created at",
+      "joinedServer": "Server joined at",
+      "userId": "User ID",
+      "roles": "Roles",
+      "points": "🪙 Minigame Points",
+      "notFound": "❌ User not found or no longer in this server."
+    },
+    "clear": {
+      "tooMany": "❌ You cannot delete more than {max} messages at once.",
+      "tooFew": "❌ Amount must be at least 1.",
+      "done": "✅ {count} message(s) deleted."
+    }
+  },
+
+  "admin": {
+    "backup": {
+      "failed": "❌ Backup failed. Check the server logs.",
+      "uploadFailed": "❌ Backup created but the upload failed.",
+      "success": "Backup was successful. ✅",
+      "logMessage": "New backup created at {date}",
+      "noChannel": "❌ Backup created but no log channel is configured."
+    },
+    "sendMessage": {
+      "modalTitle": "Send Message",
+      "label": "Description",
+      "placeholder": "Insert text",
+      "failed": "❌ Could not send the message. Check my permissions in this channel.",
+      "success": "The message was sent successfully ✅"
+    },
+    "sendEmbed": {
+      "modalTitle": "Send Embed",
+      "labelTitle": "Title",
+      "labelDescription": "Description",
+      "labelThumbnail": "Thumbnail",
+      "labelImage": "Image",
+      "labelFooter": "Footer",
+      "placeholderTitle": "Insert title",
+      "placeholderDescription": "Insert text",
+      "placeholderUrl": "Insert URL",
+      "placeholderFooter": "Insert footer text",
+      "failed": "❌ Could not send the embed. Check the URLs and my permissions in this channel.",
+      "success": "The embed was sent successfully ✅"
+    }
+  },
+
+  "guess": {
+    "title": "🔢 Guess the Number",
+    "started": "I'm thinking of a number between **{min}** and **{max}**\nUse `/{command} <number>` to guess the number!\n\nEveryone gets **{guesses} guesses** this round, one every **{cooldown} seconds**.",
+    "invalidRange": "❌ The lower bound must be less than the upper bound.",
+    "outOfGuesses": "❌ You have used all **{guesses}** guesses for this round. Wait until a team member starts a new one with `/{command}`.",
+    "cooldown": "⏳ Slow down. You can guess again in **{seconds}s**.",
+    "outOfRange": "❌ Guess between **{min}** and **{max}**.",
+    "correctTitle": "✅ Correct Number!",
+    "correctBody": "{user} Number **{number}** is **correct**! 🎉",
+    "wrongTitle": "❌ Wrong Number!",
+    "wrongBody": "{user} Number **{number}** is **not** correct. Try **{hint}**.\n\nGuesses left this round: **{left}**",
+    "higher": "higher",
+    "lower": "lower"
+  },
+
+  "jokes": {
+    "title": "🎤 Feet up, here comes a flat one!",
+    "empty": "No jokes yet. Use `/{command}` to add one!",
+    "added": "✅ Joke added"
+  },
+
+  "points": {
+    "footer": "{delta} 🪙  (Total: {total} 🪙)",
+    "rewardUnlocked": "🎉 **Reward unlocked!** You reached **{points} points** and earned: **{label}**!",
+    "title": "🪙 Points - {name}",
+    "current": "Current Points",
+    "rewards": "Rewards",
+    "noRewards": "*No rewards configured yet.*",
+    "unlockedLine": "{label}  ✅  `{points} pts`",
+    "lockedLine": "{label}  🔒  `{points} pts` - **{remaining} to go!**",
+    "progressTo": "Progress to {label}",
+    "allUnlockedTitle": "🏆 Status",
+    "allUnlocked": "You have unlocked all rewards!",
+    "footerHint": "Earn points by playing minigames!"
+  },
+
+  "games": {
+    "blackjack": {
+      "title": "🃏 Blackjack",
+      "yourHand": "Your Hand  ({value}{doubled})",
+      "dealerHand": "Dealer's Hand  ({value})",
+      "doubled": "  *(doubled)*",
+      "hit": "🃏 Hit",
+      "stand": "✋ Stand",
+      "double": "✖️ Double Down",
+      "label": "Blackjack",
+      "hintFooter": "Hit, Stand or Double Down",
+      "outcomes": {
+        "blackjack": "🃏 Blackjack! You win 1.5x!",
+        "push_bj": "🤝 Both Blackjack - Push!",
+        "dealer_bj": "🤖 Dealer Blackjack - You lose!",
+        "bust": "💥 Bust! You lose!",
+        "dealer_bust": "💥 Dealer busts - You win!",
+        "win": "🏆 You win!",
+        "lose": "💀 You lose!",
+        "push": "🤝 Push - It's a tie!"
+      }
+    },
+    "connect4": {
+      "title": "🔵 Connect Four",
+      "intro": "{playerEmoji} {player} vs {botEmoji} Bot\nYour turn - choose a column!",
+      "winTitle": "🏆 You win!",
+      "winBody": "{player} connected four {emoji}!",
+      "loseTitle": "🤖 Bot wins!",
+      "loseBody": "The bot connected four {emoji}. Better luck next time!",
+      "drawTitle": "🤝 Draw!",
+      "drawBody": "The board is full. No winner!",
+      "label": "Connect 4"
+    },
+    "dice": {
+      "title": "🎲 Dice Roll - {count}x {die}",
+      "single": "🎲 You rolled a **{die}** and got: **{result}**",
+      "multiple": "🎲 You rolled **{count}x {die}**:\n{rolls}\n\n**Total: {total}**",
+      "perfect": "\n\n🔥 **Perfect roll!** All dice at maximum!",
+      "criticalFail": "\n\n💀 **Critical fail!** All dice at minimum!",
+      "rolledBy": "Rolled by {name}"
+    },
+    "eightball": {
+      "author": "🎱 Magic 8-Ball",
+      "question": "❓ Question",
+      "answer": "🔮 Answer",
+      "askedBy": "Asked by {name}",
+      "positive": [
+        "It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.",
+        "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.",
+        "Yes.", "Signs point to yes."
+      ],
+      "neutral": [
+        "Reply hazy, try again.", "Ask again later.", "Better not tell you now.",
+        "Cannot predict now.", "Concentrate and ask again."
+      ],
+      "negative": [
+        "Don't count on it.", "My reply is no.", "My sources say no.",
+        "Outlook not so good.", "Very doubtful."
+      ]
+    },
+    "flipcoin": {
+      "title": "🪙 Flip a Coin",
+      "choose": "{user}, choose your side!",
+      "heads": "Heads",
+      "tails": "Tails",
+      "headsButton": "🪙 Heads",
+      "tailsButton": "🔙 Tails",
+      "result": "You chose: **{choice}**\nResult:    **{result}**\n\n{outcome}",
+      "label": "Flip a Coin",
+      "won": "You won! 🎉",
+      "lost": "You lost. 😔"
+    },
+    "hangman": {
+      "title": "🎯 Hangman",
+      "button": "🔤 Guess Letter",
+      "modalTitle": "Guess a Letter",
+      "modalLabel": "Enter a single letter",
+      "modalPlaceholder": "e.g. A",
+      "invalidLetter": "❌ Please enter a valid letter (A-Z).",
+      "alreadyGuessed": "⚠️ You already guessed **{letter}**!",
+      "gallows": "Gallows",
+      "word": "Word",
+      "wrongLetters": "Wrong Letters",
+      "wrongCount": "Wrong guesses: {wrong}/{max}",
+      "correctTitle": "✅ '{letter}' is in the word!",
+      "wrongTitle": "❌ '{letter}' is not in the word!",
+      "wonTitle": "🏆 You won!",
+      "lostTitle": "💀 Game Over!",
+      "words": [
+        "python", "discord", "server", "keyboard", "monitor", "internet", "database", "network", "algorithm", "variable",
+        "function", "library", "chocolate", "elephant", "umbrella", "hospital", "calendar", "mountain", "adventure", "butterfly",
+        "computer", "language", "birthday", "football", "treasure", "universe", "apartment", "carnival", "dinosaur", "firework",
+        "geography", "hamburger", "iceberg", "jellyfish", "kangaroo", "labyrinth", "marathon", "newspaper", "orchestra", "passport",
+        "question", "rainbow", "sandwich", "telephone", "vacation", "waterfall", "xylophone", "yesterday", "zeppelin"
+      ],
+      "solution": "The word was: {word}",
+      "label": "Hangman"
+    },
+    "rps": {
+      "title": "✂️ Rock Paper Scissors",
+      "choose": "{user}, make your choice!",
+      "rock": "Rock",
+      "paper": "Paper",
+      "scissors": "Scissors",
+      "winTitle": "🏆 You win!",
+      "winBody": "Your **{playerEmoji} {player}** beats the bot's **{botEmoji} {bot}**!",
+      "loseTitle": "💀 You lose!",
+      "loseBody": "The bot's **{botEmoji} {bot}** beats your **{playerEmoji} {player}**!",
+      "drawTitle": "🤝 Draw!",
+      "drawBody": "Both chose **{playerEmoji} {player}**. No winner!",
+      "label": "Rock Paper Scissors"
+    },
+    "slots": {
+      "title": "🎰 Slot Machine",
+      "start": "Press **Spin** to start!",
+      "spinButton": "🎰 Spin!",
+      "spinAgain": "🎰 Spin again!",
+      "spinning": "Spinning...",
+      "spinningButton": "⏳ Spinning...",
+      "label": "Slots",
+      "outcomes": {
+        "jackpot": "🎰 **JACKPOT!** 7️⃣7️⃣7️⃣ - **x50**!",
+        "mega_win": "💎 **MEGA WIN!** 💎💎💎 - **x20**!",
+        "big_win": "⭐ **BIG WIN!** ⭐⭐⭐ - **x10**!",
+        "win": "🎉 **WIN!** {symbols} - **x5**!",
+        "small_win": "🙂 **Small win!** Two matching symbols - **x2**!",
+        "no_match": "😔 **No match.** Better luck next time!"
+      }
+    },
+    "tictactoe": {
+      "title": "🎮 TicTacToe",
+      "chooseTitle": "🎮 TicTacToe - Choose Difficulty",
+      "chooseBody": "Hello {user}! You play as ❌.\n\nChoose a difficulty:",
+      "easy": "🟢 Easy",
+      "medium": "🟡 Medium",
+      "hard": "🔴 Hard",
+      "running": "Player: {player} ❌ vs ⭕ Bot\nDifficulty: {difficulty}\n\nYour turn!",
+      "winTitle": "🏆 You won!",
+      "winBody": "Well played, {player}! ❌\nDifficulty: {difficulty}",
+      "loseTitle": "🤖 Bot wins!",
+      "loseBody": "Better luck next time, {player}.\nDifficulty: {difficulty}",
+      "drawTitle": "🤝 Draw!",
+      "drawBody": "No winner this time, {player}.\nDifficulty: {difficulty}",
+      "label": "TicTacToe"
+    },
+    "trivia": {
+      "title": "🧠 Trivia - {category}",
+      "body": "**{question}**\n\n{options}",
+      "difficulty": "Difficulty",
+      "result": "Result",
+      "correct": "✅ **Correct!** Well done!",
+      "wrong": "❌ **Wrong!** The correct answer was:\n**{answer}**",
+      "cooldown": "⏳ Slow down! Try again in **{seconds}s**.",
+      "label": "Trivia",
+      "localQuestions": [
+        { "category": "Science", "difficulty": "easy", "question": "What is the chemical symbol for water?", "correct": "H₂O", "wrong": ["O₂", "CO₂", "H₂"] },
+        { "category": "Science", "difficulty": "easy", "question": "How many planets are in our solar system?", "correct": "8", "wrong": ["7", "9", "10"] },
+        { "category": "Science", "difficulty": "medium", "question": "What is the speed of light in km/s, approximately?", "correct": "300,000", "wrong": ["150,000", "450,000", "1,000,000"] },
+        { "category": "Science", "difficulty": "medium", "question": "What gas do plants absorb from the atmosphere?", "correct": "Carbon dioxide", "wrong": ["Oxygen", "Nitrogen", "Hydrogen"] },
+        { "category": "Science", "difficulty": "hard", "question": "What is the atomic number of gold?", "correct": "79", "wrong": ["47", "82", "78"] },
+        { "category": "Science", "difficulty": "hard", "question": "Which organelle is known as the powerhouse of the cell?", "correct": "Mitochondria", "wrong": ["Nucleus", "Ribosome", "Golgi apparatus"] },
+        { "category": "Geography", "difficulty": "easy", "question": "What is the capital of France?", "correct": "Paris", "wrong": ["London", "Berlin", "Madrid"] },
+        { "category": "Geography", "difficulty": "easy", "question": "What is the largest ocean on Earth?", "correct": "Pacific Ocean", "wrong": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"] },
+        { "category": "Geography", "difficulty": "medium", "question": "Which country has the most natural lakes?", "correct": "Canada", "wrong": ["Russia", "USA", "Finland"] },
+        { "category": "Geography", "difficulty": "hard", "question": "What is the smallest country in the world?", "correct": "Vatican City", "wrong": ["Monaco", "San Marino", "Liechtenstein"] },
+        { "category": "History", "difficulty": "easy", "question": "In which year did World War II end?", "correct": "1945", "wrong": ["1943", "1944", "1946"] },
+        { "category": "History", "difficulty": "easy", "question": "Who was the first President of the United States?", "correct": "George Washington", "wrong": ["Abraham Lincoln", "Thomas Jefferson", "John Adams"] },
+        { "category": "History", "difficulty": "medium", "question": "In which year did the Berlin Wall fall?", "correct": "1989", "wrong": ["1987", "1991", "1985"] },
+        { "category": "Technology", "difficulty": "easy", "question": "What does 'CPU' stand for?", "correct": "Central Processing Unit", "wrong": ["Central Power Unit", "Computer Processing Unit", "Core Processing Unit"] },
+        { "category": "Technology", "difficulty": "medium", "question": "Which programming language was created by Guido van Rossum?", "correct": "Python", "wrong": ["Java", "Ruby", "Perl"] },
+        { "category": "Mathematics", "difficulty": "easy", "question": "What is the value of Pi to two decimal places?", "correct": "3.14", "wrong": ["3.12", "3.16", "3.41"] },
+        { "category": "Mathematics", "difficulty": "hard", "question": "What is the derivative of sin(x)?", "correct": "cos(x)", "wrong": ["-cos(x)", "tan(x)", "-sin(x)"] }
+      ]
+    },
+    "wordle": {
+      "title": "🟩 Wordle - {tries}/{max}",
+      "button": "💬 Guess Word",
+      "modalTitle": "Enter your guess",
+      "modalLabel": "5-letter word",
+      "modalPlaceholder": "e.g. CRANE",
+      "invalid": "❌ Please enter exactly 5 letters.",
+      "words": [
+        "about", "above", "abuse", "actor", "acute", "admit", "adult", "after", "again", "agent",
+        "agree", "ahead", "alarm", "album", "alert", "alike", "alive", "allow", "alone", "along",
+        "alter", "angel", "anger", "angle", "apple", "apply", "argue", "arise", "armor", "aroma",
+        "arrow", "asset", "avoid", "awake", "award", "awful", "basic", "beach", "beard", "beast",
+        "began", "begin", "being", "below", "bench", "black", "blade", "blame", "blank", "blast",
+        "blaze", "bleed", "blend", "bless", "blind", "block", "blood", "bloom", "blown", "board",
+        "bonus", "brain", "brand", "brave", "break", "breed", "bride", "brief", "bring", "broke",
+        "brown", "build", "built", "burst", "buyer", "candy", "cargo", "carry", "catch", "cause",
+        "chain", "chair", "chaos", "charm", "chase", "cheap", "check", "chess", "chest", "chief",
+        "child", "civic", "civil", "claim", "class", "clean", "clear", "clerk", "click", "cliff",
+        "climb", "clock", "clone", "close", "cloth", "cloud", "coach", "coast", "count", "court",
+        "cover", "craft", "crane", "crash", "crazy", "cream", "crime", "cross", "crowd", "crown",
+        "curve", "cycle", "daily", "dance", "depth", "devil", "diary", "doubt", "draft", "drain",
+        "drama", "dream", "dress", "drift", "drink", "drive", "eagle", "early", "earth", "eight",
+        "elite", "enemy", "enter", "equal", "error", "event", "every", "exact", "extra", "faith",
+        "false", "fancy", "fault", "feast", "fence", "fever", "field", "fifth", "fight", "final",
+        "first", "fixed", "flame", "flash", "flesh", "float", "floor", "flour", "focus", "force",
+        "forge", "forth", "found", "frame", "frank", "fraud", "fresh", "front", "frost", "fruit",
+        "grace", "grade", "grain", "grand", "grant", "grape", "grasp", "grass", "great", "green",
+        "grief", "grill", "group", "grown", "guard", "guest", "guide", "guild", "heart", "heavy",
+        "honor", "horse", "hotel", "house", "human", "humor", "hurry", "image", "index", "inner",
+        "input", "issue", "jewel", "joint", "judge", "juice", "knife", "knock", "known", "label",
+        "large", "laser", "later", "laugh", "layer", "learn", "leave", "legal", "lemon", "level",
+        "light", "limit", "local", "logic", "lower", "lucky", "magic", "major", "maker", "march",
+        "match", "mayor", "media", "mercy", "metal", "mixed", "model", "money", "month", "mount",
+        "mouse", "mouth", "movie", "music", "nerve", "never", "night", "noble", "noise", "north",
+        "novel", "nurse", "occur", "ocean", "olive", "order", "other", "outer", "owner", "paint",
+        "panic", "paper", "party", "paste", "pause", "peace", "pearl", "phase", "phone", "photo",
+        "piece", "pilot", "pixel", "place", "plain", "plane", "plant", "plate", "power", "press",
+        "price", "pride", "prime", "print", "prize", "probe", "proof", "prove", "pulse", "punch",
+        "query", "quote", "raise", "range", "rapid", "reach", "ready", "realm", "reply", "rider",
+        "right", "rival", "river", "robot", "rough", "round", "route", "royal", "ruler", "rural",
+        "saint", "salad", "scene", "score", "serve", "seven", "shade", "shake", "shall", "shame",
+        "shape", "share", "shark", "sharp", "shelf", "shell", "shift", "shine", "shirt", "shock",
+        "shoot", "short", "shout", "sight", "since", "sixth", "sixty", "skill", "slash", "slave",
+        "sleep", "slice", "slide", "slope", "small", "smart", "smash", "smile", "smoke", "solar",
+        "solid", "solve", "south", "space", "spark", "speak", "speed", "spend", "spice", "spine",
+        "sport", "spray", "squad", "staff", "stage", "stain", "stair", "stake", "stand", "stare",
+        "start", "state", "steam", "steel", "steep", "stern", "stick", "still", "sting", "stock",
+        "stone", "store", "storm", "story", "stove", "strap", "strip", "study", "style", "sugar",
+        "suite", "sunny", "super", "surge", "swear", "sweep", "sweet", "swift", "sword", "syrup",
+        "table", "taste", "teach", "teeth", "tense", "thank", "theme", "thick", "thing", "think",
+        "those", "three", "tiger", "tight", "timer", "title", "today", "token", "topic", "total",
+        "tough", "towel", "tower", "toxic", "track", "trade", "trail", "train", "trash", "treat",
+        "trend", "trial", "truck", "truly", "trunk", "trust", "truth", "twice", "twist", "under",
+        "until", "upper", "upset", "urban", "usage", "usual", "vague", "valid", "valor", "value",
+        "verse", "viral", "virus", "visit", "vital", "voice", "voter", "wagon", "waste", "watch",
+        "water", "weave", "wedge", "where", "while", "white", "whole", "witch", "world", "worry",
+        "worse", "worst", "worth", "would", "write", "wrong", "young", "youth", "zebra"
+      ],
+      "legend": "🟩 Correct  🟨 Wrong position  ⬛ Not in word",
+      "wonTitle": "🏆 You got it in {tries}/{max}!",
+      "wonBody": "The word was **{word}**. Well done!",
+      "lostTitle": "💀 Game Over!",
+      "lostBody": "The word was **{word}**. Better luck next time!",
+      "label": "Wordle"
+    }
+  },
+
+  "autoReply": {
+    "message": "Hey {user}, {contact} will get back to you shortly."
+  },
+
+  "feedback": {
+    "title": "Feedback",
+    "body": "**Feedback sent by** {user} ({name})\n\n{content}"
+  },
+
+  "contextMenus": {
+    "noPermission": "❌ No permission.",
+    "commentFeedback": {
+      "wrongChannel": "❌ This only works in the feedback channel.",
+      "noEmbed": "No embed found in this message.",
+      "modalTitle": "Comment Feedback",
+      "label": "Message",
+      "placeholder": "Insert the comment",
+      "success": "Successfully commented the feedback ✅",
+      "commentBlock": "\n\n______\n**Comment** - by {user} ({name})\n{comment}",
+      "dmTitle": "📨 Your feedback has been commented!",
+      "dmCommentBy": "Comment by",
+      "dmComment": "Comment"
+    },
+    "answerMessage": {
+      "modalTitle": "Answer to this Message",
+      "label": "Message",
+      "placeholder": "Insert the text",
+      "success": "Successfully replied to the message ✅"
+    },
+    "editMessage": {
+      "modalTitle": "Edit this Message",
+      "label": "Message",
+      "placeholder": "Insert the text",
+      "success": "The message was edited successfully 🙂"
+    },
+    "editEmbed": {
+      "modalTitle": "Edit this Embed",
+      "noEmbed": "This message does not contain an embed.",
+      "labelTitle": "Title",
+      "labelDescription": "Description",
+      "labelThumbnail": "Thumbnail",
+      "labelImage": "Image",
+      "labelFooter": "Footer",
+      "editedAt": "Edited at {date}",
+      "success": "The message was edited successfully 🙂"
+    }
+  },
+
+  "logging": {
+    "fields": {
+      "user": "User",
+      "id": "ID",
+      "accountAge": "Account Age",
+      "roles": "Roles",
+      "author": "Author",
+      "channel": "Channel",
+      "type": "Type",
+      "role": "Role",
+      "code": "Code",
+      "before": "Before",
+      "after": "After",
+      "from": "From",
+      "to": "To",
+      "content": "Content",
+      "changes": "Changes",
+      "deleted": "Deleted",
+      "jumpTo": "Jump to",
+      "maxUses": "Max Uses",
+      "expires": "Expires",
+      "until": "Until",
+      "createdBy": "Created by",
+      "deletedBy": "Deleted by",
+      "updatedBy": "Updated by",
+      "kickedBy": "Kicked by",
+      "bannedBy": "Banned by",
+      "unbannedBy": "Unbanned by",
+      "timedOutBy": "Timed out by",
+      "removedBy": "Removed by",
+      "addedBy": "Added by",
+      "attachments": "Attachments ({count})",
+      "noTextContent": "*[no text content]*",
+      "empty": "*[empty]*",
+      "messageLink": "[Message]({url})",
+      "messageCount": "**{count}** messages",
+      "jumpChannel": "<#{id}>"
+    },
+    "memberJoin": { "title": "📥 Member Joined" },
+    "memberLeave": { "title": "📤 Member Left" },
+    "memberKick": { "title": "👢 Member Kicked" },
+    "memberBan": { "title": "🔨 Member Banned" },
+    "memberUnban": { "title": "✅ Member Unbanned" },
+    "usernameChange": { "title": "✏️ Username Changed" },
+    "nicknameChange": { "title": "📝 Nickname Changed" },
+    "memberTimeout": { "title": "⏱️ Member Timed Out" },
+    "memberTimeoutEnd": { "title": "✅ Timeout Removed" },
+    "roleGiven": { "title": "🟢 Role Added" },
+    "roleRemoved": { "title": "🔴 Role Removed" },
+    "messageDelete": { "title": "🗑️ Message Deleted" },
+    "messageBulkDelete": { "title": "🗑️ Bulk Message Delete" },
+    "messageEdit": { "title": "✏️ Message Edited" },
+    "channelCreate": { "title": "📁 Channel Created" },
+    "channelDelete": { "title": "🗑️ Channel Deleted" },
+    "channelUpdate": { "title": "✏️ Channel Updated" },
+    "roleCreate": { "title": "🔑 Role Created" },
+    "roleDelete": { "title": "🗑️ Role Deleted" },
+    "roleUpdate": { "title": "✏️ Role Updated" },
+    "voiceJoin": { "title": "🔊 Voice Joined" },
+    "voiceLeave": { "title": "🔇 Voice Left" },
+    "voiceMove": { "title": "🔀 Voice Moved" },
+    "voiceMute": { "title": "🔇 Server Muted" },
+    "voiceUnmute": { "title": "🔊 Server Unmuted" },
+    "voiceDeafen": { "title": "🔕 Server Deafened" },
+    "voiceUndeafen": { "title": "🔔 Server Undeafened" },
+    "inviteCreate": { "title": "🔗 Invite Created" },
+    "inviteDelete": { "title": "🗑️ Invite Deleted" },
+    "changes": {
+      "name": "**Name:** `{before}` → `{after}`",
+      "channelName": "**Name:** `#{before}` → `#{after}`",
+      "topic": "**Topic:** {before} → {after}",
+      "slowmode": "**Slowmode:** `{before}s` → `{after}s`",
+      "nsfw": "**NSFW:** `{before}` → `{after}`",
+      "color": "**Color:** `#{before}` → `#{after}`",
+      "hoist": "**Displayed separately:** `{before}` → `{after}`",
+      "mentionable": "**Mentionable:** `{before}` → `{after}`",
+      "permissions": "**Permissions:**\n{list}",
+      "morePermissions": "\n… and {count} more"
+    },
+    "channelTypes": {
+      "text": "Text",
+      "voice": "Voice",
+      "category": "Category",
+      "announcement": "Announcement",
+      "forum": "Forum",
+      "stage": "Stage",
+      "media": "Media",
+      "unknown": "Unknown ({type})"
+    }
+  }
+}

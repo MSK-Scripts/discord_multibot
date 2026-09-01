@@ -1,5 +1,8 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { addPoints, getPts, notifyRewards, pointsFooter } = require('../../../core/pointsManager');
+const { applyMeta } = require('../../../core/commandKit');
+const { gameFooter, gameColor } = require('../../../core/gameKit');
+const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { t } = require('../../../core/i18n');
 
 const EMPTY  = '';
 const PLAYER = 'X';
@@ -12,7 +15,10 @@ const WINNING_COMBOS = [
 ];
 
 const CELL_EMOJIS = { [PLAYER]: '❌', [BOT]: '⭕', [EMPTY]: '⬜' };
-const DIFF_LABELS  = { easy: '🟢 Easy', medium: '🟡 Medium', hard: '🔴 Hard' };
+
+// Read at call time, not at load time: a text override has to reach the label
+// without a restart of the module system.
+const diffLabel = (difficulty) => t(`games.tictactoe.${difficulty}`);
 
 function checkWinner(board) {
   for (const [a, b, c] of WINNING_COMBOS) {
@@ -105,46 +111,49 @@ function buildBoard(board, difficulty, gameOver) {
   return rows;
 }
 
-function buildEmbed(player, difficulty, result = null, ptsDelta = 0, total = 0) {
-  const diff   = DIFF_LABELS[difficulty];
-  let footer   = 'TicTacToe  •  /tictactoe to play again';
-  if (result !== null) footer += `  •  ${pointsFooter(ptsDelta, total)}`;
+function buildEmbed(player, difficulty, result = null, delta = 0, total = 0) {
+  const vars = { player: String(player), difficulty: diffLabel(difficulty) };
 
-  let title, desc, color;
+  let title, body, color;
   if (result === null) {
-    title = '🎮 TicTacToe';
-    desc  = `Player: ${player} ❌ vs ⭕ Bot\nDifficulty: ${diff}\n\nYour turn!`;
-    color = 0x5865F2;
+    title = t('games.tictactoe.title');
+    body  = t('games.tictactoe.running', vars);
+    color = gameColor('neutral');
   } else if (result === PLAYER) {
-    title = '🏆 You won!';
-    desc  = `Well played, ${player}! ❌\nDifficulty: ${diff}`;
-    color = 0x57F287;
+    title = t('games.tictactoe.winTitle');
+    body  = t('games.tictactoe.winBody', vars);
+    color = gameColor('win');
   } else if (result === BOT) {
-    title = '🤖 Bot wins!';
-    desc  = `Better luck next time, ${player}.\nDifficulty: ${diff}`;
-    color = 0xED4245;
+    title = t('games.tictactoe.loseTitle');
+    body  = t('games.tictactoe.loseBody', vars);
+    color = gameColor('lose');
   } else {
-    title = '🤝 Draw!';
-    desc  = `No winner this time, ${player}.\nDifficulty: ${diff}`;
-    color = 0xFEE75C;
+    title = t('games.tictactoe.drawTitle');
+    body  = t('games.tictactoe.drawBody', vars);
+    color = gameColor('draw');
   }
-  return new EmbedBuilder().setTitle(title).setDescription(desc).setColor(color).setFooter({ text: footer });
+
+  return new EmbedBuilder()
+    .setTitle(title).setDescription(body).setColor(color)
+    .setFooter({ text: gameFooter('tictactoe', { delta, total }) });
 }
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('tictactoe').setDescription('Play TicTacToe against the bot!'),
+  key: 'tictactoe',
+  game: 'tictactoe',
+  data: applyMeta(new SlashCommandBuilder(), 'tictactoe'),
 
   async execute(interaction) {
     const diffRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('ttt_diff_easy').setLabel('🟢 Easy').setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setCustomId('ttt_diff_medium').setLabel('🟡 Medium').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('ttt_diff_hard').setLabel('🔴 Hard').setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId('ttt_diff_easy').setLabel(diffLabel('easy')).setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId('ttt_diff_medium').setLabel(diffLabel('medium')).setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('ttt_diff_hard').setLabel(diffLabel('hard')).setStyle(ButtonStyle.Danger),
     );
 
     const startEmbed = new EmbedBuilder()
-      .setTitle('🎮 TicTacToe – Choose Difficulty')
-      .setDescription(`Hello ${interaction.user}! You play as ❌.\n\nChoose a difficulty:`)
-      .setColor(0x5865F2);
+      .setTitle(t('games.tictactoe.chooseTitle'))
+      .setDescription(t('games.tictactoe.chooseBody', { user: String(interaction.user) }))
+      .setColor(gameColor('neutral'));
 
     await interaction.reply({ embeds: [startEmbed], components: [diffRow] });
     const reply = await interaction.fetchReply();
@@ -189,16 +198,16 @@ module.exports = {
           gameCollector.stop();
         }
 
-        let ptsDelta = 0, oldPts = 0, newPts = 0;
+        let delta = 0, oldPts = 0, newPts = 0;
         if (result !== null) {
           const outcome = result === PLAYER ? 'win' : result === BOT ? 'lose' : 'draw';
-          ptsDelta = getPts('tictactoe', difficulty, outcome);
-          const pts = await addPoints(interaction.user.id, ptsDelta);
+          delta = getPts('tictactoe', difficulty, outcome);
+          const pts = await addPoints(interaction.user.id, delta);
           oldPts = pts.old; newPts = pts.new;
         }
 
         await i.update({
-          embeds: [buildEmbed(interaction.user, difficulty, result, ptsDelta, newPts)],
+          embeds: [buildEmbed(interaction.user, difficulty, result, delta, newPts)],
           components: buildBoard(board, difficulty, gameOver),
         });
 

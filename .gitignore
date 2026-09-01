@@ -1,6 +1,15 @@
 # ─── Credentials & Secrets ───────────────────────────────────────────────────
 .env
 
+# ─── This installation's own configuration ───────────────────────────────────
+#
+# The EXAMPLES are tracked and ship as the defaults; these two are the
+# operator's own and must survive every deploy. deploy.yml runs `git clean -df`
+# WITHOUT -x for exactly this reason.
+config/config.jsonc
+config/config.jsonc.bak
+config/texts.jsonc
+
 # ─── Persistente Daten ───────────────────────────────────────────────────────
 data/
 assets/*.*

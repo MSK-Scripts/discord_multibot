@@ -116,8 +116,30 @@ async function topBalances(limit = 10) {
   return (await connect()).topBalances(limit);
 }
 
+// -- dashboard access --------------------------------------------------------
+//
+// Who may open the web dashboard and what they may do there. In the database
+// rather than in config.jsonc because the dashboard WRITES it while it runs,
+// and a file the bot also reads at boot would mean two writers on one file.
+
+/** Every access row. The permission layer decides what they mean. */
+async function getAccessRows() {
+  return (await connect()).getAccessRows();
+}
+
+/** Create or replace one row, keyed by (subjectType, subjectId). */
+async function setAccessRow(row) {
+  return (await connect()).setAccessRow(row);
+}
+
+/** @returns {Promise<boolean>} whether a row was actually removed. */
+async function deleteAccessRow(subjectType, subjectId) {
+  return (await connect()).deleteAccessRow(subjectType, subjectId);
+}
+
 module.exports = {
   connect, close, dialect,
   getMeta, setMeta,
   getBalance, addBalance, topBalances,
+  getAccessRows, setAccessRow, deleteAccessRow,
 };

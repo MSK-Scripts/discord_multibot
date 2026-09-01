@@ -1,0 +1,470 @@
+// ─────────────────────────────────────────────────────────────────────────────
+//  discord_multibot — configuration
+// ─────────────────────────────────────────────────────────────────────────────
+//
+//  THIS FILE IS ALSO THE DEFAULTS. It is tracked in git, and the bot loads it
+//  first, then lays your own config/config.jsonc on top of it. A key you do not
+//  mention keeps the value below, so an update that adds a setting never asks
+//  you to edit your file. Arrays REPLACE rather than merge: a list here is one
+//  you own end to end.
+//
+//  WHAT BELONGS WHERE
+//    .env                  secrets only: the three bot tokens, database
+//                          credentials. Nothing in .env is content.
+//    config/config.jsonc   everything you see below: ids, switches, panels,
+//                          buttons, points. This file, copied and filled in.
+//    locales/en.json       the wording of every message the bot sends.
+//    config/texts.jsonc    your overrides for individual messages.
+//
+//  IDS ARE EMPTY HERE ON PURPOSE. An unset id denies rather than grants: a role
+//  check against "" is simply false. The bot reports what is missing once at
+//  boot and keeps running the parts that work.
+//
+//  Coming from an older installation that kept everything in .env? Run
+//  `npm run migrate:config`. It writes this file from your existing .env, so
+//  the ids and switches come across on their own. It carries NO text: the
+//  rules, the guides and the panel wording ship as the neutral defaults below
+//  and are yours to write.
+//
+{
+  // ─── The Discord server ────────────────────────────────────────────────────
+  //
+  // Commands are registered per guild, so without this nothing can be
+  // registered at all and every command registration fails with a permissions
+  // error that says nothing about the real cause. Not a secret, which is why it
+  // lives here and not in .env.
+  "guildId": "",
+
+  // ─── Language ──────────────────────────────────────────────────────────────
+  // Which locales/<lang>.json the bot speaks. Shipped: "en", "de".
+  // Individual messages can be overridden in config/texts.jsonc regardless.
+  "language": "en",
+
+  // Date and number formatting, e.g. "en-GB", "de-DE". Affects timestamps in
+  // embeds and log lines, not the language of the words around them.
+  "dateLocale": "en-GB",
+
+  // ─── Branding ──────────────────────────────────────────────────────────────
+  //
+  // All of this used to be hardcoded, so a fresh clone posted somebody else's
+  // colour and logo. Every piece degrades on its own.
+  "branding": {
+    // Used where a name is needed. Empty = the Discord server's own name.
+    "name": "",
+
+    // Embed colour. Empty = Discord's blurple, a neutral that belongs to nobody.
+    "color": "#5865F2",
+
+    // Embed thumbnail and footer icon. Empty = no thumbnail and no footer icon.
+    // Leave it empty rather than guessing: Discord rejects an empty URL as an
+    // invalid URL, it is not a quiet no-op.
+    "thumbnailUrl": "",
+
+    // The link buttons under the information, rules and support panels. Remove
+    // an entry and its button disappears; empty the list and the whole button
+    // row is left off, because Discord refuses an empty row.
+    "links": [
+      { "label": "Website", "url": "" },
+      { "label": "Documentation", "url": "" },
+      { "label": "Github", "url": "" }
+    ]
+  },
+
+  // ─── Bot presence ──────────────────────────────────────────────────────────
+  //
+  // One entry per bot role. `text` empty means NO presence is set at all rather
+  // than advertising a stranger. Placeholders: {brand}, {guild}, {members}.
+  //   type:   PLAYING, WATCHING, LISTENING, STREAMING, COMPETING, CUSTOM
+  //   status: online, idle, dnd, invisible
+  "presence": {
+    "commands":  { "enabled": false, "text": "", "type": "PLAYING", "status": "online", "url": "" },
+    "events":    { "enabled": true,  "text": "{brand}", "type": "PLAYING", "status": "online", "url": "" },
+    "minigames": { "enabled": true,  "text": "Minigames 🎮", "type": "PLAYING", "status": "online", "url": "" }
+  },
+
+  // ─── Roles ─────────────────────────────────────────────────────────────────
+  //
+  // Named roles the bot needs to know about. The names on the left are what
+  // `commands.<name>.roles` and the panels below refer to, so renaming a role
+  // in Discord changes nothing here. You may add your own entries.
+  "roles": {
+    "member":         "",   // handed out by the rules panel's verify button
+    "founder":        "",
+    "manager":        "",
+    "developer":      "",
+    "team":           "",
+    "giveawayNotify": ""
+  },
+
+  // ─── Channels ──────────────────────────────────────────────────────────────
+  "channels": {
+    "log":         "",   // server event logging
+    "memberCount": "",   // voice/text channel renamed to show the member count
+    "feedback":    ""    // messages here are turned into embeds
+  },
+
+  // ─── Features ──────────────────────────────────────────────────────────────
+  "features": {
+
+    // ── Server event logging ────────────────────────────────────────────────
+    //
+    // Every event can be switched off on its own. The wording of the embeds
+    // lives in locales/<lang>.json under "logging.*" and can be overridden in
+    // config/texts.jsonc.
+    "logging": {
+      "enabled": true,
+      // Empty falls back to channels.log above. Set it to send the log
+      // somewhere else without moving the rest.
+      "channelId": "",
+      "events": {
+        "memberJoin":        true,
+        "memberLeave":       true,
+        "memberKick":        true,
+        "memberBan":         true,
+        "memberUnban":       true,
+        "usernameChange":    true,
+        "nicknameChange":    true,
+        "memberTimeout":     true,
+        "memberTimeoutEnd":  true,
+        "roleGiven":         true,
+        "roleRemoved":       true,
+        "messageDelete":     true,
+        "messageBulkDelete": true,
+        "messageEdit":       true,
+        "channelCreate":     true,
+        "channelDelete":     true,
+        "channelUpdate":     true,
+        "roleCreate":        true,
+        "roleDelete":        true,
+        "roleUpdate":        true,
+        "voiceJoin":         true,
+        "voiceLeave":        true,
+        "voiceMove":         true,
+        "voiceMute":         true,
+        "voiceDeafen":       true,
+        "inviteCreate":      true,
+        "inviteDelete":      true
+      },
+      // Ignore anything happening in these channels or by these users. Useful
+      // for a bot-spam channel that would otherwise flood the log.
+      "ignoreChannels": [],
+      "ignoreUsers": [],
+      // Colours per event kind, as hex.
+      "colors": {
+        "positive": "#57F287",
+        "negative": "#ED4245",
+        "neutral":  "#5865F2",
+        "warning":  "#FEE75C",
+        "notice":   "#E67E22",
+        "muted":    "#95A5A6",
+        "special":  "#9B59B6"
+      }
+    },
+
+    // ── Member count channel ────────────────────────────────────────────────
+    //
+    // Discord throttles channel renames to 2 per 10 minutes. The rename is
+    // therefore debounced: the displayed number lags by at most the interval
+    // but is always the real one. Do not set the interval below 5 minutes.
+    "memberCount": {
+      "enabled": true,
+      "channelId": "",                       // empty = channels.memberCount
+      "template": "Members: {count}",        // {count}, {guild}
+      "intervalMinutes": 5
+    },
+
+    // ── Feedback channel ────────────────────────────────────────────────────
+    //
+    // A plain message in this channel is deleted and reposted as an embed, so
+    // staff can comment on it with the "Comment Feedback" context menu.
+    "feedback": {
+      "enabled": true,
+      "channelId": "",        // empty = channels.feedback
+      "deleteOriginal": true,
+      "dmOnComment": true     // tell the author when their feedback is commented
+    },
+
+    // ── Auto-reply ──────────────────────────────────────────────────────────
+    //
+    // When a message contains the trigger, the bot points the author at the
+    // contact. INERT unless both are set: a trigger without a contact would
+    // ping nobody, a contact without a trigger never fires.
+    "autoReply": {
+      "enabled": false,
+      "trigger": "",
+      "contactId": "",
+      // These roles are skipped — they are the people being asked for and can
+      // answer themselves. Names from "roles" above, or raw ids.
+      "exemptRoles": ["team"],
+      "caseSensitive": false
+    },
+
+    // ── /information panel ──────────────────────────────────────────────────
+    //
+    // A section whose `channel` or `role` is unset is LEFT OUT rather than
+    // rendered as a dead mention showing a raw number to every reader.
+    "information": {
+      "title": "",                 // empty = "Welcome to the {brand} Discord!"
+      "intro": "We're glad to have you here. Take a moment to explore the server and don't hesitate to reach out if you have any questions.",
+      // Free-form blocks. `channel` may be a key from "channels", a raw id or
+      // empty; when set, {channel} in the text becomes a channel mention.
+      "sections": [
+        {
+          "heading": "Channel Access",
+          "text": "To gain access to all channels, please head over to {channel}, read the rules carefully and confirm them. You will then automatically receive access to the full server.",
+          "channel": ""
+        }
+      ],
+      // The role legend. `role` is a key from "roles" above or a raw id; a line
+      // whose role is unset is dropped.
+      "roleListHeading": "Server Roles",
+      "roleList": [
+        { "role": "", "text": "Has purchased a product from our shop" },
+        { "role": "", "text": "Tests new releases before they go public" },
+        { "role": "", "text": "Helps members in the support channels" },
+        { "role": "", "text": "Keeps order and enforces the server rules" }
+      ],
+      "inviteHeading": "Invite Link",
+      "inviteUrl": "",
+      "showLinkButtons": true
+    },
+
+    // ── /rules panel ────────────────────────────────────────────────────────
+    "rules": {
+      "title": "Discord Rules",
+      "intro": "",
+      // Numbered automatically in the order given. Add, remove and reorder
+      // freely — nothing in the code depends on how many there are.
+      "rules": [
+        "All communication must be conducted in German or English only.",
+        "Spamming or flooding any channel with messages is not permitted.",
+        "NSFW content of any kind is strictly prohibited.",
+        "Treat all members with respect. Inappropriate or offensive language will not be tolerated.",
+        "Harassment, discrimination or hate speech of any form will result in an immediate ban.",
+        "Self-promotion, soliciting, advertising or reselling, whether in channels or via DMs, is not allowed.",
+        "Please keep discussions on-topic and use the appropriate channels.",
+        "Sharing links is only permitted if explicitly approved by a moderator.",
+        "Avoid unnecessary @mentions of members or roles."
+      ],
+      // Shown under the list. {role} becomes a mention of the role below.
+      "consentText": "By clicking the button below, you confirm that you have read and agreed to the rules above and will receive the {role} role.",
+      "button": {
+        "enabled": true,
+        "label": "Verification",
+        "emoji": "✅",
+        "style": "Success",     // Primary, Secondary, Success, Danger
+        "grantsRole": "member"  // key from "roles" above, or a raw id
+      },
+      "showLinkButtons": false
+    },
+
+    // ── /roles self-assign panel ────────────────────────────────────────────
+    //
+    // One button per entry, up to 25 (Discord's limit is 5 rows of 5). A button
+    // whose role is unset is left out. `id` only has to be unique and stable —
+    // it is what Discord sends back when the button is pressed, so changing it
+    // orphans buttons already posted in the channel.
+    //
+    // The two below are PLACEHOLDERS with no role, so the panel does nothing
+    // until you fill them in, and the dashboard reports this feature as
+    // "incomplete" rather than pretending it is ready. That is the point: these
+    // buttons are a list only the operator can write, and shipping somebody
+    // else's — the four script names that used to stand here — hands every
+    // installation a panel advertising products it does not have.
+    "roleMenu": {
+      "title": "Choose your roles",
+      "description": "Click a button to give yourself the matching role. Click it again to take it back.",
+      "buttons": [
+        { "id": "announcements", "label": "Announcements", "emoji": "📣", "style": "Primary", "role": "" },
+        { "id": "events",        "label": "Events",        "emoji": "🎉", "style": "Success", "role": "" }
+      ],
+      // Ask before taking a role away instead of toggling it off in one click.
+      "confirmRemoval": true,
+      "showLinkButtons": false
+    },
+
+    // ── /script_guides ──────────────────────────────────────────────────────
+    //
+    // `value` is what Discord stores for the choice and must be unique;
+    // `name` is what the user picks from the list.
+    "supportGuides": {
+      "enabled": true,
+      "showLinkButtons": true,
+      "guides": [
+        {
+          "value": "documentation",
+          "name": "Documentation",
+          "title": "Documentation",
+          "description": "Link to your documentation here."
+        }
+      ]
+    },
+
+    // ── Guess the number (/random and /rg) ──────────────────────────────────
+    //
+    // The rate limit, not the randomness, is what protects the prize: a range
+    // of 100 values is trivially enumerable, so a per-user budget is the
+    // control that matters.
+    "guessNumber": {
+      "enabled": true,
+      "defaultMin": 1,
+      "defaultMax": 100,
+      "maxGuessesPerRound": 5,
+      "cooldownSeconds": 30,
+      // Appended to the win message. This is where you say how to claim.
+      "winNote": ""
+    },
+
+    // ── /flachwitz ──────────────────────────────────────────────────────────
+    "jokes": {
+      "enabled": true
+    },
+
+    // ── Minigames ───────────────────────────────────────────────────────────
+    "minigames": {
+      "enabled": true,
+      // Per game. A game switched off here is not registered as a command at
+      // all, so it does not show up in Discord's autocomplete either.
+      "games": {
+        "blackjack": true,
+        "connect4":  true,
+        "dice":      true,
+        "eightball": true,
+        "flipcoin":  true,
+        "hangman":   true,
+        "points":    true,
+        "rps":       true,
+        "slots":     true,
+        "tictactoe": true,
+        "trivia":    true,
+        "wordle":    true
+      },
+      // What each outcome pays. Negative values cost points.
+      "points": {
+        "tictactoe": {
+          "easy":   { "win": 5,  "lose": -2, "draw": 1 },
+          "medium": { "win": 10, "lose": -4, "draw": 2 },
+          "hard":   { "win": 20, "lose": -5, "draw": 5 }
+        },
+        "flipcoin": { "win": 3, "lose": -1 },
+        "rps":      { "win": 5, "lose": -2, "draw": 0 },
+        "slots":    { "jackpot": 50, "mega_win": 20, "big_win": 10, "win": 8, "small_win": 3, "no_match": -2 },
+        "trivia": {
+          "easy":   { "win": 5,  "lose": -1 },
+          "medium": { "win": 10, "lose": -2 },
+          "hard":   { "win": 20, "lose": -3 }
+        },
+        "hangman":  { "win": 15, "lose": -3 },
+        "connect4": { "win": 10, "lose": -3, "draw": 2 },
+        "wordle":   { "1_try": 50, "2_try": 30, "3_try": 20, "4_try": 15, "5_try": 10, "6_try": 5, "lose": -5 },
+        "blackjack":{ "win": 15, "blackjack": 25, "lose": -5, "draw": 0 }
+      },
+      // Crossing a threshold congratulates the player and, if a role is given,
+      // hands it over. An entry without a role still congratulates.
+      "rewards": [
+        { "points": 500,   "label": "🥉 Bronze Player",  "role": "" },
+        { "points": 1500,  "label": "🥈 Silver Player",  "role": "" },
+        { "points": 4000,  "label": "🥇 Gold Player",    "role": "" },
+        { "points": 10000, "label": "💎 Diamond Player", "role": "" }
+      ],
+      // Shown under a game's result embed. {delta} and {total} are filled in.
+      "showPointsFooter": true,
+      // Trivia can pull questions from opentdb.com. THE API IS ENGLISH ONLY:
+      // switch it off when the bot runs in another language, and the shipped
+      // question list in locales/<lang>.json is used instead.
+      "trivia": {
+        "useApi": true
+      },
+      // The four colours a game embed uses, as hex.
+      "colors": {
+        "win":     "#57F287",
+        "lose":    "#ED4245",
+        "draw":    "#FEE75C",
+        "neutral": "#5865F2"
+      }
+    },
+
+    // ── /userinfo ───────────────────────────────────────────────────────────
+    "userinfo": {
+      "showRoles": true,
+      "showPoints": true,
+      "showAccountAge": true,
+      "showJoinedAt": true
+    },
+
+    // ── /clear ──────────────────────────────────────────────────────────────
+    "clear": {
+      // Discord itself refuses more than 100 per call and anything older than
+      // 14 days, so this is a floor on top of a hard limit, never a way past it.
+      "maxMessages": 100
+    },
+
+    // ── /backup_database ────────────────────────────────────────────────────
+    //
+    // Dumps the FiveM server's MariaDB using the DB_* credentials from .env and
+    // posts the file to the log channel. Off by default: it needs mysqldump on
+    // the machine and hands a full database dump to whoever may run it.
+    "backupDatabase": {
+      "enabled": false,
+      "channelId": "",           // empty = channels.log
+      "deleteLocalFile": true
+    },
+
+    // ── Message context menus ───────────────────────────────────────────────
+    //
+    // Right-click a message → Apps. `name` is what Discord shows; renaming one
+    // is safe, the code routes by the key on the left.
+    "contextMenus": {
+      "commentFeedback": { "enabled": true, "name": "Comment Feedback", "roles": ["founder", "manager"] },
+      "answerMessage":   { "enabled": true, "name": "Answer a Message", "roles": ["founder", "manager"] },
+      "editMessage":     { "enabled": true, "name": "Edit Message",     "roles": ["founder", "manager"] },
+      "editEmbed":       { "enabled": true, "name": "Edit Embed",       "roles": ["founder", "manager"] }
+    }
+  },
+
+  // ─── Commands ──────────────────────────────────────────────────────────────
+  //
+  // One entry per slash command.
+  //   enabled      false = not registered with Discord at all
+  //   name         what members type. Lowercase, 1-32 chars, no spaces.
+  //   description  what Discord shows next to it. Empty = the shipped wording
+  //                from locales/<lang>.json.
+  //   roles        who may run it. EMPTY LIST MEANS EVERYONE. Entries are keys
+  //                from "roles" above or raw role ids.
+  //
+  // Renaming is safe: registration and routing both read this table, so they
+  // cannot drift apart.
+  "commands": {
+    "ping":            { "enabled": true, "name": "ping",            "description": "", "roles": [] },
+    "userinfo":        { "enabled": true, "name": "userinfo",        "description": "", "roles": [] },
+    "clear":           { "enabled": true, "name": "clear",           "description": "", "roles": ["team"] },
+
+    "information":     { "enabled": true, "name": "information",     "description": "", "roles": ["manager", "founder"] },
+    "rules":           { "enabled": true, "name": "rules",           "description": "", "roles": ["manager", "founder"] },
+    "roles":           { "enabled": true, "name": "roles",           "description": "", "roles": ["manager", "founder"] },
+
+    "script_guides":   { "enabled": true, "name": "script_guides",   "description": "", "roles": [] },
+
+    "backup_database": { "enabled": true, "name": "backup_database", "description": "", "roles": ["founder"] },
+    "send_message":    { "enabled": true, "name": "send_message",    "description": "", "roles": ["founder", "manager"] },
+    "send_embed":      { "enabled": true, "name": "send_embed",      "description": "", "roles": ["founder", "manager"] },
+
+    "random":          { "enabled": true, "name": "random",          "description": "", "roles": ["team"] },
+    "rg":              { "enabled": true, "name": "rg",              "description": "", "roles": [] },
+    "flachwitz":       { "enabled": true, "name": "flachwitz",       "description": "", "roles": [] },
+    "add_flachwitz":   { "enabled": true, "name": "add_flachwitz",   "description": "", "roles": ["team"] },
+
+    "blackjack":       { "enabled": true, "name": "blackjack",       "description": "", "roles": [] },
+    "connect4":        { "enabled": true, "name": "connect4",        "description": "", "roles": [] },
+    "dice":            { "enabled": true, "name": "dice",            "description": "", "roles": [] },
+    "8ball":           { "enabled": true, "name": "8ball",           "description": "", "roles": [] },
+    "flipcoin":        { "enabled": true, "name": "flipcoin",        "description": "", "roles": [] },
+    "hangman":         { "enabled": true, "name": "hangman",         "description": "", "roles": [] },
+    "points":          { "enabled": true, "name": "points",          "description": "", "roles": [] },
+    "rps":             { "enabled": true, "name": "rps",             "description": "", "roles": [] },
+    "slots":           { "enabled": true, "name": "slots",           "description": "", "roles": [] },
+    "tictactoe":       { "enabled": true, "name": "tictactoe",       "description": "", "roles": [] },
+    "trivia":          { "enabled": true, "name": "trivia",          "description": "", "roles": [] },
+    "wordle":          { "enabled": true, "name": "wordle",          "description": "", "roles": [] }
+  }
+}

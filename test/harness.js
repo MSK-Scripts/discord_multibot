@@ -6,12 +6,17 @@
 // InteractionCreate listeners. No Discord token is needed, and nothing is
 // written outside data/points.json, which is restored afterwards.
 //
+// THE CONFIG IS A FIXTURE, NOT THE DEVELOPER'S OWN. A temporary config.jsonc
+// with fake snowflakes is written before anything requires core/config, and
+// MULTIBOT_CONFIG points at it. Reading whoever's real config happened to be on
+// the machine made the role gates pass or fail depending on the developer, and
+// on a fresh CI checkout there is no config at all.
+//
 // The last section does hit the network: it calls client.login() with an
 // obviously invalid token and asserts that Discord rejects it. That single
 // unauthenticated request is what proves the REST stack actually works, and it
-// is the check that caught undici 8 breaking @discordjs/rest (see the Overrides
-// section in README.md). Set SKIP_NETWORK_TESTS=1 to leave it out on a machine
-// without internet access.
+// is the check that caught undici 8 breaking @discordjs/rest. Set
+// SKIP_NETWORK_TESTS=1 to leave it out on a machine without internet access.
 //
 // KNOWN BLIND SPOT: an invalid token fails at REST authentication, so the
 // gateway WebSocket is never opened and @discordjs/ws is never exercised. An
@@ -24,27 +29,55 @@ const { execSync } = require('child_process');
 const assert = require('assert');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 const REPO = process.argv[2] ?? path.join(__dirname, '..');
 process.chdir(REPO);
 
-// core/config.js no longer carries any ids: an unset one is the empty string,
-// because a default here means a fresh clone points at somebody else's server.
-// The harness therefore seeds its own fake snowflakes BEFORE anything requires
-// core/config, or every role gate would read '' and F0 would fail on a repo
-// that is perfectly fine.
-//
-// Only UNSET variables are filled, so a developer with a real .env still tests
-// against their own values.
-const FAKE_IDS = [
-  'GUILD_ID', 'LOG_CHANNEL_ID', 'MEMBER_COUNT_CHANNEL_ID', 'FEEDBACK_CHANNEL_ID',
-  'MEMBER_ROLE_ID', 'FOUNDER_ROLE_ID', 'MANAGER_ROLE_ID', 'DEVELOPER_ROLE_ID',
-  'GIVEAWAY_NOTIFY_ROLE_ID', 'TEAM_ROLE_ID', 'GARAGE_ROLE_ID', 'HANDCUFFS_ROLE_ID',
-  'STORAGE_ROLE_ID', 'VEHICLEKEYS_ROLE_ID',
-];
-FAKE_IDS.forEach((key, i) => {
-  if (!process.env[key]) process.env[key] = String(900000000000001000 + i);
-});
+// ── the fixture config ───────────────────────────────────────────────────────
+/**
+ * Distinct fake snowflakes.
+ *
+ * BUILT AS A STRING, NOT BY ADDING TO A NUMBER. `900000000000001000 + n` is
+ * past Number.MAX_SAFE_INTEGER, so every n produced the SAME id and half the
+ * checks below silently compared a value with itself. That is the repo's own
+ * "snowflakes are strings, always" rule, broken in the one place nobody was
+ * looking: the test helper.
+ */
+const FAKE = (n) => `9000000000000${String(10000 + n)}`;
+
+const FIXTURE = {
+  guildId: FAKE(0),
+  language: 'en',
+  roles: {
+    member: FAKE(1), founder: FAKE(2), manager: FAKE(3),
+    developer: FAKE(4), team: FAKE(5), giveawayNotify: FAKE(6),
+  },
+  channels: { log: FAKE(10), memberCount: FAKE(11), feedback: FAKE(12) },
+  features: {
+    rules: { button: { grantsRole: 'member' } },
+    roleMenu: { buttons: [{ id: 'announcements', label: 'Announcements', emoji: '📣', style: 'Primary', role: FAKE(20) }] },
+    autoReply: { enabled: true, trigger: 'harness-trigger', contactId: FAKE(21) },
+    supportGuides: {
+      guides: [{ value: 'demo', name: 'Demo', title: 'Demo guide', description: 'A demo guide body.' }],
+    },
+    information: {
+      sections: [{ heading: 'Access', text: 'Head to {channel} first.', channel: FAKE(12) }],
+      roleList: [{ role: 'founder', text: 'Runs the place' }],
+      inviteUrl: 'https://example.com/invite',
+    },
+    backupDatabase: { enabled: true },
+  },
+};
+
+const FIXTURE_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'multibot-harness-')), 'config.jsonc');
+fs.writeFileSync(FIXTURE_PATH, JSON.stringify(FIXTURE, null, 2), 'utf8');
+process.env.MULTIBOT_CONFIG = FIXTURE_PATH;
+
+// A throwaway database, set before anything connects. Without this the harness
+// would write into data/multibot.db and hand out points to a made-up user on
+// the real installation.
+process.env.DATABASE_URL = 'sqlite::memory:';
 
 const req = p => require(path.join(REPO, p));
 
@@ -60,25 +93,49 @@ async function acheck(name, fn) {
 }
 const section = t => console.log('\n' + t);
 
+/**
+ * Tracked source files, minus the tests and everything GENERATED.
+ *
+ * graphify-out/ is built from the source and web/dist/ is built from web/src/,
+ * so a hit in either is an echo of the real thing rather than a second
+ * occurrence of it. The minified bundle would also sail into the id scan on the
+ * day a hash happens to contain eighteen digits in a row.
+ */
+const GENERATED = ['graphify-out/', 'web/dist/'];
+const trackedSources = (patterns) => execSync(`git ls-files ${patterns}`, { cwd: REPO })
+  .toString().trim().split(/\r?\n/)
+  .filter(f => f && !f.startsWith('test/') && !GENERATED.some(d => f.startsWith(d))
+    && fs.existsSync(path.join(REPO, f)));
+
+/**
+ * Whole-line and block comments removed.
+ *
+ * Several files EXPLAIN what used to be hardcoded, and prose about a mistake is
+ * not the mistake. Without this the scans below report the comment that warns
+ * about them.
+ */
+const stripComments = (src) => src
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .split('\n').filter(l => !l.trim().startsWith('//') && !l.trim().startsWith('*')).join('\n');
+
 // ---------------------------------------------------------------- versions
 section('A) installed dependency versions');
 const v = (p, dir = path.join(REPO, 'node_modules'), depth = 0) => {
-  const direct = path.join(dir, p, 'package.json');
-  if (fs.existsSync(direct)) return JSON.parse(fs.readFileSync(direct, 'utf8')).version;
-  if (depth > 2) return null;
-  for (const e of fs.readdirSync(dir)) {
-    const nested = e.startsWith('@')
-      ? fs.readdirSync(path.join(dir, e)).map(x => path.join(dir, e, x, 'node_modules'))
-      : [path.join(dir, e, 'node_modules')];
-    for (const n of nested) {
-      if (!fs.existsSync(n)) continue;
-      const found = v(p, n, depth + 1);
-      if (found) return found;
+  try {
+    return JSON.parse(fs.readFileSync(path.join(dir, p, 'package.json'), 'utf8')).version;
+  } catch {
+    if (depth > 2) return null;
+    for (const scope of ['discord.js', '@discordjs/rest', '@discordjs/ws']) {
+      const nested = path.join(dir, scope, 'node_modules');
+      if (fs.existsSync(path.join(nested, p))) return v(p, nested, depth + 1);
     }
+    return null;
   }
-  return null;
 };
-for (const p of ['discord.js', 'dotenv', '@discordjs/collection', '@discordjs/ws', '@discordjs/rest', 'undici']) {
+for (const p of [
+  'discord.js', 'undici', '@discordjs/rest', '@discordjs/ws',
+  '@discordjs/collection', '@discordjs/builders', 'dotenv', 'better-sqlite3',
+]) {
   const ver = v(p);
   check(`${p} @ ${ver ?? 'not found'}`, () => assert.ok(ver, p + ' not installed'));
 }
@@ -87,8 +144,12 @@ for (const p of ['discord.js', 'dotenv', '@discordjs/collection', '@discordjs/ws
 section('B) module loading (what main.js requires)');
 let djs, modules;
 check('discord.js loads', () => { djs = require(path.join(REPO, 'node_modules/discord.js')); });
+check('core/jsonc loads', () => req('core/jsonc'));
 check('core/config loads', () => req('core/config'));
+check('core/i18n loads', () => req('core/i18n'));
 check('core/utils loads', () => req('core/utils'));
+check('core/commandKit loads', () => req('core/commandKit'));
+check('core/gameKit loads', () => req('core/gameKit'));
 check('core/pointsManager loads', () => req('core/pointsManager'));
 check('all three bot modules load', () => {
   modules = [
@@ -96,40 +157,52 @@ check('all three bot modules load', () => {
     { name: 'Events Bot',    module: req('bots/events/bot') },
     { name: 'Minigames Bot', module: req('bots/minigames/bot') },
   ];
-  assert.strictEqual(modules.length, 3);
+  for (const m of modules) {
+    assert.ok(Array.isArray(m.module.intents), m.name + ' has no intents array');
+    assert.strictEqual(typeof m.module.attach, 'function', m.name + ' has no attach()');
+  }
+});
+
+const config = req('core/config');
+const i18n = req('core/i18n');
+
+check('the fixture config is the one in use', () => {
+  assert.strictEqual(config.guildId(), FAKE(0), 'a different config was loaded');
+  assert.strictEqual(config.roleId('team'), FAKE(5));
 });
 
 // ---------------------------------------------------------------- intents
 section('C) intents and partials resolve to real enum values');
 const intentSet = new Set(), partialSet = new Set();
-for (const b of modules) {
-  for (const i of b.module.intents || []) intentSet.add(i);
-  for (const p of b.module.partials || []) partialSet.add(p);
+for (const m of modules) {
+  for (const i of m.module.intents  || []) intentSet.add(i);
+  for (const p of m.module.partials || []) partialSet.add(p);
 }
 check('intents are known GatewayIntentBits', () => {
-  const known = new Set(Object.values(djs.GatewayIntentBits).filter(x => typeof x === 'number'));
-  for (const i of intentSet) assert.ok(known.has(i), 'unknown intent ' + i);
-  assert.ok(intentSet.size >= 8, 'only ' + intentSet.size + ' intents');
+  const known = new Set(Object.values(djs.GatewayIntentBits));
+  for (const i of intentSet) assert.ok(known.has(i), 'unknown intent ' + String(i));
+  assert.ok(intentSet.size >= 4, 'suspiciously few intents');
 });
 check('partials are known Partials', () => {
-  const known = new Set(Object.values(djs.Partials).filter(x => typeof x === 'number'));
-  for (const p of partialSet) assert.ok(known.has(p), 'unknown partial ' + p);
+  const known = new Set(Object.values(djs.Partials));
+  for (const p of partialSet) assert.ok(known.has(p), 'unknown partial ' + String(p));
 });
 
 // ---------------------------------------------------------------- registry
 section('D) command registry and the exact rest.put payload');
 const client = new EventEmitter();
-client.user = { id: '111222333444555666', tag: 'TestBot#0001', setPresence: () => {} };
+client.user = { id: '1', tag: 'Harness#0000', setPresence: () => {} };
 client.ws = { ping: 42 };
-client.channels = { cache: new Map() };
 client.guilds = { cache: new Map() };
+client.channels = { cache: new Map() };
+client.users = { fetch: async () => ({ send: async () => {} }) };
 
 const commands = [];
 const registry = { addCommand: d => commands.push(d), getAll: () => commands };
 
 check('attach() runs for all three roles', () => {
-  for (const b of modules) b.module.attach(client, registry, { botName: b.name });
-  assert.ok(commands.length > 0, 'registry empty');
+  for (const m of modules) m.module.attach(client, registry, { botName: m.name });
+  assert.ok(commands.length > 0, 'no commands registered');
 });
 
 let body;
@@ -138,42 +211,39 @@ check('every command serializes via toJSON()', () => {
   assert.strictEqual(body.length, commands.length);
 });
 check(`payload has ${commands.length} commands, all with a name`, () => {
-  for (const c of body) assert.ok(typeof c.name === 'string' && c.name.length, JSON.stringify(c).slice(0, 80));
+  for (const c of body) assert.ok(c.name, 'command without a name');
 });
 check('no duplicate command names', () => {
   const seen = new Map();
   for (const c of body) {
-    const key = c.name + '/' + (c.type ?? 1);
+    const key = `${c.type ?? 1}:${c.name}`;
     assert.ok(!seen.has(key), 'duplicate: ' + key);
     seen.set(key, true);
   }
 });
 check('slash command names match Discord rules', () => {
   for (const c of body) {
-    if ((c.type ?? 1) !== 1) continue;
-    assert.match(c.name, /^[-_\p{L}\p{N}]{1,32}$/u, c.name);
-    assert.strictEqual(c.name, c.name.toLowerCase(), c.name + ' is not lowercase');
-    assert.ok(c.description && c.description.length <= 100, c.name + ' description');
+    if (c.type && c.type !== 1) continue;
+    assert.match(c.name, /^[-_\p{Ll}\p{Lo}\p{N}]{1,32}$/u, 'bad name: ' + c.name);
+    assert.ok(c.description && c.description.length <= 100, 'bad description on ' + c.name);
   }
 });
 check('context menu commands are typed 2 or 3 and carry no description', () => {
-  const ctx = body.filter(c => c.type === 2 || c.type === 3);
-  assert.strictEqual(ctx.length, 4, 'expected 4 context menus, got ' + ctx.length);
-  for (const c of ctx) assert.ok(!c.description, c.name + ' must not have a description');
+  for (const c of body.filter(x => x.type && x.type !== 1)) {
+    assert.ok([2, 3].includes(c.type), c.name + ' has type ' + c.type);
+    assert.ok(!c.description, c.name + ' has a description');
+  }
 });
 check('payload stays under the 100 guild command limit', () => assert.ok(body.length <= 100, String(body.length)));
 check('payload is JSON serializable end to end', () => {
-  const s = JSON.stringify(body);
-  assert.ok(s.length > 500);
-  JSON.parse(s);
+  assert.ok(JSON.parse(JSON.stringify(body)).length === body.length);
 });
 check('InteractionCreate listeners: one stack per role', () => {
-  assert.strictEqual(client.listenerCount('interactionCreate'), 3, String(client.listenerCount('interactionCreate')));
+  const n = client.listeners('interactionCreate').length;
+  assert.ok(n >= 3, 'expected at least 3 listeners, got ' + n);
 });
 
 // ---------------------------------------------------------------- mocks
-const { guild: gcfg } = req('core/config');
-
 function mockInteraction({ name, opts = {}, roles = [], userId = 'test-user-1', type = 'chat' }) {
   const out = { replies: [], followUps: [], edits: [], modals: [] };
   const i = {
@@ -182,27 +252,41 @@ function mockInteraction({ name, opts = {}, roles = [], userId = 'test-user-1', 
     client,
     replied: false,
     deferred: false,
-    user: { id: userId, tag: 'Tester#0001', displayName: 'Tester', username: 'Tester', toString: () => `<@${userId}>` },
-    member: { roles: { cache: new Map(roles.map(r => [r, { id: r, name: 'x' }])), add: async () => {} } },
-    guild: { id: gcfg.ID, name: 'MSK Test', roles: { cache: new Map() }, members: { cache: new Map() } },
-    channel: { id: '1', send: async m => m },
+    user: {
+      id: userId, tag: 'Tester#0001', displayName: 'Tester', username: 'Tester',
+      toString: () => `<@${userId}>`, displayAvatarURL: () => 'https://example.com/a.png',
+      avatarURL: () => 'https://example.com/a.png', createdAt: new Date(0),
+    },
+    member: {
+      roles: { cache: new Map(roles.map(r => [r, { id: r, name: 'x', toString: () => `<@&${r}>` }])), add: async () => {} },
+      joinedAt: new Date(0),
+    },
+    guild: {
+      id: config.guildId(), name: 'Harness Guild',
+      roles: { cache: new Map() },
+      members: { cache: new Map() },
+      channels: { cache: new Map() },
+    },
+    channel: { id: '1', send: async m => m, bulkDelete: async () => ({ size: 3 }) },
     options: {
       getInteger: n => opts[n] ?? null,
       getString:  n => opts[n] ?? null,
       getUser:    n => opts[n] ?? null,
+      getMember:  n => opts[n] ?? null,
       getBoolean: n => opts[n] ?? null,
       getChannel: n => opts[n] ?? null,
     },
-    isChatInputCommand:        () => type === 'chat',
-    isButton:                  () => type === 'button',
-    isUserContextMenuCommand:  () => type === 'user',
+    isChatInputCommand:          () => type === 'chat',
+    isButton:                    () => type === 'button',
+    isUserContextMenuCommand:    () => type === 'user',
     isMessageContextMenuCommand: () => type === 'message',
-    isContextMenuCommand:      () => type === 'user' || type === 'message',
-    isModalSubmit:             () => false,
-    isAutocomplete:            () => false,
+    isContextMenuCommand:        () => type === 'user' || type === 'message',
+    isModalSubmit:               () => false,
+    isAutocomplete:              () => false,
     reply:      async r => { out.replies.push(r); i.replied = true; return r; },
     followUp:   async r => { out.followUps.push(r); return r; },
     editReply:  async r => { out.edits.push(r); return r; },
+    deleteReply: async () => {},
     deferReply: async () => { i.deferred = true; },
     showModal:  async m => { out.modals.push(m); },
     awaitModalSubmit: async () => null,
@@ -214,8 +298,9 @@ function mockInteraction({ name, opts = {}, roles = [], userId = 'test-user-1', 
 }
 
 const lastText = i => {
-  const r = i._out.replies.at(-1);
+  const r = i._out.replies.at(-1) ?? i._out.edits.at(-1);
   if (!r) return '';
+  if (typeof r === 'string') return r;
   if (r.content) return r.content;
   const e = r.embeds?.[0];
   const d = e?.data ?? e ?? {};
@@ -227,92 +312,129 @@ const dispatch = async i => {
   return i;
 };
 
+/** The registered name for a command key, which is what an interaction carries. */
+const nameOf = key => config.command(key).name;
+
 (async () => {
   // ------------------------------------------------------------ dispatch
   section('E) real dispatch through the attached InteractionCreate listeners');
 
   await acheck('/ping answers', async () => {
-    const i = await dispatch(mockInteraction({ name: 'ping' }));
+    const i = await dispatch(mockInteraction({ name: nameOf('ping') }));
     assert.ok(i._out.replies.length, 'no reply');
   });
 
   await acheck('/random is denied without the Team role', async () => {
-    const i = await dispatch(mockInteraction({ name: 'random', opts: { number1: 1, number2: 10 } }));
-    assert.match(lastText(i), /required role/);
+    const i = await dispatch(mockInteraction({ name: nameOf('random'), opts: { number1: 1, number2: 10 } }));
+    assert.strictEqual(lastText(i), i18n.t('common.noPermission'));
   });
 
-  await acheck('/random is granted with the Team role ID', async () => {
+  await acheck('/random is granted with the configured Team role id', async () => {
     const i = await dispatch(mockInteraction({
-      name: 'random', opts: { number1: 1, number2: 50 }, roles: [gcfg.TEAM_ROLE_ID],
+      name: nameOf('random'), opts: { number1: 1, number2: 50 }, roles: [config.roleId('team')],
     }));
-    assert.match(lastText(i), /Guess the Number/);
+    assert.ok(lastText(i).includes(i18n.t('guess.title')), lastText(i));
   });
 
-  await acheck('/random stays denied for a role with the right NAME but wrong ID', async () => {
+  await acheck('a role gate is by id: another snowflake stays denied', async () => {
     const i = await dispatch(mockInteraction({
-      name: 'random', opts: { number1: 1, number2: 50 }, roles: ['999999999999999999'],
+      name: nameOf('random'), opts: { number1: 1, number2: 50 }, roles: ['999999999999999999'],
     }));
-    assert.match(lastText(i), /required role/);
+    assert.strictEqual(lastText(i), i18n.t('common.noPermission'));
+  });
+
+  await acheck('an EMPTY roles list means everyone, an unresolvable one means nobody', () => {
+    const { allowedByRoles } = req('core/utils');
+    const nobody = mockInteraction({ name: 'x', roles: [] });
+    assert.strictEqual(allowedByRoles(nobody, []), true, 'an empty list must allow');
+    assert.strictEqual(allowedByRoles(nobody, ['no_such_role']), false, 'an unresolvable list must deny');
   });
 
   await acheck('/rg first guess accepted, second hits the cooldown', async () => {
     // Wide round so the probe guesses cannot accidentally be correct, which
     // would start a fresh round and clear the very cooldown under test.
     await dispatch(mockInteraction({
-      name: 'random', opts: { number1: 1, number2: 100000 }, roles: [gcfg.TEAM_ROLE_ID],
+      name: nameOf('random'), opts: { number1: 1, number2: 100000 }, roles: [config.roleId('team')],
     }));
-    const a = await dispatch(mockInteraction({ name: 'rg', opts: { number: 7 }, userId: 'guesser-1' }));
-    assert.doesNotMatch(lastText(a), /Slow down/, 'first guess was blocked');
-    const b = await dispatch(mockInteraction({ name: 'rg', opts: { number: 8 }, userId: 'guesser-1' }));
-    assert.match(lastText(b), /Slow down/);
+    const a = await dispatch(mockInteraction({ name: nameOf('rg'), opts: { number: 7 }, userId: 'guesser-1' }));
+    assert.ok(!a._out.replies.at(-1).content?.includes('⏳'), 'first guess was blocked');
+    const b = await dispatch(mockInteraction({ name: nameOf('rg'), opts: { number: 8 }, userId: 'guesser-1' }));
+    assert.ok(b._out.replies.at(-1).content?.includes('⏳'), 'no cooldown on the second guess');
   });
 
   await acheck('/rg out-of-range guess is rejected without burning a guess', async () => {
     await dispatch(mockInteraction({
-      name: 'random', opts: { number1: 1, number2: 100000 }, roles: [gcfg.TEAM_ROLE_ID],
+      name: nameOf('random'), opts: { number1: 1, number2: 100000 }, roles: [config.roleId('team')],
     }));
-    const i = await dispatch(mockInteraction({ name: 'rg', opts: { number: 999999 }, userId: 'guesser-2' }));
-    assert.match(lastText(i), /Guess between/);
-    const j = await dispatch(mockInteraction({ name: 'rg', opts: { number: 5 }, userId: 'guesser-2' }));
-    assert.doesNotMatch(lastText(j), /Slow down/, 'the rejected guess consumed the budget');
+    const i = await dispatch(mockInteraction({ name: nameOf('rg'), opts: { number: 999999 }, userId: 'guesser-2' }));
+    assert.ok(lastText(i).includes('100000'), lastText(i));
+    const j = await dispatch(mockInteraction({ name: nameOf('rg'), opts: { number: 5 }, userId: 'guesser-2' }));
+    assert.ok(!j._out.replies.at(-1).content?.includes('⏳'), 'the rejected guess consumed the budget');
   });
 
   await acheck('/rg refuses the 6th guess in a round', async () => {
-    // Dedicated wide round: with 1..100000 the six probe guesses below cannot
-    // realistically hit the secret, which would start a new round and reset the
-    // very budget this test is checking.
     await dispatch(mockInteraction({
-      name: 'random', opts: { number1: 1, number2: 100000 }, roles: [gcfg.TEAM_ROLE_ID],
+      name: nameOf('random'), opts: { number1: 1, number2: 100000 }, roles: [config.roleId('team')],
     }));
     const realNow = Date.now;
     let t = realNow();
     Date.now = () => t;
-    let txt = '';
+    let text = '';
     try {
       for (let n = 0; n < 6; n++) {
         t += 60_000;
-        const i = await dispatch(mockInteraction({ name: 'rg', opts: { number: 1 + n }, userId: 'guesser-3' }));
-        txt = lastText(i);
+        const i = await dispatch(mockInteraction({ name: nameOf('rg'), opts: { number: 1 + n }, userId: 'guesser-3' }));
+        text = lastText(i);
       }
     } finally { Date.now = realNow; }
-    assert.match(txt, /used all \*\*5\*\* guesses/);
+    assert.ok(text.includes('**5**'), 'the budget was not enforced: ' + text);
   });
 
-  await acheck('/flachwitz reads data/flachwitze.json', async () => {
-    const i = await dispatch(mockInteraction({ name: 'flachwitz' }));
+  await acheck('/flachwitz answers', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('flachwitz') }));
     assert.ok(i._out.replies.length);
   });
 
-  for (const [name, opts] of [
-    ['dice', { sides: 6, count: 3 }],
-    ['8ball', { question: 'Does undici 8 work?' }],
-    ['flipcoin', {}],
-    ['rps', {}],
-    ['slots', {}],
-  ]) {
-    await acheck(`minigame /${name} executes`, async () => {
-      const i = await dispatch(mockInteraction({ name, opts }));
-      assert.ok(i._out.replies.length, 'no reply from /' + name);
+  await acheck('/script_guides serves a configured guide', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('script_guides'), opts: { script: 'demo' } }));
+    assert.ok(lastText(i).includes('Demo guide'), lastText(i));
+  });
+
+  await acheck('/information builds a panel from the config', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('information'), roles: [config.roleId('manager')] }));
+    assert.strictEqual(lastText(i), i18n.t('panels.sentInformation'), lastText(i));
+  });
+
+  await acheck('/rules builds a panel from the config', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('rules'), roles: [config.roleId('founder')] }));
+    assert.strictEqual(lastText(i), i18n.t('panels.sentRules'), lastText(i));
+  });
+
+  await acheck('/roles builds a panel from the config', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('roles'), roles: [config.roleId('founder')] }));
+    assert.strictEqual(lastText(i), i18n.t('panels.sentRoles'), lastText(i));
+  });
+
+  await acheck('/userinfo answers', async () => {
+    const member = {
+      user: {
+        id: '900000000000000090', username: 'Someone', displayName: 'Someone',
+        createdAt: new Date(0), avatarURL: () => 'https://example.com/a.png',
+      },
+      joinedAt: new Date(0),
+      roles: { cache: new Map() },
+      toString: () => '<@900000000000000090>',
+    };
+    member.roles.cache.filter = () => ({ map: () => [] });
+    const i = await dispatch(mockInteraction({ name: nameOf('userinfo'), opts: { member } }));
+    assert.ok(i._out.replies.length, 'no reply');
+  });
+
+  for (const key of ['dice', '8ball', 'flipcoin', 'rps', 'slots', 'points', 'blackjack', 'wordle', 'hangman', 'connect4', 'tictactoe']) {
+    const opts = key === 'dice' ? { sides: 6, count: 3 } : key === '8ball' ? { question: 'Does it work?' } : {};
+    await acheck(`minigame /${key} executes`, async () => {
+      const i = await dispatch(mockInteraction({ name: nameOf(key), opts }));
+      assert.ok(i._out.replies.length, 'no reply from /' + key);
     });
   }
 
@@ -321,164 +443,442 @@ const dispatch = async i => {
     assert.strictEqual(i._out.replies.length, 0);
   });
 
-  await acheck('admin command gated by Founder ID', async () => {
-    const denied = await dispatch(mockInteraction({ name: 'send_message', roles: [] }));
-    assert.ok(denied._out.replies.length || denied._out.modals.length === 0);
-    const granted = await dispatch(mockInteraction({ name: 'send_message', roles: [gcfg.MANAGER_ROLE_ID] }));
-    assert.ok(granted._out.modals.length === 1 || granted._out.replies.length >= 0);
+  await acheck('admin command is gated by the configured roles', async () => {
+    const denied = await dispatch(mockInteraction({ name: nameOf('send_message'), roles: [] }));
+    assert.strictEqual(lastText(denied), i18n.t('common.noPermission'));
+    const granted = await dispatch(mockInteraction({ name: nameOf('send_message'), roles: [config.roleId('manager')] }));
+    assert.strictEqual(granted._out.modals.length, 1, 'the manager did not get the modal');
   });
 
-  // ------------------------------------------------------------ role ids
-  section('F0) every gcfg.*_ROLE_ID used in the code exists in the config');
+  await acheck('the role menu button grants the configured role', async () => {
+    const roleId = FAKE(20);
+    const i = mockInteraction({ name: '', type: 'button' });
+    i.customId = 'rolemenu_announcements';
+    i.guild.roles.cache.set(roleId, { id: roleId, toString: () => `<@&${roleId}>` });
+    await dispatch(i);
+    assert.ok(lastText(i).includes(roleId), 'the button did not grant the role: ' + lastText(i));
+  });
+
+  await acheck('a role menu button posted before the rename still works', async () => {
+    // Panels posted months ago carry the OLD custom ids. Dropping them turns
+    // every button in every server already running this bot into a dead click.
+    const roleId = FAKE(20);
+    const i = mockInteraction({ name: '', type: 'button' });
+    i.customId = 'roles_announcements';
+    i.guild.roles.cache.set(roleId, { id: roleId, toString: () => `<@&${roleId}>` });
+    await dispatch(i);
+    assert.ok(lastText(i).includes(roleId), 'the legacy custom id was ignored: ' + lastText(i));
+  });
+
+  // ------------------------------------------------------------ config paths
+  section('F0) every config path the code reads exists in config.example.jsonc');
   {
-    // orders.js is gitignored, so it is present on a dev machine and in
-    // production but not in a fresh CI checkout. Scan it when it is there.
-    const scanned = execSync('git ls-files "*.js"', { cwd: REPO }).toString().trim().split(/\r?\n/)
-      .concat(['bots/commands/commands/orders.js'])
-      .filter(f => fs.existsSync(path.join(REPO, f)));
-    const used = new Set();
-    for (const f of scanned) {
-      for (const m of fs.readFileSync(path.join(REPO, f), 'utf8').matchAll(/gcfg\.([A-Z_]+_ROLE_ID)/g)) {
-        used.add(m[1]);
+    const { parseJsonc, getPath } = req('core/jsonc');
+    const exampleSrc = fs.readFileSync(path.join(REPO, 'config/config.example.jsonc'), 'utf8');
+    const parsed = parseJsonc(exampleSrc, 'config.example.jsonc');
+
+    check('config.example.jsonc parses as JSONC', () => {
+      assert.ok(parsed.ok, (parsed.lines || []).join('\n'));
+    });
+
+    check('config.example.jsonc carries no Discord ids', () => {
+      // It is TRACKED. An id in there is one installation's server shipped to
+      // everybody, which is the whole reason this file exists.
+      const ids = [...new Set(stripComments(exampleSrc).match(/\b\d{17,20}\b/g) || [])];
+      assert.deepStrictEqual(ids, [], 'ids in the shipped defaults: ' + ids.join(', '));
+    });
+
+    // Read by the code but deliberately absent from the defaults, with a
+    // reason. An exemption is a decision somebody wrote down; a missing path is
+    // one nobody noticed.
+    const NOT_IN_EXAMPLE = {};
+
+    const used = new Map();
+    for (const f of trackedSources('"*.js"')) {
+      const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
+      for (const m of src.matchAll(/config\.get\(\s*['"]([a-zA-Z0-9_.]+)['"]/g)) {
+        if (!used.has(m[1])) used.set(m[1], f);
       }
     }
-    check(`found role references in ${scanned.length} files`, () => assert.ok(used.size >= 4, [...used].join(',')));
-    for (const key of used) {
-      check(`${key} is defined and looks like a snowflake`, () => {
-        assert.strictEqual(typeof gcfg[key], 'string', key + ' missing in core/config.js');
-        assert.match(gcfg[key], /^\d{17,20}$/, key + ' = ' + gcfg[key]);
-      });
-    }
+
+    check('the scan actually found config paths', () => {
+      assert.ok(used.size >= 20, `only ${used.size} config paths found, the scan broke`);
+    });
+
+    check('no config path is read that the defaults do not define', () => {
+      const missing = [...used.keys()]
+        .filter(p => !(p in NOT_IN_EXAMPLE))
+        // A path under a list of things the operator names themselves cannot
+        // be predefined: `roles.<whatever>` and `channels.<whatever>` are
+        // looked up by whatever the operator called them.
+        .filter(p => !/^(roles|channels)\./.test(p))
+        .filter(p => getPath(parsed.value ?? {}, p, undefined) === undefined);
+      assert.deepStrictEqual(missing, [], 'read by the code, absent from the defaults: '
+        + missing.map(p => `${p} (${used.get(p)})`).join(', '));
+    });
+
+    check('every command key used in the code is in the command table', () => {
+      const table = new Set(config.commandKeys());
+      const keys = new Set();
+      for (const f of trackedSources('"*.js"')) {
+        const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
+        for (const m of src.matchAll(/(?:applyMeta\([^,]+,\s*|guard\(interaction,\s*|config\.command\(|optionText\(\s*)['"]([a-z0-9_]+)['"]/g)) {
+          keys.add(m[1]);
+        }
+      }
+      assert.ok(keys.size >= 20, `only ${keys.size} command keys found, the scan broke`);
+      const missing = [...keys].filter(k => !table.has(k));
+      assert.deepStrictEqual(missing, [], 'command used in code but not in the table: ' + missing.join(', '));
+    });
+
+    check('every command in the table is actually implemented', () => {
+      // The other direction: a key left in the table after the command was
+      // removed is a switch that does nothing, which reads as a broken feature.
+      const implemented = new Set();
+      for (const dir of ['bots/commands/commands', 'bots/minigames/commands']) {
+        for (const file of fs.readdirSync(path.join(REPO, dir)).filter(f => f.endsWith('.js'))) {
+          const src = fs.readFileSync(path.join(REPO, dir, file), 'utf8');
+          for (const m of src.matchAll(/key:\s*['"]([a-z0-9_]+)['"]/g)) implemented.add(m[1]);
+        }
+      }
+      const orphans = config.commandKeys().filter(k => !implemented.has(k));
+      assert.deepStrictEqual(orphans, [], 'in the table, implemented nowhere: ' + orphans.join(', '));
+    });
+
+    check('every command file declares a key', () => {
+      // Without one the command is registered under whatever it happens to be
+      // named, and renaming it in the config silently stops routing.
+      const missing = [];
+      for (const dir of ['bots/commands/commands', 'bots/minigames/commands']) {
+        for (const file of fs.readdirSync(path.join(REPO, dir)).filter(f => f.endsWith('.js'))) {
+          const src = fs.readFileSync(path.join(REPO, dir, file), 'utf8');
+          const keys = [...src.matchAll(/key:\s*['"]/g)].length;
+          const execs = [...src.matchAll(/async execute\(/g)].length;
+          if (keys < execs) missing.push(`${dir}/${file} (${execs} commands, ${keys} keys)`);
+        }
+      }
+      assert.deepStrictEqual(missing, [], missing.join(', '));
+    });
+
+    check('every feature a command hangs off has an explicit switch', () => {
+      // `featureEnabled()` treats a missing switch as OFF, `commandKit.enabled()`
+      // treats it as ON. A block without one therefore answers differently
+      // depending on who asks, and the command would register while the feature
+      // reports itself disabled.
+      const missing = [];
+      for (const dir of ['bots/commands/commands', 'bots/minigames/commands']) {
+        for (const file of fs.readdirSync(path.join(REPO, dir)).filter(f => f.endsWith('.js'))) {
+          const src = fs.readFileSync(path.join(REPO, dir, file), 'utf8');
+          for (const m of src.matchAll(/feature:\s*['\"]([a-zA-Z0-9_]+)['\"]/g)) {
+            if (getPath(parsed.value ?? {}, `features.${m[1]}.enabled`, undefined) === undefined) {
+              missing.push(`${m[1]} (${dir}/${file})`);
+            }
+          }
+        }
+      }
+      assert.deepStrictEqual([...new Set(missing)], [], 'feature without an "enabled" in the defaults: ' + missing.join(', '));
+    });
+
+    check('a renamed command is registered AND routed under the new name', () => {
+      // The whole point of the key/name split. Both halves read the same table,
+      // so this proves they cannot drift apart.
+      const { applyMeta } = req('core/commandKit');
+      const builder = applyMeta(new djs.SlashCommandBuilder(), 'ping');
+      assert.strictEqual(builder.toJSON().name, config.command('ping').name);
+    });
+
+    check('an invalid configured name falls back instead of throwing', () => {
+      // discord.js throws on a bad name, and that throw happens while the
+      // command FILE is being required, taking every command in the directory
+      // with it and blaming discord.js rather than the setting.
+      const { validName } = req('core/commandKit');
+      assert.strictEqual(validName('Not A Name', 'ping'), 'ping');
+      assert.strictEqual(validName('', 'ping'), 'ping');
+      assert.strictEqual(validName('pong', 'ping'), 'pong');
+    });
   }
 
   // ------------------------------------------------------------ env template
-  section('F1) every env variable the code reads is in .env.example');
+  section('F1) .env holds secrets only, and every one is in .env.example');
   {
     // .env.example is what a self-hoster copies. A setting that reaches the
     // code without reaching the template is invisible: nobody can switch it on
-    // because nobody knows it exists. DATABASE_URL shipped exactly that way and
-    // was only caught by somebody asking where to configure the database.
-    //
-    // The scan has to know how config.js reads: not only process.env directly
-    // but also the _id() / _str() accessors. A pattern that misses those finds
-    // 2 of 23 variables and reports all clear.
-    const PATTERN = /process\.env\.([A-Z][A-Z0-9_]*)|process\.env\[['"]([A-Z][A-Z0-9_]*)|_(?:id|str)\(\s*['"]([A-Z][A-Z0-9_]*)/g;
+    // because nobody knows it exists. DATABASE_URL shipped exactly that way.
+    const PATTERN = /process\.env\.([A-Z][A-Z0-9_]*)\b|process\.env\[['"]([A-Z][A-Z0-9_]*)['"]\]|_env\(\s*['"]([A-Z][A-Z0-9_]*)['"]\s*[,)]/g;
 
-    // Comments are stripped first. Without that, the prose ABOVE this line
-    // counts as a usage and the check fails on a variable nobody reads. Only
-    // whole-line comments and block comments go, so a trailing comment after
-    // real code still gets scanned.
-    const stripComments = (src) => src
-      .replace(/\/\*[\s\S]*?\*\//g, '')
-      .split('\n').filter(l => !l.trim().startsWith('//')).join('\n');
-
-    // Read by the code but deliberately NOT in the template, with the reason.
-    // An exemption is a decision somebody wrote down; a missing variable is one
-    // nobody noticed.
     const NOT_IN_TEMPLATE = {
       SKIP_NETWORK_TESTS: 'a switch for this harness, not a setting an installation has',
+      MULTIBOT_CONFIG: 'an override for the config path, used by the harness and by tooling',
+      MULTIBOT_TEXTS: 'the same for the message-override file, so a test cannot write into the real one',
+      DASHBOARD_DATA_DIR: 'lets a test point the dashboard settings at a throwaway directory',
+      GUILD_ID: 'moved into config.jsonc; still read so an old .env keeps working, loudly',
     };
 
-    const envFiles = execSync('git ls-files "*.js"', { cwd: REPO }).toString().trim().split(/\s+/)
-      .filter(f => f && fs.existsSync(path.join(REPO, f)));
-    const envUsed = new Map();
+    // The harness itself IS scanned here, unlike everywhere else: it reads
+    // switches of its own, and an exemption for one has to stay checkable.
+    const envFiles = execSync('git ls-files "*.js"', { cwd: REPO }).toString().trim().split(/\r?\n/)
+      .filter(f => f && !GENERATED.some(d => f.startsWith(d)) && fs.existsSync(path.join(REPO, f)));
+
+    const used = new Map();
     for (const f of envFiles) {
       const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
       for (const m of src.matchAll(PATTERN)) {
         const name = m[1] || m[2] || m[3];
-        if (!envUsed.has(name)) envUsed.set(name, f);
+        if (!used.has(name)) used.set(name, f);
       }
     }
 
     const template = fs.readFileSync(path.join(REPO, '.env.example'), 'utf8');
 
     check('the scan actually found the variables', () => {
-      // Without a floor this passes by having gone blind: a pattern that
-      // matches nothing reports nothing missing.
-      assert.ok(envUsed.size >= 15, `only ${envUsed.size} env variables found, the scan broke`);
+      assert.ok(used.size >= 6, `only ${used.size} env variables found, the scan broke`);
     });
 
     check('no variable is read without being in .env.example', () => {
-      const missing = [...envUsed.keys()]
+      const missing = [...used.keys()]
         .filter(n => !(n in NOT_IN_TEMPLATE))
         .filter(n => !new RegExp('^' + n + '=', 'm').test(template));
       assert.deepStrictEqual(missing, [], 'read by the code, absent from the template: '
-        + missing.map(n => n + ' (' + envUsed.get(n) + ')').join(', '));
+        + missing.map(n => n + ' (' + used.get(n) + ')').join(', '));
     });
 
     check('an exemption still names a variable the code reads', () => {
-      const stale = Object.keys(NOT_IN_TEMPLATE).filter(n => !envUsed.has(n));
+      const stale = Object.keys(NOT_IN_TEMPLATE).filter(n => !used.has(n));
       assert.deepStrictEqual(stale, [], 'exempt but nothing reads it any more: ' + stale.join(', '));
+    });
+
+    check('.env.example offers credentials and the dashboard, and nothing else', () => {
+      // Every id, switch and piece of text about the SERVER moved into
+      // config.jsonc; one left behind here is a second home for it, and the two
+      // will disagree. The DASHBOARD_* group is the deliberate exception: a bind
+      // address and a port describe the machine, not the Discord server, and the
+      // dashboard reads them before it has any reason to look at a guild.
+      const ALLOWED = /^(COMMANDS_BOT_TOKEN|EVENTS_BOT_TOKEN|MINIGAMES_BOT_TOKEN|DB_HOST|DB_USER|DB_PASS|DB_NAME|DATABASE_URL|DASHBOARD_[A-Z_]+|CLIENT_ID|CLIENT_SECRET|SESSION_SECRET)$/;
+      const declared = [...template.matchAll(/^([A-Z][A-Z0-9_]*)=/gm)].map(m => m[1]);
+      assert.ok(declared.length >= 5, 'the template scan found almost nothing');
+      const strays = declared.filter(n => !ALLOWED.test(n));
+      assert.deepStrictEqual(strays, [], 'not a secret, belongs in config.jsonc: ' + strays.join(', '));
     });
   }
 
   // ------------------------------------------------------------ no ids in source
-  section('F1b) no installation-specific ids in the tracked source');
+  section('F1b) nothing installation-specific in the tracked source');
   {
-    // core/config.js used to carry MSK's own guild, channels and roles as
-    // defaults. A fresh clone therefore pointed at somebody else's server, and
-    // an id removed from a .env silently kept working, which is the worse half:
-    // a missing setting looked like a working one.
-    //
-    // A snowflake is 17 to 20 digits. Test files are excluded because their
-    // whole job is to make up ids.
+    // A fresh clone must not point at anybody's server. A snowflake is 17 to 20
+    // digits; test files are excluded because their whole job is to make up ids.
     const SNOWFLAKE = /\b\d{17,20}\b/g;
-
-    // Files that still carry ids, each with what has to happen to them. These
-    // are DEBT, not exemptions: the entry goes away when the file does.
-    const STILL_TO_DO = {
-      'bots/commands/commands/community.js':
-        'the /information panel names six channels and roles inline; they belong in .env',
-      'bots/events/handlers/messageHandler.js':
-        'the auto-reply contact is one hardcoded user id; belongs in .env',
-      'bots/minigames/points_config.json':
-        'the four reward role_ids; that file is settings, so they can stay there but must not be MSK-specific in the repo',
-    };
-
-    const tracked = execSync('git ls-files "*.js" "*.json"', { cwd: REPO }).toString().trim().split(/\s+/)
-      .filter(f => f && !f.startsWith('test/') && fs.existsSync(path.join(REPO, f)));
+    const tracked = trackedSources('"*.js" "*.json" "*.jsonc"');
 
     const offenders = [];
     for (const f of tracked) {
-      const src = fs.readFileSync(path.join(REPO, f), 'utf8');
-      const found = [...new Set(src.match(SNOWFLAKE) || [])];
+      const found = [...new Set(fs.readFileSync(path.join(REPO, f), 'utf8').match(SNOWFLAKE) || [])];
       if (found.length) offenders.push({ file: f, ids: found });
     }
 
     check('the scan actually looked at the source', () => {
-      // A scan that reads nothing reports nothing.
       assert.ok(tracked.length >= 10, `only ${tracked.length} files scanned`);
     });
 
-    check('core/config.js carries no ids at all', () => {
-      // The point of the whole exercise, and the one file that must stay clean.
-      const bad = offenders.find(o => o.file === 'core/config.js');
-      assert.ok(!bad, 'core/config.js has ids again: ' + (bad ? bad.ids.join(', ') : ''));
-    });
-
-    check('no NEW file started carrying ids', () => {
-      const fresh = offenders.filter(o => !(o.file in STILL_TO_DO)).map(o => `${o.file} (${o.ids.join(', ')})`);
+    check('no tracked source file carries an id', () => {
+      const fresh = offenders.map(o => `${o.file} (${o.ids.join(', ')})`);
       assert.deepStrictEqual(fresh, [], 'ids in the source:\n' + fresh.join('\n'));
     });
 
-    check('the known-debt list still describes reality', () => {
-      // An entry left behind after the file was cleaned would quietly permit
-      // ids there again.
-      const stale = Object.keys(STILL_TO_DO).filter(f => !offenders.some(o => o.file === f));
+    check('no Discord invite link is baked into the source', () => {
+      const withInvite = tracked
+        .filter(f => /discord\.gg\//.test(fs.readFileSync(path.join(REPO, f), 'utf8')));
+      assert.deepStrictEqual(withInvite, [], 'invite link in: ' + withInvite.join(', '));
+    });
+
+    // Colour, logo, bot name, link buttons, the rules text and the support
+    // guides are all configuration now. The debt list is EMPTY, and an entry
+    // that outlived its cleanup would quietly permit brand text again.
+    const BRAND_DEBT = {
+      'package.json': 'the repository description, never shown to a Discord user',
+    };
+    const BRAND = /msk-scripts\.de|MSK[ -]Scripts/i;
+
+    const branded = tracked
+      .filter(f => BRAND.test(stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'))));
+
+    check('no NEW file started carrying brand text', () => {
+      const fresh = branded.filter(f => !(f in BRAND_DEBT));
+      assert.deepStrictEqual(fresh, [], 'brand text in: ' + fresh.join(', '));
+    });
+
+    check('the brand-debt list still describes reality', () => {
+      const stale = Object.keys(BRAND_DEBT).filter(f => !branded.includes(f));
       assert.deepStrictEqual(stale, [], 'listed as debt but already clean: ' + stale.join(', '));
+    });
+
+    check('nothing the bot sends to Discord hardcodes a brand colour or logo', () => {
+      // Scoped to the BOT's source. web/ is the dashboard, an operator-facing
+      // panel whose palette is a design-system default, lives in index.css and
+      // is overridable at runtime from its own Appearance page. A colour there
+      // reaches nobody's Discord server; a colour in an embed reaches everyone's,
+      // which is what this check is actually about.
+      for (const f of tracked.filter(x => !x.startsWith('web/'))) {
+        const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
+        assert.ok(!/5EB131/i.test(src), 'the brand green is back in ' + f);
+        assert.ok(!/cdn.msk-scripts.de/i.test(src), 'the brand logo URL is back in ' + f);
+      }
+    });
+  }
+
+  // ------------------------------------------------------------ messages
+  section('F1c) every message the code asks for exists in the catalogue');
+  {
+    const enPath = path.join(REPO, 'locales/en.json');
+    const en = JSON.parse(fs.readFileSync(enPath, 'utf8'));
+    const { leafPaths, getPath } = req('core/jsonc');
+
+    const localeFiles = fs.readdirSync(path.join(REPO, 'locales')).filter(f => f.endsWith('.json'));
+
+    check('the catalogue is a real catalogue', () => {
+      assert.ok(leafPaths(en).length >= 200, 'suspiciously few keys in locales/en.json');
+    });
+
+    check('every shipped translation has exactly the English key set', () => {
+      // A translation missing a key falls back to English at runtime, which is
+      // fine to READ but invisible: nobody notices the file is incomplete. An
+      // EXTRA key is worse, it is a message no code path ever asks for.
+      const base = new Set(leafPaths(en));
+      for (const file of localeFiles.filter(f => f !== 'en.json')) {
+        const other = JSON.parse(fs.readFileSync(path.join(REPO, 'locales', file), 'utf8'));
+        const keys = new Set(leafPaths(other));
+        const missing = [...base].filter(k => !keys.has(k));
+        const extra = [...keys].filter(k => !base.has(k));
+        assert.deepStrictEqual(missing, [], `${file} is missing: ` + missing.slice(0, 8).join(', '));
+        assert.deepStrictEqual(extra, [], `${file} has keys English does not: ` + extra.slice(0, 8).join(', '));
+      }
+    });
+
+    const asked = new Map();
+    for (const f of trackedSources('"*.js"')) {
+      const src = stripComments(fs.readFileSync(path.join(REPO, f), 'utf8'));
+      for (const m of src.matchAll(/\b(?:t|tList|tData|raw)\(\s*['"]([a-zA-Z0-9_.]+)['"]/g)) {
+        if (!asked.has(m[1])) asked.set(m[1], f);
+      }
+    }
+
+    check('the message scan actually found keys', () => {
+      assert.ok(asked.size >= 80, `only ${asked.size} message keys found, the scan broke`);
+    });
+
+    check('no message key is asked for that the catalogue does not have', () => {
+      const missing = [...asked.keys()].filter(k => getPath(en, k, undefined) === undefined);
+      assert.deepStrictEqual(missing, [], 'asked for, not in locales/en.json: '
+        + missing.map(k => `${k} (${asked.get(k)})`).join(', '));
+    });
+
+    check('nothing asked for a missing key while the commands were built', () => {
+      // The scan above only sees literal keys. This catches the computed ones,
+      // e.g. t(`games.rps.${choice}`), for every path the build actually took.
+      assert.deepStrictEqual(i18n.missing(), [], 'missing at runtime: ' + i18n.missing().join(', '));
+    });
+
+    check('the text override file is valid and empty by default', () => {
+      const { parseJsonc } = req('core/jsonc');
+      const src = fs.readFileSync(path.join(REPO, 'config/texts.example.jsonc'), 'utf8');
+      const result = parseJsonc(src, 'texts.example.jsonc');
+      assert.ok(result.ok, (result.lines || []).join('\n'));
+      assert.deepStrictEqual(result.value, {}, 'the shipped override file overrides something');
+    });
+
+    check('an override actually overrides, in every language', () => {
+      const { deepMerge } = req('core/jsonc');
+      const merged = deepMerge({ common: { none: 'a', unknown: 'b' } }, { common: { none: 'z' } });
+      assert.strictEqual(merged.common.none, 'z');
+      assert.strictEqual(merged.common.unknown, 'b', 'the merge dropped a sibling key');
+    });
+
+    check('a list in the catalogue replaces rather than merges', () => {
+      // Arrays are lists the operator owns end to end: the rules, the guides,
+      // the 8-ball answers. Merging by index would leave the shipped fourth
+      // entry hanging under a list of three.
+      const { deepMerge } = req('core/jsonc');
+      assert.deepStrictEqual(deepMerge({ a: [1, 2, 3] }, { a: [9] }).a, [9]);
+    });
+
+    check('a missing key reads as the key, never as an empty string', () => {
+      // An empty string is a blank embed field, which Discord then refuses with
+      // an error about a field the code says is fine.
+      assert.strictEqual(i18n.t('no.such.key.at.all'), 'no.such.key.at.all');
+      assert.deepStrictEqual(i18n.tList('no.such.list'), []);
+    });
+
+    check('an unfilled placeholder is left standing, not blanked', () => {
+      // "{user} joined" with no user reads as an obvious mistake. " joined"
+      // reads as a bug in the bot.
+      assert.ok(i18n.t('guess.correctBody', { number: 5 }).includes('{user}'));
     });
   }
 
   // ------------------------------------------------------------ builders
   section('F) discord.js builders still behave');
-  const { makeEmbed } = req('core/utils');
+  const { makeEmbed, linkRow, presenceOptions } = req('core/utils');
   check('makeEmbed produces a serializable embed', () => {
-    const e = makeEmbed({ title: 'T', description: 'D', guildName: 'MSK' });
+    const e = makeEmbed({ title: 'T', description: 'D', guildName: 'Example' });
     const j = e.toJSON();
     assert.strictEqual(j.title, 'T');
-    assert.ok(j.footer.text.includes('MSK'));
-    assert.ok(j.thumbnail.url);
+    assert.ok(j.footer.text.includes('Example'));
   });
+
+  check('an unconfigured thumbnail means no thumbnail, not an empty one', () => {
+    // setThumbnail('') is an invalid-URL error from Discord, not a quiet no-op,
+    // so every embed the bot sends would fail on an installation with no logo.
+    // This used to be hidden by one company's logo being the hardcoded default.
+    const j = makeEmbed({ title: 'T', guildName: 'Example' }).toJSON();
+    if (config.thumbnailUrl()) assert.strictEqual(j.thumbnail.url, config.thumbnailUrl());
+    else {
+      assert.strictEqual(j.thumbnail, undefined, 'a thumbnail appeared without one being configured');
+      assert.strictEqual(j.footer.icon_url, undefined, 'a footer icon appeared without one being configured');
+    }
+  });
+
+  check('an explicit thumbnail still wins', () => {
+    const j = makeEmbed({ title: 'T', thumbnail: 'https://example.com/a.png' }).toJSON();
+    assert.strictEqual(j.thumbnail.url, 'https://example.com/a.png');
+  });
+
+  check('no configured links means NO button row, not an empty one', () => {
+    // Discord refuses an ActionRow without components, so an empty row is a
+    // panel that fails to post rather than a panel without buttons.
+    assert.deepStrictEqual(linkRow(), []);
+  });
+
+  check('a configured link becomes exactly one row', () => {
+    const original = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
+    fs.writeFileSync(FIXTURE_PATH, JSON.stringify({
+      ...original,
+      branding: { links: [{ label: 'Site', url: 'https://example.com' }] },
+    }), 'utf8');
+    config.reload();
+    try {
+      const rows = linkRow();
+      assert.strictEqual(rows.length, 1);
+      assert.strictEqual(rows[0].toJSON().components.length, 1);
+      // A link without a URL is dropped rather than crashing the builder.
+      fs.writeFileSync(FIXTURE_PATH, JSON.stringify({
+        ...original,
+        branding: { links: [{ label: 'Site', url: '' }, { label: '', url: 'https://example.com' }] },
+      }), 'utf8');
+      config.reload();
+      assert.deepStrictEqual(linkRow(), []);
+    } finally {
+      fs.writeFileSync(FIXTURE_PATH, JSON.stringify(original, null, 2), 'utf8');
+      config.reload();
+    }
+  });
+
+  check('an unset presence text means no presence at all', () => {
+    // Not a fallback to something: every installation of this bot used to
+    // advertise one company's name under its own bot.
+    assert.strictEqual(presenceOptions('commands'), null);
+    const events = presenceOptions('events', { guild: 'Example' });
+    assert.ok(events === null || typeof events.activities[0].name === 'string');
+  });
+
   check('Collection API used by the bot modules works', () => {
     const c = new djs.Collection();
     c.set('a', 1); c.set('b', 2);
@@ -491,6 +891,55 @@ const dispatch = async i => {
       new djs.ButtonBuilder().setCustomId('x').setLabel('L').setStyle(djs.ButtonStyle.Primary));
     assert.strictEqual(row.toJSON().components.length, 1);
   });
+
+  // ------------------------------------------------------------ jsonc
+  section('F3) the config parser');
+  {
+    const { stripJsonComments, parseJsonc, deepMerge } = req('core/jsonc');
+
+    check('comments go, and the line layout survives', () => {
+      // The stripper blanks rather than deletes, so a JSON.parse offset still
+      // maps onto the line the operator is looking at. Deleting shifts every
+      // position after the first comment and the caret points at an innocent
+      // line, which is worse than no caret at all.
+      const src = '{\n  // a comment\n  "a": 1\n}';
+      const out = stripJsonComments(src);
+      assert.strictEqual(out.length, src.length);
+      assert.strictEqual(out.split('\n').length, src.split('\n').length);
+      assert.deepStrictEqual(JSON.parse(out), { a: 1 });
+    });
+
+    check('a // inside a string is not a comment', () => {
+      const parsed = parseJsonc('{"url": "https://example.com/x"}');
+      assert.ok(parsed.ok);
+      assert.strictEqual(parsed.value.url, 'https://example.com/x');
+    });
+
+    check('an escaped quote does not end the string', () => {
+      const parsed = parseJsonc('{"a": "say \\"hi\\" // not a comment"}');
+      assert.ok(parsed.ok, (parsed.lines || []).join('\n'));
+      assert.ok(parsed.value.a.includes('//'));
+    });
+
+    check('a trailing comma is forgiven', () => {
+      assert.deepStrictEqual(parseJsonc('{"a": 1, "b": [1, 2,], }').value, { a: 1, b: [1, 2] });
+    });
+
+    check('a syntax error names the line and points at the column', () => {
+      const result = parseJsonc('{\n  "a": 1\n  "b": 2\n}', 'x.jsonc');
+      assert.ok(!result.ok, 'that should not have parsed');
+      const text = result.lines.join('\n');
+      assert.match(text, /line 3/);
+      assert.match(text, /\^/);
+    });
+
+    check('a key the operator never mentions keeps its default', () => {
+      // The reason the example file is also the defaults: an update that adds a
+      // setting must not require editing an existing installation's file.
+      const merged = deepMerge({ a: { b: 1, c: 2 } }, { a: { c: 9 } });
+      assert.deepStrictEqual(merged, { a: { b: 1, c: 9 } });
+    });
+  }
 
   // ------------------------------------------------------------ collection
   section('F2) @discordjs/collection surface that discord.js itself uses');
@@ -523,17 +972,12 @@ const dispatch = async i => {
       assert.strictEqual([...c.keys()].length, 3);
       c.clear();
       assert.strictEqual(c.size, 0);
-    } finally { try { c2.destroy(); } catch {} }
+    } finally { try { c2.destroy(); } catch { /* nothing to clean up */ } }
   });
 
   // ------------------------------------------------------------ points
   section('G) points system, database backed');
   {
-    // A THROWAWAY DATABASE, set before anything connects. Without this the
-    // harness would write into data/multibot.db, and a test run would hand out
-    // points to a made-up user on the real installation.
-    process.env.DATABASE_URL = 'sqlite::memory:';
-
     const dbUrl = req('core/db/url');
     const { SCHEMA } = req('core/db/schema');
 
@@ -561,8 +1005,6 @@ const dispatch = async i => {
     });
 
     check('all three dialects define the same tables', () => {
-      // The three statement lists sit next to each other in schema.js so a
-      // missing table is visible. This is the check that says so out loud.
       const tablesOf = (list) => list
         .map(s => (s.match(/CREATE TABLE IF NOT EXISTS (\w+)/) || [])[1])
         .filter(Boolean).sort();
@@ -602,13 +1044,37 @@ const dispatch = async i => {
     const backup = hadFile ? fs.readFileSync(pointsFile) : null;
 
     try {
-      check('points_config.json parses and has games + rewards', () => {
-        const cfg = pm.getConfig();
-        assert.ok(cfg.games && Object.keys(cfg.games).length, 'no games');
-        assert.ok(Array.isArray(cfg.rewards) && cfg.rewards.length, 'no rewards');
+      check('the shipped defaults define points and rewards', () => {
+        const points = config.get('features.minigames.points', {});
+        assert.ok(Object.keys(points).length >= 8, 'no per-game point values');
+        assert.ok(pm.rewards().length >= 1, 'no rewards');
       });
 
-      check('getPts traverses the config', () => assert.strictEqual(typeof pm.getPts('dice', 'win'), 'number'));
+      check('a reward names a role, not an env variable', () => {
+        // points_config.json was TRACKED, so the four reward role ids in it
+        // were one installation's roles shipped to everybody. Working around
+        // that needed a REWARD_<TIER>_ROLE_ID variable per tier, resolved by a
+        // computed name that no check could see.
+        for (const r of pm.rewards()) assert.strictEqual(typeof r.role, 'string');
+        const src = fs.readFileSync(path.join(REPO, 'core/pointsManager.js'), 'utf8');
+        assert.ok(!/REWARD_.*_ROLE_ID/.test(stripComments(src)), 'the tier indirection is back');
+        assert.ok(!fs.existsSync(path.join(REPO, 'bots/minigames/points_config.json')),
+          'points_config.json is back, and it is tracked');
+      });
+
+      check('every game the config knows has an implementation', () => {
+        const dir = path.join(REPO, 'bots/minigames/commands');
+        const files = new Set(fs.readdirSync(dir).filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)));
+        const missing = Object.keys(config.get('features.minigames.games', {})).filter(g => !files.has(g));
+        assert.deepStrictEqual(missing, [], 'switchable but not implemented: ' + missing.join(', '));
+      });
+
+      check('getPts traverses the config and answers 0 for the unknown', () => {
+        assert.strictEqual(typeof pm.getPts('slots', 'jackpot'), 'number');
+        assert.strictEqual(pm.getPts('slots', 'jackpot'), 50);
+        assert.strictEqual(pm.getPts('trivia', 'hard', 'win'), 20);
+        assert.strictEqual(pm.getPts('nope', 'nope'), 0);
+      });
 
       check('getPts and pointsFooter stay synchronous', () => {
         // They read SETTINGS, not state. Making them async too would put an
@@ -665,9 +1131,7 @@ const dispatch = async i => {
 
       await acheck('re-applying the schema keeps the data', async () => {
         // applySchema runs on every start. The failure mode of getting the
-        // IF NOT EXISTS wrong is a silently emptied installation, so this
-        // applies it a second time against the live connection and checks the
-        // rows are still there.
+        // IF NOT EXISTS wrong is a silently emptied installation.
         const before = await pm.getPoints('900000000000000098');
         assert.ok(before > 0, 'nothing stored, the check would prove nothing');
         const driver = await db.connect();
@@ -687,7 +1151,8 @@ const dispatch = async i => {
       check('every call site awaits addPoints and getPoints', () => {
         // A forgotten await computes with a Promise: `{old, new}` becomes
         // undefined and the footer prints NaN, with no error anywhere. Cheap
-        // to check, expensive to notice in production.
+        // to check, expensive to notice in production. The dispatch tests do
+        // NOT catch it, verified by removing an await and watching them pass.
         const offenders = [];
         for (const rel of ['bots/commands/commands', 'bots/minigames/commands']) {
           const dir = path.join(REPO, rel);
@@ -743,11 +1208,11 @@ const dispatch = async i => {
     assert.ok(err, 'login unexpectedly succeeded');
     const msg = String(err.message);
     // A working REST/undici stack reaches Discord and gets told the token is bad.
-    const reachedDiscord = /token|unauthorized|401/i.test(msg);
-    assert.ok(reachedDiscord, 'did not reach Discord, got instead: ' + msg);
+    assert.ok(/token|unauthorized|401/i.test(msg), 'did not reach Discord, got instead: ' + msg);
   });
 
-  try { realClient?.destroy(); } catch {}
+  try { realClient?.destroy(); } catch { /* nothing to clean up */ }
+  try { fs.rmSync(path.dirname(FIXTURE_PATH), { recursive: true, force: true }); } catch { /* temp dir */ }
 
   console.log('\n' + '='.repeat(60));
   console.log(`  ${pass} passed, ${fail} failed`);

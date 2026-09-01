@@ -5,7 +5,10 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "node test/harness.js"
+    "test": "node test/harness.js",
+    "migrate:config": "node scripts/migrate-config.js",
+    "dashboard": "node dashboard.js",
+    "test:dashboard": "node test/dashboard.js"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
@@ -16,6 +19,8 @@
     "node": ">=24.0.0"
   },
   "optionalDependencies": {
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
     "mysql2": "^3.24.2",
     "pg": "^8.23.0"
   }

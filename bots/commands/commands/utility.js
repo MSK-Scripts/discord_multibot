@@ -1,50 +1,66 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
-const { makeEmbed, hasAnyRole } = require('../../../core/utils');
+const { makeEmbed, dateTimeStr } = require('../../../core/utils');
+const { applyMeta, optionText, guard } = require('../../../core/commandKit');
 const { getPoints } = require('../../../core/pointsManager');
-const { guild: gcfg } = require('../../../core/config');
+const { t } = require('../../../core/i18n');
+const config = require('../../../core/config');
 
 module.exports = [
   {
-    data: new SlashCommandBuilder()
-      .setName('ping')
-      .setDescription("Responds with Pong and the bot's current latency"),
+    key: 'ping',
+    data: applyMeta(new SlashCommandBuilder(), 'ping'),
 
     async execute(interaction) {
+      if (!await guard(interaction, 'ping')) return;
       const latency = Math.round(interaction.client.ws.ping);
-      await interaction.reply(`🏓 Pong!\nLatency: \`${latency}ms\``);
+      await interaction.reply(t('utility.ping', { latency }));
     },
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('userinfo')
-      .setDescription('Information about a specific User')
-      .addUserOption(o => o.setName('member').setDescription('The user you want info about').setRequired(true)),
+    key: 'userinfo',
+    data: applyMeta(new SlashCommandBuilder(), 'userinfo')
+      .addUserOption(o => o.setName('member').setDescription(optionText('userinfo', 'member')).setRequired(true)),
 
     async execute(interaction) {
+      if (!await guard(interaction, 'userinfo')) return;
+
       const member = interaction.options.getMember('member');
       if (!member) {
-        return interaction.reply({ content: '❌ User not found or no longer in this server.', flags: MessageFlags.Ephemeral });
+        return interaction.reply({ content: t('utility.userinfo.notFound'), flags: MessageFlags.Ephemeral });
       }
       const user = member.user;
 
       const embed = makeEmbed({
-        title:       `Userinfo for ${user.username}`,
-        description: `Information about ${member}`,
+        title:       t('utility.userinfo.title', { username: user.username }),
+        description: t('utility.userinfo.description', { mention: String(member) }),
       });
 
-      embed
-        .addFields(
-          { name: 'Account created at', value: user.createdAt.toLocaleString('de-DE'), inline: true },
-          { name: 'Server joined at',   value: member.joinedAt?.toLocaleString('de-DE') ?? 'Unknown', inline: true },
-          { name: 'User ID',            value: user.id, inline: false },
-        );
+      if (config.get('features.userinfo.showAccountAge', true)) {
+        embed.addFields({ name: t('utility.userinfo.accountCreated'), value: dateTimeStr(user.createdAt), inline: true });
+      }
+      if (config.get('features.userinfo.showJoinedAt', true)) {
+        embed.addFields({
+          name:  t('utility.userinfo.joinedServer'),
+          value: member.joinedAt ? dateTimeStr(member.joinedAt) : t('common.unknown'),
+          inline: true,
+        });
+      }
+      embed.addFields({ name: t('utility.userinfo.userId'), value: user.id, inline: false });
 
-      const roles = member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r.toString()).join('\n');
-      if (roles) embed.addFields({ name: 'Roles', value: roles, inline: false });
+      if (config.get('features.userinfo.showRoles', true)) {
+        const roles = member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r.toString()).join('\n');
+        if (roles) embed.addFields({ name: t('utility.userinfo.roles'), value: roles, inline: false });
+      }
 
-      const points = await getPoints(user.id);
-      embed.addFields({ name: '🪙 Minigame Points', value: `**${points.toLocaleString()}**`, inline: false });
+      if (config.get('features.userinfo.showPoints', true) && config.get('features.minigames.enabled', true)) {
+        const points = await getPoints(user.id);
+        embed.addFields({
+          name:  t('utility.userinfo.points'),
+          value: `**${points.toLocaleString(config.dateLocale())}**`,
+          inline: false,
+        });
+      }
 
       if (user.avatarURL()) embed.setThumbnail(user.avatarURL());
 
@@ -53,23 +69,29 @@ module.exports = [
   },
 
   {
-    data: new SlashCommandBuilder()
-      .setName('clear')
-      .setDescription('Clears a specific amount of messages')
-      .addIntegerOption(o => o.setName('amount').setDescription('Number of messages to delete (max 100)').setRequired(true)),
+    key: 'clear',
+    // The limit is read once, when the command is built, because it is part of
+    // the option's description that Discord stores.
+    data: applyMeta(new SlashCommandBuilder(), 'clear')
+      .addIntegerOption(o => o
+        .setName('amount')
+        .setDescription(optionText('clear', 'amount', { max: Math.min(Number(config.get('features.clear.maxMessages', 100)) || 100, 100) }))
+        .setRequired(true)),
 
     async execute(interaction) {
-      if (!hasAnyRole(interaction, gcfg.TEAM_ROLE_ID)) {
-        return interaction.reply({ content: '❌ You do not have the required role for this command.', flags: MessageFlags.Ephemeral });
-      }
+      if (!await guard(interaction, 'clear')) return;
 
+      // Discord itself refuses more than 100 per call, so the configured limit
+      // can only ever make the ceiling lower, never higher.
+      const max = Math.min(Number(config.get('features.clear.maxMessages', 100)) || 100, 100);
       const amount = interaction.options.getInteger('amount');
-      if (amount > 100) return interaction.reply({ content: '❌ You cannot delete more than 100 messages at once.', flags: MessageFlags.Ephemeral });
-      if (amount < 1)   return interaction.reply({ content: '❌ Amount must be at least 1.', flags: MessageFlags.Ephemeral });
+
+      if (amount > max) return interaction.reply({ content: t('utility.clear.tooMany', { max }), flags: MessageFlags.Ephemeral });
+      if (amount < 1)   return interaction.reply({ content: t('utility.clear.tooFew'), flags: MessageFlags.Ephemeral });
 
       await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const deleted = await interaction.channel.bulkDelete(amount, true);
-      await interaction.editReply({ content: `✅ ${deleted.size} message(s) deleted.` });
+      await interaction.editReply({ content: t('utility.clear.done', { count: deleted.size }) });
     },
   },
 ];
