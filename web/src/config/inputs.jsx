@@ -645,6 +645,32 @@ export function Field({ field, value, onChange, lookups, roleNames, languages, d
         />,
       );
 
+    case 'multiplierList':
+      return wrap(
+        <ObjectList
+          value={value}
+          onChange={onChange}
+          blank={{ role: '', factor: 2 }}
+          addLabel={t('inputs.addBonusRole')}
+          renderItem={(item, set) => (
+            <div className="grid gap-2 sm:grid-cols-[1fr_9rem]">
+              <IdPicker value={item.role} onChange={v => set({ role: v })} options={roles} names={roleNames} allowNames placeholder={t('inputs.pickRole')} />
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground text-sm">x</span>
+                <Input
+                  type="number"
+                  min={1}
+                  step={0.5}
+                  value={Number(item.factor) || 0}
+                  onChange={e => set({ factor: Number(e.target.value) || 0 })}
+                  className="tabular-nums"
+                />
+              </div>
+            </div>
+          )}
+        />,
+      );
+
     case 'contextMenus':
       return wrap(<ContextMenus value={value} onChange={onChange} roles={roles} roleNames={roleNames} />);
 

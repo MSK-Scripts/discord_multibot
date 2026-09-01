@@ -41,7 +41,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "botsupervisor",
       "source_file": "core/dashboard/supervisor.js",
@@ -58,7 +58,7 @@
       "file_type": "code",
       "norm_label": "discordapierror",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L17"
+      "source_location": "L20"
     },
     {
       "id": "web_src_api_apierror",
@@ -143,19 +143,7 @@
       "file_type": "code",
       "norm_label": "addpoints()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L133"
-    },
-    {
-      "id": "core_pointsmanager_getpts",
-      "label": "getPts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "notifyRewards",
-      "file_type": "code",
-      "norm_label": "getpts()",
-      "source_file": "core/pointsManager.js",
-      "source_location": "L47"
+      "source_location": "L198"
     },
     {
       "id": "core_pointsmanager_notifyrewards",
@@ -167,7 +155,19 @@
       "file_type": "code",
       "norm_label": "notifyrewards()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L149"
+      "source_location": "L214"
+    },
+    {
+      "id": "core_pointsmanager_pointsfor",
+      "label": "pointsFor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "notifyRewards",
+      "file_type": "code",
+      "norm_label": "pointsfor()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L116"
     },
     {
       "id": "bots_minigames_commands_connect4_botmove",
@@ -491,7 +491,7 @@
       "file_type": "code",
       "norm_label": "reload()",
       "source_file": "core/config.js",
-      "source_location": "L302"
+      "source_location": "L317"
     },
     {
       "id": "core_config_report",
@@ -710,6 +710,18 @@
       "source_location": "L21"
     },
     {
+      "id": "core_i18n_tdata",
+      "label": "tData()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 13,
+      "community_name": "trivia.js",
+      "file_type": "code",
+      "norm_label": "tdata()",
+      "source_file": "core/i18n.js",
+      "source_location": "L130"
+    },
+    {
       "id": "bots_events_bot_attach",
       "label": "attach()",
       "_callable": true,
@@ -758,42 +770,6 @@
       "source_location": "L112"
     },
     {
-      "id": "bots_events_handlers_messagehandler_autoreply",
-      "label": "autoReply()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "autoreply()",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L29"
-    },
-    {
-      "id": "bots_events_handlers_messagehandler_feedbacktoembed",
-      "label": "feedbackToEmbed()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "feedbacktoembed()",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L57"
-    },
-    {
-      "id": "bots_events_handlers_messagehandler_onmessage",
-      "label": "onMessage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "onmessage()",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L22"
-    },
-    {
       "id": "bots_minigames_bot_attach",
       "label": "attach()",
       "_callable": true,
@@ -823,7 +799,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "builddata()",
       "source_file": "bots/commands/commands/support.js",
@@ -835,7 +811,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/commands/commands/support.js",
@@ -847,35 +823,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "guides()",
       "source_file": "bots/commands/commands/support.js",
       "source_location": "L23"
-    },
-    {
-      "id": "core_commandkit_applymeta",
-      "label": "applyMeta()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "applymeta()",
-      "source_file": "core/commandKit.js",
-      "source_location": "L58"
-    },
-    {
-      "id": "core_commandkit_description",
-      "label": "description()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "description()",
-      "source_file": "core/commandKit.js",
-      "source_location": "L44"
     },
     {
       "id": "core_commandkit_optiontext",
@@ -883,23 +835,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "optiontext()",
       "source_file": "core/commandKit.js",
       "source_location": "L66"
-    },
-    {
-      "id": "core_commandkit_validname",
-      "label": "validName()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "validname()",
-      "source_file": "core/commandKit.js",
-      "source_location": "L31"
     },
     {
       "id": "core_db_drivers_mysql_create",
@@ -1382,78 +1322,6 @@
       "source_location": "L63"
     },
     {
-      "id": "core_dashboard_envfile_detecteol",
-      "label": "detectEol()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "detecteol()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L18"
-    },
-    {
-      "id": "core_dashboard_envfile_parseenvfile",
-      "label": "parseEnvFile()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "parseenvfile()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "core_dashboard_envfile_quote",
-      "label": "quote()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "quote()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L46"
-    },
-    {
-      "id": "core_dashboard_envfile_setenvvalue",
-      "label": "setEnvValue()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "setenvvalue()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L53"
-    },
-    {
-      "id": "core_dashboard_envfile_splitlines",
-      "label": "splitLines()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "splitlines()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L19"
-    },
-    {
-      "id": "core_dashboard_envfile_unquote",
-      "label": "unquote()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "unquote()",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L22"
-    },
-    {
       "id": "core_dashboard_permissions_canusedashboard",
       "label": "canUseDashboard()",
       "_callable": true,
@@ -1466,18 +1334,6 @@
       "source_location": "L108"
     },
     {
-      "id": "core_dashboard_permissions_checkselfedit",
-      "label": "checkSelfEdit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "checkselfedit()",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L122"
-    },
-    {
       "id": "core_dashboard_permissions_haspermission",
       "label": "hasPermission()",
       "_callable": true,
@@ -1488,42 +1344,6 @@
       "norm_label": "haspermission()",
       "source_file": "core/dashboard/permissions.js",
       "source_location": "L95"
-    },
-    {
-      "id": "core_dashboard_permissions_ispermission",
-      "label": "isPermission()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "ispermission()",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L42"
-    },
-    {
-      "id": "core_dashboard_permissions_issubjecttype",
-      "label": "isSubjectType()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "issubjecttype()",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L43"
-    },
-    {
-      "id": "core_dashboard_permissions_parsepermissions",
-      "label": "parsePermissions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "parsepermissions()",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L52"
     },
     {
       "id": "core_dashboard_permissions_resolvepermissions",
@@ -1548,30 +1368,6 @@
       "norm_label": "selectaccessrows()",
       "source_file": "core/dashboard/permissions.js",
       "source_location": "L62"
-    },
-    {
-      "id": "core_dashboard_routes_getoverride",
-      "label": "getOverride()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "getoverride()",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L400"
-    },
-    {
-      "id": "core_dashboard_routes_registerroutes",
-      "label": "registerRoutes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "registerroutes()",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L46"
     },
     {
       "id": "core_dashboard_server_getmembercontext",
@@ -1922,24 +1718,12 @@
       "source_location": "L148"
     },
     {
-      "id": "core_utils_nowstr",
-      "label": "nowStr()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "contextMenus.js",
-      "file_type": "code",
-      "norm_label": "nowstr()",
-      "source_file": "core/utils.js",
-      "source_location": "L11"
-    },
-    {
       "id": "bots_minigames_commands_tictactoe_aieasy",
       "label": "aiEasy()",
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "aieasy()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -1951,7 +1735,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "aihard()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -1963,7 +1747,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "aimedium()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -1975,7 +1759,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "available()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -1987,23 +1771,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "buildboard()",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L91"
-    },
-    {
-      "id": "bots_minigames_commands_tictactoe_buildembed",
-      "label": "buildEmbed()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "t",
-      "file_type": "code",
-      "norm_label": "buildembed()",
-      "source_file": "bots/minigames/commands/tictactoe.js",
-      "source_location": "L114"
     },
     {
       "id": "bots_minigames_commands_tictactoe_checkwinner",
@@ -2011,23 +1783,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "checkwinner()",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L23"
-    },
-    {
-      "id": "bots_minigames_commands_tictactoe_difflabel",
-      "label": "diffLabel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "t",
-      "file_type": "code",
-      "norm_label": "difflabel()",
-      "source_file": "bots/minigames/commands/tictactoe.js",
-      "source_location": "L21"
     },
     {
       "id": "bots_minigames_commands_tictactoe_execute",
@@ -2035,7 +1795,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -2047,7 +1807,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "isdraw()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -2059,7 +1819,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "minimax()",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -2071,83 +1831,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "winningmove()",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L35"
-    },
-    {
-      "id": "core_i18n_t",
-      "label": "t()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 24,
-      "community_name": "t",
-      "file_type": "code",
-      "norm_label": "t()",
-      "source_file": "core/i18n.js",
-      "source_location": "L101"
-    },
-    {
-      "id": "core_dashboard_config_ensuresessionsecret",
-      "label": "ensureSessionSecret()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "ensuresessionsecret()",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L117"
-    },
-    {
-      "id": "core_dashboard_config_isloopback",
-      "label": "isLoopback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "isloopback()",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "core_dashboard_config_loaddashboardconfig",
-      "label": "loadDashboardConfig()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "loaddashboardconfig()",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L39"
-    },
-    {
-      "id": "core_dashboard_config_truthy",
-      "label": "truthy()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "truthy()",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L31"
-    },
-    {
-      "id": "core_dashboard_config_validatedashboardconfig",
-      "label": "validateDashboardConfig()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "validatedashboardconfig()",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L71"
     },
     {
       "id": "core_dashboard_supervisor_botsupervisor_cancelscheduledrestart",
@@ -2155,7 +1843,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".cancelscheduledrestart()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2167,7 +1855,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2179,7 +1867,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".getlogs()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2191,7 +1879,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".getstate()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2203,7 +1891,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".pushlog()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2215,7 +1903,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".restart()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2227,7 +1915,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".run()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2239,7 +1927,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".schedulerestart()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2251,7 +1939,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".setstatus()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2263,7 +1951,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".start()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2275,7 +1963,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".stop()",
       "source_file": "core/dashboard/supervisor.js",
@@ -2287,35 +1975,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": ".update()",
       "source_file": "core/dashboard/supervisor.js",
       "source_location": "L226"
-    },
-    {
-      "id": "dashboard_installshutdownhandlers",
-      "label": "installShutdownHandlers()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "installshutdownhandlers()",
-      "source_file": "dashboard.js",
-      "source_location": "L32"
-    },
-    {
-      "id": "dashboard_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "dashboard.js",
-      "source_location": "L45"
     },
     {
       "id": "core_dashboard_security_b64url",
@@ -2555,7 +2219,7 @@
       "file_type": "code",
       "norm_label": "commandtable()",
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L707"
+      "source_location": "L733"
     },
     {
       "id": "web_src_config_inputs_contextmenus",
@@ -2567,7 +2231,7 @@
       "file_type": "code",
       "norm_label": "contextmenus()",
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L668"
+      "source_location": "L694"
     },
     {
       "id": "web_src_config_inputs_fieldshell",
@@ -2855,7 +2519,7 @@
       "file_type": "code",
       "norm_label": "avatarurl()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L122"
+      "source_location": "L135"
     },
     {
       "id": "core_dashboard_discord_bottoken",
@@ -2867,7 +2531,7 @@
       "file_type": "code",
       "norm_label": "bottoken()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L32"
+      "source_location": "L35"
     },
     {
       "id": "core_dashboard_discord_cacheuser",
@@ -2879,7 +2543,7 @@
       "file_type": "code",
       "norm_label": "cacheuser()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L136"
+      "source_location": "L149"
     },
     {
       "id": "core_dashboard_discord_discordapierror_constructor",
@@ -2891,7 +2555,7 @@
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L18"
+      "source_location": "L21"
     },
     {
       "id": "core_dashboard_discord_getguild",
@@ -2903,7 +2567,7 @@
       "file_type": "code",
       "norm_label": "getguild()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L77"
+      "source_location": "L90"
     },
     {
       "id": "core_dashboard_discord_getguildchannels",
@@ -2915,7 +2579,7 @@
       "file_type": "code",
       "norm_label": "getguildchannels()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L79"
+      "source_location": "L92"
     },
     {
       "id": "core_dashboard_discord_getguildlookups",
@@ -2927,7 +2591,7 @@
       "file_type": "code",
       "norm_label": "getguildlookups()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L189"
+      "source_location": "L202"
     },
     {
       "id": "core_dashboard_discord_getguildmember",
@@ -2939,7 +2603,7 @@
       "file_type": "code",
       "norm_label": "getguildmember()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L82"
+      "source_location": "L95"
     },
     {
       "id": "core_dashboard_discord_getguildroles",
@@ -2951,7 +2615,7 @@
       "file_type": "code",
       "norm_label": "getguildroles()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L78"
+      "source_location": "L91"
     },
     {
       "id": "core_dashboard_discord_getuser",
@@ -2963,7 +2627,7 @@
       "file_type": "code",
       "norm_label": "getuser()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L91"
+      "source_location": "L104"
     },
     {
       "id": "core_dashboard_discord_request",
@@ -2975,7 +2639,7 @@
       "file_type": "code",
       "norm_label": "request()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L42"
+      "source_location": "L45"
     },
     {
       "id": "core_dashboard_discord_resolvemembercontext",
@@ -2987,7 +2651,7 @@
       "file_type": "code",
       "norm_label": "resolvemembercontext()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L108"
+      "source_location": "L121"
     },
     {
       "id": "core_dashboard_discord_resolveusers",
@@ -2999,7 +2663,7 @@
       "file_type": "code",
       "norm_label": "resolveusers()",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L144"
+      "source_location": "L157"
     },
     {
       "id": "bots_minigames_commands_points_execute",
@@ -3014,6 +2678,18 @@
       "source_location": "L15"
     },
     {
+      "id": "core_pointsmanager_applymultiplier",
+      "label": "applyMultiplier()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "applymultiplier()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L102"
+    },
+    {
       "id": "core_pointsmanager_getnewlyunlockedrewards",
       "label": "getNewlyUnlockedRewards()",
       "_callable": true,
@@ -3023,7 +2699,43 @@
       "file_type": "code",
       "norm_label": "getnewlyunlockedrewards()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L145"
+      "source_location": "L210"
+    },
+    {
+      "id": "core_pointsmanager_getpts",
+      "label": "getPts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "getpts()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "core_pointsmanager_multiplierfor",
+      "label": "multiplierFor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "multiplierfor()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L87"
+    },
+    {
+      "id": "core_pointsmanager_multipliers",
+      "label": "multipliers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "pointsManager.js",
+      "file_type": "code",
+      "norm_label": "multipliers()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L64"
     },
     {
       "id": "core_pointsmanager_rewards",
@@ -3035,7 +2747,7 @@
       "file_type": "code",
       "norm_label": "rewards()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L56"
+      "source_location": "L121"
     },
     {
       "id": "web_src_i18n_getlocale",
@@ -3167,7 +2879,7 @@
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L44"
+      "source_location": "L53"
     },
     {
       "id": "bots_commands_commands_minigames_newround",
@@ -3179,7 +2891,7 @@
       "file_type": "code",
       "norm_label": "newround()",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L24"
+      "source_location": "L33"
     },
     {
       "id": "bots_commands_commands_minigames_settings",
@@ -3191,7 +2903,7 @@
       "file_type": "code",
       "norm_label": "settings()",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L16"
+      "source_location": "L25"
     },
     {
       "id": "core_utils_writejson",
@@ -3290,6 +3002,78 @@
       "source_location": "L58"
     },
     {
+      "id": "core_dashboard_permissions_checkselfedit",
+      "label": "checkSelfEdit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "checkselfedit()",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L122"
+    },
+    {
+      "id": "core_dashboard_permissions_ispermission",
+      "label": "isPermission()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "ispermission()",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L42"
+    },
+    {
+      "id": "core_dashboard_permissions_issubjecttype",
+      "label": "isSubjectType()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "issubjecttype()",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L43"
+    },
+    {
+      "id": "core_dashboard_permissions_parsepermissions",
+      "label": "parsePermissions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "parsepermissions()",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L52"
+    },
+    {
+      "id": "core_dashboard_routes_getoverride",
+      "label": "getOverride()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "getoverride()",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L400"
+    },
+    {
+      "id": "core_dashboard_routes_registerroutes",
+      "label": "registerRoutes()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "registerroutes()",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L46"
+    },
+    {
       "id": "web_src_app_allowed",
       "label": "allowed()",
       "_callable": true,
@@ -3367,7 +3151,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/dice.js",
@@ -3379,7 +3163,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/eightball.js",
@@ -3391,7 +3175,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "buildembed()",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -3403,11 +3187,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "pickword()",
       "source_file": "bots/minigames/commands/hangman.js",
       "source_location": "L31"
+    },
+    {
+      "id": "bots_minigames_commands_tictactoe_buildembed",
+      "label": "buildEmbed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "buildembed()",
+      "source_file": "bots/minigames/commands/tictactoe.js",
+      "source_location": "L114"
+    },
+    {
+      "id": "bots_minigames_commands_tictactoe_difflabel",
+      "label": "diffLabel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "difflabel()",
+      "source_file": "bots/minigames/commands/tictactoe.js",
+      "source_location": "L21"
     },
     {
       "id": "bots_minigames_commands_wordle_buildembed",
@@ -3415,7 +3223,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "buildembed()",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -3427,7 +3235,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "evaluate()",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -3439,7 +3247,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -3451,7 +3259,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "words()",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -3463,11 +3271,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "gamecolor()",
       "source_file": "core/gameKit.js",
       "source_location": "L36"
+    },
+    {
+      "id": "core_gamekit_gamefooter",
+      "label": "gameFooter()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "gamefooter()",
+      "source_file": "core/gameKit.js",
+      "source_location": "L22"
+    },
+    {
+      "id": "core_i18n_t",
+      "label": "t()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "t()",
+      "source_file": "core/i18n.js",
+      "source_location": "L101"
     },
     {
       "id": "core_i18n_tlist",
@@ -3475,11 +3307,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "tlist()",
       "source_file": "core/i18n.js",
       "source_location": "L113"
+    },
+    {
+      "id": "core_pointsmanager_pointsfooter",
+      "label": "pointsFooter()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "pointsfooter()",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L241"
     },
     {
       "id": "bots_commands_commands_admin_execute",
@@ -3506,16 +3350,16 @@
       "source_location": "L13"
     },
     {
-      "id": "core_commandkit_guard",
-      "label": "guard()",
+      "id": "core_utils_nowstr",
+      "label": "nowStr()",
       "_callable": true,
       "_origin": "ast",
       "community": 37,
       "community_name": "admin.js",
       "file_type": "code",
-      "norm_label": "guard()",
-      "source_file": "core/commandKit.js",
-      "source_location": "L79"
+      "norm_label": "nowstr()",
+      "source_file": "core/utils.js",
+      "source_location": "L11"
     },
     {
       "id": "web_src_main_render",
@@ -3619,7 +3463,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "buildembed()",
       "source_file": "bots/minigames/commands/slots.js",
@@ -3631,7 +3475,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "evaluate()",
       "source_file": "bots/minigames/commands/slots.js",
@@ -3643,7 +3487,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "execute()",
       "source_file": "bots/minigames/commands/slots.js",
@@ -3655,35 +3499,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "spin()",
       "source_file": "bots/minigames/commands/slots.js",
       "source_location": "L19"
-    },
-    {
-      "id": "core_gamekit_gamefooter",
-      "label": "gameFooter()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "gamefooter()",
-      "source_file": "core/gameKit.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "core_pointsmanager_pointsfooter",
-      "label": "pointsFooter()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "pointsfooter()",
-      "source_file": "core/pointsManager.js",
-      "source_location": "L176"
     },
     {
       "id": "core_db_index_addbalance",
@@ -4019,7 +3839,7 @@
       "file_type": "code",
       "norm_label": "selectcontent()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L36"
+      "source_location": "L57"
     },
     {
       "id": "web_src_components_ui_select_selectgroup",
@@ -4043,7 +3863,7 @@
       "file_type": "code",
       "norm_label": "selectitem()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L65"
+      "source_location": "L86"
     },
     {
       "id": "web_src_components_ui_select_selectlabel",
@@ -4055,7 +3875,7 @@
       "file_type": "code",
       "norm_label": "selectlabel()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L61"
+      "source_location": "L82"
     },
     {
       "id": "web_src_components_ui_select_selectscrolldownbutton",
@@ -4067,7 +3887,7 @@
       "file_type": "code",
       "norm_label": "selectscrolldownbutton()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L97"
+      "source_location": "L118"
     },
     {
       "id": "web_src_components_ui_select_selectscrollupbutton",
@@ -4079,7 +3899,7 @@
       "file_type": "code",
       "norm_label": "selectscrollupbutton()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L89"
+      "source_location": "L110"
     },
     {
       "id": "web_src_components_ui_select_selectseparator",
@@ -4091,7 +3911,7 @@
       "file_type": "code",
       "norm_label": "selectseparator()",
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L85"
+      "source_location": "L106"
     },
     {
       "id": "web_src_components_ui_select_selecttrigger",
@@ -4118,6 +3938,90 @@
       "source_location": "L13"
     },
     {
+      "id": "core_dashboard_config_ensuresessionsecret",
+      "label": "ensureSessionSecret()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "ensuresessionsecret()",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L117"
+    },
+    {
+      "id": "core_dashboard_config_isloopback",
+      "label": "isLoopback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "isloopback()",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L34"
+    },
+    {
+      "id": "core_dashboard_config_loaddashboardconfig",
+      "label": "loadDashboardConfig()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "loaddashboardconfig()",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L39"
+    },
+    {
+      "id": "core_dashboard_config_truthy",
+      "label": "truthy()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "truthy()",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L31"
+    },
+    {
+      "id": "core_dashboard_config_validatedashboardconfig",
+      "label": "validateDashboardConfig()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "validatedashboardconfig()",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L71"
+    },
+    {
+      "id": "dashboard_installshutdownhandlers",
+      "label": "installShutdownHandlers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "installshutdownhandlers()",
+      "source_file": "dashboard.js",
+      "source_location": "L32"
+    },
+    {
+      "id": "dashboard_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "dashboard.js",
+      "source_location": "L45"
+    },
+    {
       "id": "bots_commands_commands_utility_execute",
       "label": "execute()",
       "_callable": true,
@@ -4139,7 +4043,7 @@
       "file_type": "code",
       "norm_label": "getpoints()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L125"
+      "source_location": "L190"
     },
     {
       "id": "core_pointsmanager_init",
@@ -4151,7 +4055,7 @@
       "file_type": "code",
       "norm_label": "init()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L85"
+      "source_location": "L150"
     },
     {
       "id": "core_pointsmanager_toppoints",
@@ -4163,7 +4067,7 @@
       "file_type": "code",
       "norm_label": "toppoints()",
       "source_file": "core/pointsManager.js",
-      "source_location": "L138"
+      "source_location": "L203"
     },
     {
       "id": "core_utils_datetimestr",
@@ -4188,6 +4092,18 @@
       "norm_label": "readjson()",
       "source_file": "core/utils.js",
       "source_location": "L136"
+    },
+    {
+      "id": "core_commandkit_guard",
+      "label": "guard()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 45,
+      "community_name": "core/utils.js",
+      "file_type": "code",
+      "norm_label": "guard()",
+      "source_file": "core/commandKit.js",
+      "source_location": "L79"
     },
     {
       "id": "core_utils_allowedbyroles",
@@ -4499,7 +4415,7 @@
       "file_type": "code",
       "norm_label": "acheck()",
       "source_file": "test/harness.js",
-      "source_location": "L90"
+      "source_location": "L98"
     },
     {
       "id": "test_harness_check",
@@ -4511,7 +4427,7 @@
       "file_type": "code",
       "norm_label": "check()",
       "source_file": "test/harness.js",
-      "source_location": "L86"
+      "source_location": "L94"
     },
     {
       "id": "test_harness_dispatch",
@@ -4523,7 +4439,7 @@
       "file_type": "code",
       "norm_label": "dispatch()",
       "source_file": "test/harness.js",
-      "source_location": "L310"
+      "source_location": "L318"
     },
     {
       "id": "test_harness_fake",
@@ -4547,7 +4463,7 @@
       "file_type": "code",
       "norm_label": "lasttext()",
       "source_file": "test/harness.js",
-      "source_location": "L300"
+      "source_location": "L308"
     },
     {
       "id": "test_harness_mockinteraction",
@@ -4559,7 +4475,7 @@
       "file_type": "code",
       "norm_label": "mockinteraction()",
       "source_file": "test/harness.js",
-      "source_location": "L247"
+      "source_location": "L255"
     },
     {
       "id": "test_harness_nameof",
@@ -4571,7 +4487,7 @@
       "file_type": "code",
       "norm_label": "nameof()",
       "source_file": "test/harness.js",
-      "source_location": "L316"
+      "source_location": "L324"
     },
     {
       "id": "test_harness_req",
@@ -4583,7 +4499,7 @@
       "file_type": "code",
       "norm_label": "req()",
       "source_file": "test/harness.js",
-      "source_location": "L82"
+      "source_location": "L90"
     },
     {
       "id": "test_harness_section",
@@ -4595,7 +4511,7 @@
       "file_type": "code",
       "norm_label": "section()",
       "source_file": "test/harness.js",
-      "source_location": "L94"
+      "source_location": "L102"
     },
     {
       "id": "test_harness_stripcomments",
@@ -4607,7 +4523,7 @@
       "file_type": "code",
       "norm_label": "stripcomments()",
       "source_file": "test/harness.js",
-      "source_location": "L117"
+      "source_location": "L125"
     },
     {
       "id": "test_harness_trackedsources",
@@ -4619,7 +4535,7 @@
       "file_type": "code",
       "norm_label": "trackedsources()",
       "source_file": "test/harness.js",
-      "source_location": "L105"
+      "source_location": "L113"
     },
     {
       "id": "test_harness_v",
@@ -4631,7 +4547,7 @@
       "file_type": "code",
       "norm_label": "v()",
       "source_file": "test/harness.js",
-      "source_location": "L123"
+      "source_location": "L131"
     },
     {
       "id": "web_src_components_ui_card_card",
@@ -4739,7 +4655,7 @@
       "file_type": "code",
       "norm_label": "dropdownmenucontent()",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L8"
+      "source_location": "L13"
     },
     {
       "id": "web_src_components_ui_dropdown_menu_dropdownmenugroup",
@@ -4763,7 +4679,7 @@
       "file_type": "code",
       "norm_label": "dropdownmenuitem()",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L24"
+      "source_location": "L29"
     },
     {
       "id": "web_src_components_ui_dropdown_menu_dropdownmenulabel",
@@ -4775,7 +4691,7 @@
       "file_type": "code",
       "norm_label": "dropdownmenulabel()",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L39"
+      "source_location": "L44"
     },
     {
       "id": "web_src_components_ui_dropdown_menu_dropdownmenuseparator",
@@ -4787,7 +4703,7 @@
       "file_type": "code",
       "norm_label": "dropdownmenuseparator()",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L43"
+      "source_location": "L48"
     },
     {
       "id": "web_src_components_ui_dropdown_menu_dropdownmenutrigger",
@@ -4800,6 +4716,42 @@
       "norm_label": "dropdownmenutrigger()",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
       "source_location": "L5"
+    },
+    {
+      "id": "core_commandkit_applymeta",
+      "label": "applyMeta()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "applymeta()",
+      "source_file": "core/commandKit.js",
+      "source_location": "L58"
+    },
+    {
+      "id": "core_commandkit_description",
+      "label": "description()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "description()",
+      "source_file": "core/commandKit.js",
+      "source_location": "L44"
+    },
+    {
+      "id": "core_commandkit_validname",
+      "label": "validName()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "validname()",
+      "source_file": "core/commandKit.js",
+      "source_location": "L31"
     },
     {
       "id": "web_src_components_ui_table_table",
@@ -5267,7 +5219,7 @@
       "file_type": "code",
       "norm_label": "describe()",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L349"
+      "source_location": "L361"
     },
     {
       "id": "core_dashboard_features_f",
@@ -5315,7 +5267,7 @@
       "file_type": "code",
       "norm_label": "statusof()",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L340"
+      "source_location": "L352"
     },
     {
       "id": "core_i18n_allkeys",
@@ -5414,18 +5366,6 @@
       "source_location": "L177"
     },
     {
-      "id": "core_i18n_tdata",
-      "label": "tData()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "i18n.js",
-      "file_type": "code",
-      "norm_label": "tdata()",
-      "source_file": "core/i18n.js",
-      "source_location": "L130"
-    },
-    {
       "id": "core_jsonc_deepmerge",
       "label": "deepMerge()",
       "_callable": true,
@@ -5520,6 +5460,42 @@
       "norm_label": "scrollbar()",
       "source_file": "web/src/components/ui/scroll-area.jsx",
       "source_location": "L19"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_autoreply",
+      "label": "autoReply()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "autoreply()",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L29"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_feedbacktoembed",
+      "label": "feedbackToEmbed()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "feedbacktoembed()",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L57"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_onmessage",
+      "label": "onMessage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "onmessage()",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L22"
     },
     {
       "id": "bots_minigames_commands_blackjack_buildbuttons",
@@ -5714,6 +5690,78 @@
       "source_location": "L5"
     },
     {
+      "id": "core_dashboard_envfile_detecteol",
+      "label": "detectEol()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "detecteol()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "core_dashboard_envfile_parseenvfile",
+      "label": "parseEnvFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "parseenvfile()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L34"
+    },
+    {
+      "id": "core_dashboard_envfile_quote",
+      "label": "quote()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "quote()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L46"
+    },
+    {
+      "id": "core_dashboard_envfile_setenvvalue",
+      "label": "setEnvValue()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "setenvvalue()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L53"
+    },
+    {
+      "id": "core_dashboard_envfile_splitlines",
+      "label": "splitLines()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "splitlines()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "core_dashboard_envfile_unquote",
+      "label": "unquote()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "unquote()",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L22"
+    },
+    {
       "id": "bots_commands_bot_attach",
       "label": "attach()",
       "_callable": true,
@@ -5809,13 +5857,13 @@
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_flipcoin_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_flipcoin_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 0,
       "community_name": "notifyRewards",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/flipcoin.js",
       "source_location": "L5"
     },
@@ -5886,13 +5934,13 @@
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_rps_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_rps_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 0,
       "community_name": "notifyRewards",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/rps.js",
       "source_location": "L4"
     },
@@ -5963,13 +6011,13 @@
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_connect4_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_connect4_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 1,
       "community_name": "connect4.js",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/connect4.js",
       "source_location": "L4"
     },
@@ -6249,13 +6297,13 @@
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_trivia_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_trivia_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 13,
       "community_name": "trivia.js",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/trivia.js",
       "source_location": "L4"
     },
@@ -6403,50 +6451,6 @@
       "source_location": "L2"
     },
     {
-      "id": "bots_events_handlers_messagehandler",
-      "label": "messageHandler.js",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "messagehandler.js",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_events_handlers_messagehandler_config",
-      "label": "config",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "config",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "bots_events_handlers_messagehandler_makeembed",
-      "label": "{ makeEmbed }",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "{ makeembed }",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_events_handlers_messagehandler_t",
-      "label": "{ t }",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "minigames/bot.js",
-      "file_type": "code",
-      "norm_label": "{ t }",
-      "source_file": "bots/events/handlers/messageHandler.js",
-      "source_location": "L2"
-    },
-    {
       "id": "bots_minigames_bot",
       "label": "minigames/bot.js",
       "_origin": "ast",
@@ -6550,7 +6554,7 @@
       "label": "support.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "support.js",
       "source_file": "bots/commands/commands/support.js",
@@ -6561,7 +6565,7 @@
       "label": "{ applyMeta, optionText, guard }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "{ applymeta, optiontext, guard }",
       "source_file": "bots/commands/commands/support.js",
@@ -6572,7 +6576,7 @@
       "label": "config",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "config",
       "source_file": "bots/commands/commands/support.js",
@@ -6583,7 +6587,7 @@
       "label": "{ makeEmbed, linkRow }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "{ makeembed, linkrow }",
       "source_file": "bots/commands/commands/support.js",
@@ -6594,7 +6598,7 @@
       "label": "{ SlashCommandBuilder, MessageFlags }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, messageflags }",
       "source_file": "bots/commands/commands/support.js",
@@ -6605,132 +6609,11 @@
       "label": "{ t }",
       "_origin": "ast",
       "community": 16,
-      "community_name": "commandKit.js",
+      "community_name": "support.js",
       "file_type": "code",
       "norm_label": "{ t }",
       "source_file": "bots/commands/commands/support.js",
       "source_location": "L4"
-    },
-    {
-      "id": "bots_minigames_commands_dice",
-      "label": "dice.js",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "dice.js",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_minigames_commands_dice_applymeta_optiontext",
-      "label": "{ applyMeta, optionText }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ applymeta, optiontext }",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L2"
-    },
-    {
-      "id": "bots_minigames_commands_dice_gamecolor",
-      "label": "{ gameColor }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ gamecolor }",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L3"
-    },
-    {
-      "id": "bots_minigames_commands_dice_sides",
-      "label": "SIDES",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "sides",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L6"
-    },
-    {
-      "id": "bots_minigames_commands_dice_slashcommandbuilder_embedbuilder",
-      "label": "{ SlashCommandBuilder, EmbedBuilder }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ slashcommandbuilder, embedbuilder }",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "bots_minigames_commands_dice_t",
-      "label": "{ t }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ t }",
-      "source_file": "bots/minigames/commands/dice.js",
-      "source_location": "L4"
-    },
-    {
-      "id": "core_commandkit",
-      "label": "commandKit.js",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "commandkit.js",
-      "source_file": "core/commandKit.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_commandkit_allowedbyroles",
-      "label": "{ allowedByRoles }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ allowedbyroles }",
-      "source_file": "core/commandKit.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "core_commandkit_config",
-      "label": "config",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "config",
-      "source_file": "core/commandKit.js",
-      "source_location": "L19"
-    },
-    {
-      "id": "core_commandkit_messageflags",
-      "label": "{ MessageFlags }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ messageflags }",
-      "source_file": "core/commandKit.js",
-      "source_location": "L18"
-    },
-    {
-      "id": "core_commandkit_t",
-      "label": "{ t }",
-      "_origin": "ast",
-      "community": 16,
-      "community_name": "commandKit.js",
-      "file_type": "code",
-      "norm_label": "{ t }",
-      "source_file": "core/commandKit.js",
-      "source_location": "L20"
     },
     {
       "id": "core_db_drivers_mysql",
@@ -7016,226 +6899,6 @@
       "file_type": "code",
       "norm_label": "{ redirecturi }",
       "source_file": "core/dashboard/auth.js",
-      "source_location": "L15"
-    },
-    {
-      "id": "core_dashboard_config_env_path",
-      "label": "ENV_PATH",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "env_path",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L29"
-    },
-    {
-      "id": "core_dashboard_envfile",
-      "label": "envFile.js",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "envfile.js",
-      "source_file": "core/dashboard/envFile.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_dashboard_permissions",
-      "label": "permissions.js",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "permissions.js",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_dashboard_permissions_permission_labels",
-      "label": "PERMISSION_LABELS",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "permission_labels",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L29"
-    },
-    {
-      "id": "core_dashboard_permissions_permissions",
-      "label": "PERMISSIONS",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "permissions",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "core_dashboard_permissions_subject_types",
-      "label": "SUBJECT_TYPES",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "subject_types",
-      "source_file": "core/dashboard/permissions.js",
-      "source_location": "L40"
-    },
-    {
-      "id": "core_dashboard_routes",
-      "label": "routes.js",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "routes.js",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_dashboard_routes_config",
-      "label": "config",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "config",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L13"
-    },
-    {
-      "id": "core_dashboard_routes_configfile",
-      "label": "configFile",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "configfile",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L16"
-    },
-    {
-      "id": "core_dashboard_routes_db",
-      "label": "db",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "db",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L12"
-    },
-    {
-      "id": "core_dashboard_routes_discord",
-      "label": "discord",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "discord",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L19"
-    },
-    {
-      "id": "core_dashboard_routes_editable_env",
-      "label": "EDITABLE_ENV",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "editable_env",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L35"
-    },
-    {
-      "id": "core_dashboard_routes_express",
-      "label": "express",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "express",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L10"
-    },
-    {
-      "id": "core_dashboard_routes_features",
-      "label": "features",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "features",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "core_dashboard_routes_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L9"
-    },
-    {
-      "id": "core_dashboard_routes_i18n",
-      "label": "i18n",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "i18n",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L14"
-    },
-    {
-      "id": "core_dashboard_routes_permissions_permission_labels_issubjecttype_ispermission_checkselfedit_parsepermissions",
-      "label": "{\r\n  PERMISSIONS, PERMISSION_LABELS, isSubjectType, isPermission, checkSelfEdit, parsePermissions,\r\n}",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "{\r\n  permissions, permission_labels, issubjecttype, ispermission, checkselfedit, parsepermissions,\r\n}",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "core_dashboard_routes_secret_env",
-      "label": "SECRET_ENV",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "secret_env",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L42"
-    },
-    {
-      "id": "core_dashboard_routes_setenvvalue_parseenvfile",
-      "label": "{ setEnvValue, parseEnvFile }",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "{ setenvvalue, parseenvfile }",
-      "source_file": "core/dashboard/routes.js",
-      "source_location": "L20"
-    },
-    {
-      "id": "core_dashboard_routes_settings",
-      "label": "settings",
-      "_origin": "ast",
-      "community": 21,
-      "community_name": "server.js",
-      "file_type": "code",
-      "norm_label": "settings",
-      "source_file": "core/dashboard/routes.js",
       "source_location": "L15"
     },
     {
@@ -7749,20 +7412,20 @@
       "label": "tictactoe.js",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "tictactoe.js",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_tictactoe_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_tictactoe_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L4"
     },
@@ -7771,7 +7434,7 @@
       "label": "{ applyMeta }",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "{ applymeta }",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -7782,7 +7445,7 @@
       "label": "CELL_EMOJIS",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "cell_emojis",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -7793,7 +7456,7 @@
       "label": "{ gameFooter, gameColor }",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "{ gamefooter, gamecolor }",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -7804,7 +7467,7 @@
       "label": "{ SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder }",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -7815,7 +7478,7 @@
       "label": "{ t }",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "{ t }",
       "source_file": "bots/minigames/commands/tictactoe.js",
@@ -7826,84 +7489,18 @@
       "label": "WINNING_COMBOS",
       "_origin": "ast",
       "community": 24,
-      "community_name": "t",
+      "community_name": "tictactoe.js",
       "file_type": "code",
       "norm_label": "winning_combos",
       "source_file": "bots/minigames/commands/tictactoe.js",
       "source_location": "L11"
     },
     {
-      "id": "core_dashboard_config",
-      "label": "dashboard/config.js",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "dashboard/config.js",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_dashboard_config_config",
-      "label": "config",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "config",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L26"
-    },
-    {
-      "id": "core_dashboard_config_crypto",
-      "label": "crypto",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "crypto",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "core_dashboard_config_fs",
-      "label": "fs",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "fs",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "core_dashboard_config_path",
-      "label": "path",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "core_dashboard_config_setenvvalue",
-      "label": "{ setEnvValue }",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "{ setenvvalue }",
-      "source_file": "core/dashboard/config.js",
-      "source_location": "L27"
-    },
-    {
       "id": "core_dashboard_supervisor",
       "label": "supervisor.js",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "supervisor.js",
       "source_file": "core/dashboard/supervisor.js",
@@ -7914,7 +7511,7 @@
       "label": "BOT_ENTRY",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "bot_entry",
       "source_file": "core/dashboard/supervisor.js",
@@ -7925,7 +7522,7 @@
       "label": "config",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "config",
       "source_file": "core/dashboard/supervisor.js",
@@ -7936,7 +7533,7 @@
       "label": "ENV_PATH",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "env_path",
       "source_file": "core/dashboard/supervisor.js",
@@ -7947,7 +7544,7 @@
       "label": "EventEmitter",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "eventemitter",
       "source_file": "core/dashboard/supervisor.js",
@@ -7958,7 +7555,7 @@
       "label": "{ fork, spawn }",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "{ fork, spawn }",
       "source_file": "core/dashboard/supervisor.js",
@@ -7969,7 +7566,7 @@
       "label": "fs",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "fs",
       "source_file": "core/dashboard/supervisor.js",
@@ -7980,43 +7577,10 @@
       "label": "path",
       "_origin": "ast",
       "community": 25,
-      "community_name": "dashboard/config.js",
+      "community_name": "BotSupervisor",
       "file_type": "code",
       "norm_label": "path",
       "source_file": "core/dashboard/supervisor.js",
-      "source_location": "L15"
-    },
-    {
-      "id": "dashboard",
-      "label": "dashboard.js",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "dashboard.js",
-      "source_file": "dashboard.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "dashboard_botsupervisor",
-      "label": "{ BotSupervisor }",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "{ botsupervisor }",
-      "source_file": "dashboard.js",
-      "source_location": "L16"
-    },
-    {
-      "id": "dashboard_loaddashboardconfig_validatedashboardconfig_ensuresessionsecret",
-      "label": "{ loadDashboardConfig, validateDashboardConfig, ensureSessionSecret }",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "dashboard/config.js",
-      "file_type": "code",
-      "norm_label": "{ loaddashboardconfig, validatedashboardconfig, ensuresessionsecret }",
-      "source_file": "dashboard.js",
       "source_location": "L15"
     },
     {
@@ -8226,7 +7790,7 @@
       "file_type": "code",
       "norm_label": "usercache",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L134"
+      "source_location": "L147"
     },
     {
       "id": "bots_minigames_commands_points",
@@ -8273,13 +7837,13 @@
       "source_location": "L3"
     },
     {
-      "id": "bots_minigames_commands_points_getpoints_rewards",
-      "label": "{ getPoints, rewards }",
+      "id": "bots_minigames_commands_points_getpoints_rewards_multiplierfor",
+      "label": "{ getPoints, rewards, multiplierFor }",
       "_origin": "ast",
       "community": 3,
       "community_name": "pointsManager.js",
       "file_type": "code",
-      "norm_label": "{ getpoints, rewards }",
+      "norm_label": "{ getpoints, rewards, multiplierfor }",
       "source_file": "bots/minigames/commands/points.js",
       "source_location": "L4"
     },
@@ -8501,7 +8065,7 @@
       "file_type": "code",
       "norm_label": "{ applymeta, optiontext, guard }",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4"
+      "source_location": "L5"
     },
     {
       "id": "bots_commands_commands_minigames_config",
@@ -8512,7 +8076,7 @@
       "file_type": "code",
       "norm_label": "config",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L6"
+      "source_location": "L7"
     },
     {
       "id": "bots_commands_commands_minigames_join",
@@ -8534,7 +8098,7 @@
       "file_type": "code",
       "norm_label": "jokes_file",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L8"
+      "source_location": "L9"
     },
     {
       "id": "bots_commands_commands_minigames_makeembed_readjson_writejson",
@@ -8544,6 +8108,17 @@
       "community_name": "minigames.js",
       "file_type": "code",
       "norm_label": "{ makeembed, readjson, writejson }",
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "bots_commands_commands_minigames_randomint",
+      "label": "{ randomInt }",
+      "_origin": "ast",
+      "community": 31,
+      "community_name": "minigames.js",
+      "file_type": "code",
+      "norm_label": "{ randomint }",
       "source_file": "bots/commands/commands/minigames.js",
       "source_location": "L3"
     },
@@ -8567,7 +8142,7 @@
       "file_type": "code",
       "norm_label": "{ t }",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L5"
+      "source_location": "L6"
     },
     {
       "id": "web_src_i18n",
@@ -8636,26 +8211,213 @@
       "source_location": "L23"
     },
     {
-      "id": "web_package_dependencies_class_variance_authority",
-      "label": "class-variance-authority",
+      "id": "core_dashboard_config_env_path",
+      "label": "ENV_PATH",
       "_origin": "ast",
       "community": 33,
-      "community_name": "class-variance-authority",
+      "community_name": "routes.js",
       "file_type": "code",
-      "norm_label": "class-variance-authority",
-      "source_file": "web/package.json",
-      "source_location": "L26"
+      "norm_label": "env_path",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L29"
     },
     {
-      "id": "class_variance_authority",
-      "label": "class-variance-authority",
+      "id": "core_dashboard_permissions",
+      "label": "permissions.js",
       "_origin": "ast",
       "community": 33,
-      "community_name": "class-variance-authority",
-      "file_type": "concept",
-      "norm_label": "class-variance-authority",
-      "source_file": "web/package.json",
-      "source_location": "L26"
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "permissions.js",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_dashboard_permissions_permission_labels",
+      "label": "PERMISSION_LABELS",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "permission_labels",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L29"
+    },
+    {
+      "id": "core_dashboard_permissions_permissions",
+      "label": "PERMISSIONS",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "permissions",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L17"
+    },
+    {
+      "id": "core_dashboard_permissions_subject_types",
+      "label": "SUBJECT_TYPES",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "subject_types",
+      "source_file": "core/dashboard/permissions.js",
+      "source_location": "L40"
+    },
+    {
+      "id": "core_dashboard_routes",
+      "label": "routes.js",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "routes.js",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_dashboard_routes_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "core_dashboard_routes_configfile",
+      "label": "configFile",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "configfile",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "core_dashboard_routes_db",
+      "label": "db",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "db",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L12"
+    },
+    {
+      "id": "core_dashboard_routes_discord",
+      "label": "discord",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "discord",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "core_dashboard_routes_editable_env",
+      "label": "EDITABLE_ENV",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "editable_env",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L35"
+    },
+    {
+      "id": "core_dashboard_routes_express",
+      "label": "express",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "express",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "core_dashboard_routes_features",
+      "label": "features",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "features",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L17"
+    },
+    {
+      "id": "core_dashboard_routes_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L9"
+    },
+    {
+      "id": "core_dashboard_routes_i18n",
+      "label": "i18n",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "i18n",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L14"
+    },
+    {
+      "id": "core_dashboard_routes_permissions_permission_labels_issubjecttype_ispermission_checkselfedit_parsepermissions",
+      "label": "{\r\n  PERMISSIONS, PERMISSION_LABELS, isSubjectType, isPermission, checkSelfEdit, parsePermissions,\r\n}",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "{\r\n  permissions, permission_labels, issubjecttype, ispermission, checkselfedit, parsepermissions,\r\n}",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "core_dashboard_routes_secret_env",
+      "label": "SECRET_ENV",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "secret_env",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L42"
+    },
+    {
+      "id": "core_dashboard_routes_setenvvalue_parseenvfile",
+      "label": "{ setEnvValue, parseEnvFile }",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "{ setenvvalue, parseenvfile }",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L20"
+    },
+    {
+      "id": "core_dashboard_routes_settings",
+      "label": "settings",
+      "_origin": "ast",
+      "community": 33,
+      "community_name": "routes.js",
+      "file_type": "code",
+      "norm_label": "settings",
+      "source_file": "core/dashboard/routes.js",
+      "source_location": "L15"
     },
     {
       "id": "web_package_dependencies",
@@ -8669,6 +8431,17 @@
       "source_location": "L12"
     },
     {
+      "id": "web_package_dependencies_class_variance_authority",
+      "label": "class-variance-authority",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "dependencies",
+      "file_type": "code",
+      "norm_label": "class-variance-authority",
+      "source_file": "web/package.json",
+      "source_location": "L26"
+    },
+    {
       "id": "web_package_dependencies_clsx",
       "label": "clsx",
       "_origin": "ast",
@@ -8678,17 +8451,6 @@
       "norm_label": "clsx",
       "source_file": "web/package.json",
       "source_location": "L27"
-    },
-    {
-      "id": "web_package_dependencies_fontsource_dm_sans",
-      "label": "@fontsource/dm-sans",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "dependencies",
-      "file_type": "code",
-      "norm_label": "@fontsource/dm-sans",
-      "source_file": "web/package.json",
-      "source_location": "L13"
     },
     {
       "id": "web_package_dependencies_fontsource_space_mono",
@@ -8746,6 +8508,17 @@
       "source_location": "L31"
     },
     {
+      "id": "class_variance_authority",
+      "label": "class-variance-authority",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "dependencies",
+      "file_type": "concept",
+      "norm_label": "class-variance-authority",
+      "source_file": "web/package.json",
+      "source_location": "L26"
+    },
+    {
       "id": "clsx",
       "label": "clsx",
       "_origin": "ast",
@@ -8755,17 +8528,6 @@
       "norm_label": "clsx",
       "source_file": "web/package.json",
       "source_location": "L27"
-    },
-    {
-      "id": "fontsource_dm_sans",
-      "label": "@fontsource/dm-sans",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "dependencies",
-      "file_type": "concept",
-      "norm_label": "@fontsource/dm-sans",
-      "source_file": "web/package.json",
-      "source_location": "L13"
     },
     {
       "id": "fontsource_space_mono",
@@ -8889,69 +8651,69 @@
       "source_location": "L17"
     },
     {
-      "id": "bots_minigames_commands_eightball",
-      "label": "eightball.js",
+      "id": "bots_minigames_commands_dice",
+      "label": "dice.js",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
-      "norm_label": "eightball.js",
-      "source_file": "bots/minigames/commands/eightball.js",
+      "norm_label": "dice.js",
+      "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_eightball_applymeta_optiontext",
+      "id": "bots_minigames_commands_dice_applymeta_optiontext",
       "label": "{ applyMeta, optionText }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ applymeta, optiontext }",
-      "source_file": "bots/minigames/commands/eightball.js",
+      "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L2"
     },
     {
-      "id": "bots_minigames_commands_eightball_categories",
-      "label": "CATEGORIES",
-      "_origin": "ast",
-      "community": 36,
-      "community_name": "gameColor",
-      "file_type": "code",
-      "norm_label": "categories",
-      "source_file": "bots/minigames/commands/eightball.js",
-      "source_location": "L11"
-    },
-    {
-      "id": "bots_minigames_commands_eightball_gamecolor",
+      "id": "bots_minigames_commands_dice_gamecolor",
       "label": "{ gameColor }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ gamecolor }",
-      "source_file": "bots/minigames/commands/eightball.js",
+      "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L3"
     },
     {
-      "id": "bots_minigames_commands_eightball_slashcommandbuilder_embedbuilder_messageflags",
-      "label": "{ SlashCommandBuilder, EmbedBuilder, MessageFlags }",
+      "id": "bots_minigames_commands_dice_sides",
+      "label": "SIDES",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
-      "norm_label": "{ slashcommandbuilder, embedbuilder, messageflags }",
-      "source_file": "bots/minigames/commands/eightball.js",
+      "norm_label": "sides",
+      "source_file": "bots/minigames/commands/dice.js",
+      "source_location": "L6"
+    },
+    {
+      "id": "bots_minigames_commands_dice_slashcommandbuilder_embedbuilder",
+      "label": "{ SlashCommandBuilder, EmbedBuilder }",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "{ slashcommandbuilder, embedbuilder }",
+      "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_eightball_t_tlist",
-      "label": "{ t, tList }",
+      "id": "bots_minigames_commands_dice_t",
+      "label": "{ t }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
-      "norm_label": "{ t, tlist }",
-      "source_file": "bots/minigames/commands/eightball.js",
+      "norm_label": "{ t }",
+      "source_file": "bots/minigames/commands/dice.js",
       "source_location": "L4"
     },
     {
@@ -8959,20 +8721,20 @@
       "label": "hangman.js",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "hangman.js",
       "source_file": "bots/minigames/commands/hangman.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_hangman_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_hangman_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/hangman.js",
       "source_location": "L7"
     },
@@ -8981,7 +8743,7 @@
       "label": "{ applyMeta }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ applymeta }",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -8992,7 +8754,7 @@
       "label": "{ gameFooter, gameColor }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ gamefooter, gamecolor }",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -9003,7 +8765,7 @@
       "label": "{\n  SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder,\n  ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags,\n}",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{\n  slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder,\n  modalbuilder, textinputbuilder, textinputstyle, messageflags,\n}",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -9014,7 +8776,7 @@
       "label": "STAGES",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "stages",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -9025,7 +8787,7 @@
       "label": "{ t, tList }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ t, tlist }",
       "source_file": "bots/minigames/commands/hangman.js",
@@ -9036,20 +8798,20 @@
       "label": "wordle.js",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "wordle.js",
       "source_file": "bots/minigames/commands/wordle.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_wordle_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_wordle_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/wordle.js",
       "source_location": "L7"
     },
@@ -9058,7 +8820,7 @@
       "label": "{ applyMeta }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ applymeta }",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -9069,7 +8831,7 @@
       "label": "{ gameFooter, gameColor }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ gamefooter, gamecolor }",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -9080,7 +8842,7 @@
       "label": "{\n  SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder,\n  ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags,\n}",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{\n  slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder,\n  modalbuilder, textinputbuilder, textinputstyle, messageflags,\n}",
       "source_file": "bots/minigames/commands/wordle.js",
@@ -9091,11 +8853,66 @@
       "label": "{ t, tList }",
       "_origin": "ast",
       "community": 36,
-      "community_name": "gameColor",
+      "community_name": "t",
       "file_type": "code",
       "norm_label": "{ t, tlist }",
       "source_file": "bots/minigames/commands/wordle.js",
       "source_location": "L8"
+    },
+    {
+      "id": "core_gamekit",
+      "label": "gameKit.js",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "gamekit.js",
+      "source_file": "core/gameKit.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_gamekit_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "core/gameKit.js",
+      "source_location": "L12"
+    },
+    {
+      "id": "core_gamekit_fallback",
+      "label": "FALLBACK",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "fallback",
+      "source_file": "core/gameKit.js",
+      "source_location": "L34"
+    },
+    {
+      "id": "core_gamekit_pointsfooter",
+      "label": "{ pointsFooter }",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "{ pointsfooter }",
+      "source_file": "core/gameKit.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "core_gamekit_t",
+      "label": "{ t }",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "t",
+      "file_type": "code",
+      "norm_label": "{ t }",
+      "source_file": "core/gameKit.js",
+      "source_location": "L11"
     },
     {
       "id": "bots_commands_commands_admin",
@@ -9245,20 +9062,20 @@
       "label": "slots.js",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "slots.js",
       "source_file": "bots/minigames/commands/slots.js",
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_slots_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_slots_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/slots.js",
       "source_location": "L4"
     },
@@ -9267,7 +9084,7 @@
       "label": "{ applyMeta }",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "{ applymeta }",
       "source_file": "bots/minigames/commands/slots.js",
@@ -9278,7 +9095,7 @@
       "label": "{ gameFooter, gameColor }",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "{ gamefooter, gamecolor }",
       "source_file": "bots/minigames/commands/slots.js",
@@ -9289,7 +9106,7 @@
       "label": "{ SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder }",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "{ slashcommandbuilder, buttonbuilder, buttonstyle, actionrowbuilder, embedbuilder }",
       "source_file": "bots/minigames/commands/slots.js",
@@ -9300,7 +9117,7 @@
       "label": "SYMBOLS_WEIGHTED",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "symbols_weighted",
       "source_file": "bots/minigames/commands/slots.js",
@@ -9311,66 +9128,11 @@
       "label": "{ t }",
       "_origin": "ast",
       "community": 39,
-      "community_name": "gameKit.js",
+      "community_name": "slots.js",
       "file_type": "code",
       "norm_label": "{ t }",
       "source_file": "bots/minigames/commands/slots.js",
       "source_location": "L5"
-    },
-    {
-      "id": "core_gamekit",
-      "label": "gameKit.js",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "gamekit.js",
-      "source_file": "core/gameKit.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "core_gamekit_config",
-      "label": "config",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "config",
-      "source_file": "core/gameKit.js",
-      "source_location": "L12"
-    },
-    {
-      "id": "core_gamekit_fallback",
-      "label": "FALLBACK",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "fallback",
-      "source_file": "core/gameKit.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "core_gamekit_pointsfooter",
-      "label": "{ pointsFooter }",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "{ pointsfooter }",
-      "source_file": "core/gameKit.js",
-      "source_location": "L13"
-    },
-    {
-      "id": "core_gamekit_t",
-      "label": "{ t }",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "gameKit.js",
-      "file_type": "code",
-      "norm_label": "{ t }",
-      "source_file": "core/gameKit.js",
-      "source_location": "L11"
     },
     {
       "id": "core_config_data_dir",
@@ -9679,6 +9441,105 @@
       "norm_label": "select.jsx",
       "source_file": "web/src/components/ui/select.jsx",
       "source_location": "L1"
+    },
+    {
+      "id": "core_dashboard_config",
+      "label": "dashboard/config.js",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "dashboard/config.js",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_dashboard_config_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L26"
+    },
+    {
+      "id": "core_dashboard_config_crypto",
+      "label": "crypto",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "crypto",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "core_dashboard_config_fs",
+      "label": "fs",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "fs",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L22"
+    },
+    {
+      "id": "core_dashboard_config_path",
+      "label": "path",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "core_dashboard_config_setenvvalue",
+      "label": "{ setEnvValue }",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "{ setenvvalue }",
+      "source_file": "core/dashboard/config.js",
+      "source_location": "L27"
+    },
+    {
+      "id": "dashboard",
+      "label": "dashboard.js",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "dashboard.js",
+      "source_file": "dashboard.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "dashboard_botsupervisor",
+      "label": "{ BotSupervisor }",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "{ botsupervisor }",
+      "source_file": "dashboard.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "dashboard_loaddashboardconfig_validatedashboardconfig_ensuresessionsecret",
+      "label": "{ loadDashboardConfig, validateDashboardConfig, ensureSessionSecret }",
+      "_origin": "ast",
+      "community": 43,
+      "community_name": "dashboard/config.js",
+      "file_type": "code",
+      "norm_label": "{ loaddashboardconfig, validatedashboardconfig, ensuresessionsecret }",
+      "source_file": "dashboard.js",
+      "source_location": "L15"
     },
     {
       "id": "bots_commands_commands_utility",
@@ -10074,7 +9935,7 @@
       "file_type": "code",
       "norm_label": "client",
       "source_file": "test/harness.js",
-      "source_location": "L193"
+      "source_location": "L201"
     },
     {
       "id": "test_harness_commands",
@@ -10085,7 +9946,7 @@
       "file_type": "code",
       "norm_label": "commands",
       "source_file": "test/harness.js",
-      "source_location": "L200"
+      "source_location": "L208"
     },
     {
       "id": "test_harness_config",
@@ -10096,7 +9957,7 @@
       "file_type": "code",
       "norm_label": "config",
       "source_file": "test/harness.js",
-      "source_location": "L166"
+      "source_location": "L174"
     },
     {
       "id": "test_harness_eventemitter",
@@ -10129,7 +9990,7 @@
       "file_type": "code",
       "norm_label": "failures",
       "source_file": "test/harness.js",
-      "source_location": "L85"
+      "source_location": "L93"
     },
     {
       "id": "test_harness_fixture",
@@ -10151,7 +10012,7 @@
       "file_type": "code",
       "norm_label": "fixture_path",
       "source_file": "test/harness.js",
-      "source_location": "L73"
+      "source_location": "L81"
     },
     {
       "id": "test_harness_fs",
@@ -10173,7 +10034,7 @@
       "file_type": "code",
       "norm_label": "generated",
       "source_file": "test/harness.js",
-      "source_location": "L104"
+      "source_location": "L112"
     },
     {
       "id": "test_harness_i18n",
@@ -10184,7 +10045,7 @@
       "file_type": "code",
       "norm_label": "i18n",
       "source_file": "test/harness.js",
-      "source_location": "L167"
+      "source_location": "L175"
     },
     {
       "id": "test_harness_intentset",
@@ -10195,7 +10056,7 @@
       "file_type": "code",
       "norm_label": "intentset",
       "source_file": "test/harness.js",
-      "source_location": "L176"
+      "source_location": "L184"
     },
     {
       "id": "test_harness_os",
@@ -10217,7 +10078,7 @@
       "file_type": "code",
       "norm_label": "partialset",
       "source_file": "test/harness.js",
-      "source_location": "L176"
+      "source_location": "L184"
     },
     {
       "id": "test_harness_path",
@@ -10239,7 +10100,7 @@
       "file_type": "code",
       "norm_label": "registry",
       "source_file": "test/harness.js",
-      "source_location": "L201"
+      "source_location": "L209"
     },
     {
       "id": "web_src_components_ui_card",
@@ -10262,6 +10123,127 @@
       "norm_label": "dropdown-menu.jsx",
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
       "source_location": "L1"
+    },
+    {
+      "id": "bots_minigames_commands_eightball",
+      "label": "eightball.js",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "eightball.js",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_minigames_commands_eightball_applymeta_optiontext",
+      "label": "{ applyMeta, optionText }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ applymeta, optiontext }",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L2"
+    },
+    {
+      "id": "bots_minigames_commands_eightball_categories",
+      "label": "CATEGORIES",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "categories",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L11"
+    },
+    {
+      "id": "bots_minigames_commands_eightball_gamecolor",
+      "label": "{ gameColor }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ gamecolor }",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "bots_minigames_commands_eightball_slashcommandbuilder_embedbuilder_messageflags",
+      "label": "{ SlashCommandBuilder, EmbedBuilder, MessageFlags }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ slashcommandbuilder, embedbuilder, messageflags }",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_minigames_commands_eightball_t_tlist",
+      "label": "{ t, tList }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ t, tlist }",
+      "source_file": "bots/minigames/commands/eightball.js",
+      "source_location": "L4"
+    },
+    {
+      "id": "core_commandkit",
+      "label": "commandKit.js",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "commandkit.js",
+      "source_file": "core/commandKit.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "core_commandkit_allowedbyroles",
+      "label": "{ allowedByRoles }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ allowedbyroles }",
+      "source_file": "core/commandKit.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "core_commandkit_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "core/commandKit.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "core_commandkit_messageflags",
+      "label": "{ MessageFlags }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ messageflags }",
+      "source_file": "core/commandKit.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "core_commandkit_t",
+      "label": "{ t }",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "commandKit.js",
+      "file_type": "code",
+      "norm_label": "{ t }",
+      "source_file": "core/commandKit.js",
+      "source_location": "L20"
     },
     {
       "id": "web_src_components_ui_table",
@@ -10605,6 +10587,50 @@
       "source_location": "L1"
     },
     {
+      "id": "bots_events_handlers_messagehandler",
+      "label": "messageHandler.js",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "messagehandler.js",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_config",
+      "label": "config",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "config",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_makeembed",
+      "label": "{ makeEmbed }",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "{ makeembed }",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "bots_events_handlers_messagehandler_t",
+      "label": "{ t }",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "messageHandler.js",
+      "file_type": "code",
+      "norm_label": "{ t }",
+      "source_file": "bots/events/handlers/messageHandler.js",
+      "source_location": "L2"
+    },
+    {
       "id": "web_package_dependencies_fontsource_syne",
       "label": "@fontsource/syne",
       "_origin": "ast",
@@ -10792,13 +10818,13 @@
       "source_location": "L1"
     },
     {
-      "id": "bots_minigames_commands_blackjack_addpoints_getpts_notifyrewards",
-      "label": "{ addPoints, getPts, notifyRewards }",
+      "id": "bots_minigames_commands_blackjack_addpoints_pointsfor_notifyrewards",
+      "label": "{ addPoints, pointsFor, notifyRewards }",
       "_origin": "ast",
       "community": 7,
       "community_name": "blackjack.js",
       "file_type": "code",
-      "norm_label": "{ addpoints, getpts, notifyrewards }",
+      "norm_label": "{ addpoints, pointsfor, notifyrewards }",
       "source_file": "bots/minigames/commands/blackjack.js",
       "source_location": "L4"
     },
@@ -11362,6 +11388,39 @@
       "norm_label": "vite.config.js",
       "source_file": "web/vite.config.js",
       "source_location": "L1"
+    },
+    {
+      "id": "core_dashboard_envfile",
+      "label": "envFile.js",
+      "_origin": "ast",
+      "community": 81,
+      "community_name": "envFile.js",
+      "file_type": "code",
+      "norm_label": "envfile.js",
+      "source_file": "core/dashboard/envFile.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_package_dependencies_fontsource_dm_sans",
+      "label": "@fontsource/dm-sans",
+      "_origin": "ast",
+      "community": 82,
+      "community_name": "@fontsource/dm-sans",
+      "file_type": "code",
+      "norm_label": "@fontsource/dm-sans",
+      "source_file": "web/package.json",
+      "source_location": "L13"
+    },
+    {
+      "id": "fontsource_dm_sans",
+      "label": "@fontsource/dm-sans",
+      "_origin": "ast",
+      "community": 82,
+      "community_name": "@fontsource/dm-sans",
+      "file_type": "concept",
+      "norm_label": "@fontsource/dm-sans",
+      "source_file": "web/package.json",
+      "source_location": "L13"
     },
     {
       "id": "bots_commands_bot",
@@ -12095,7 +12154,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L144",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -12107,7 +12166,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L172",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -12119,7 +12178,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L45",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -12131,7 +12190,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L49",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -12143,7 +12202,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L51",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -12155,7 +12214,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L52",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -12167,7 +12226,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L54",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -14020,7 +14079,7 @@
     },
     {
       "source": "bots_minigames_commands_blackjack_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14284,7 +14343,7 @@
     },
     {
       "source": "bots_minigames_commands_connect4_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14440,7 +14499,7 @@
     },
     {
       "source": "bots_minigames_commands_flipcoin_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14524,7 +14583,7 @@
     },
     {
       "source": "bots_minigames_commands_hangman_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14655,6 +14714,18 @@
       "weight": 1.0
     },
     {
+      "source": "bots_minigames_commands_points_execute",
+      "target": "core_pointsmanager_multiplierfor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "bots/minigames/commands/points.js",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
       "source": "bots_minigames_commands_rps_execute",
       "target": "core_i18n_t",
       "relation": "calls",
@@ -14692,7 +14763,7 @@
     },
     {
       "source": "bots_minigames_commands_rps_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -14824,7 +14895,7 @@
     },
     {
       "source": "bots_minigames_commands_slots_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15100,7 +15171,7 @@
     },
     {
       "source": "bots_minigames_commands_tictactoe_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15256,7 +15327,7 @@
     },
     {
       "source": "bots_minigames_commands_trivia_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15400,7 +15471,7 @@
     },
     {
       "source": "bots_minigames_commands_wordle_execute",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -15779,7 +15850,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/config.js",
-      "source_location": "L303",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -15839,7 +15910,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/config.js",
-      "source_location": "L284",
+      "source_location": "L299",
       "weight": 1.0
     },
     {
@@ -15851,7 +15922,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/config.js",
-      "source_location": "L290",
+      "source_location": "L305",
       "weight": 1.0
     },
     {
@@ -16247,7 +16318,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L77",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -16259,7 +16330,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L79",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -16271,7 +16342,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L191",
+      "source_location": "L204",
       "weight": 1.0
     },
     {
@@ -16283,7 +16354,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L192",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -16295,7 +16366,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L84",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -16307,7 +16378,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L78",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -16319,7 +16390,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L93",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -16331,7 +16402,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L43",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -16343,7 +16414,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L73",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -16355,7 +16426,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L110",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -16367,7 +16438,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L111",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -16379,7 +16450,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L153",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -16391,7 +16462,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L161",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -16403,7 +16474,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L165",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -16415,7 +16486,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L177",
+      "source_location": "L190",
       "weight": 1.0
     },
     {
@@ -16511,7 +16582,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L358",
+      "source_location": "L370",
       "weight": 1.0
     },
     {
@@ -16535,7 +16606,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L341",
+      "source_location": "L353",
       "weight": 1.0
     },
     {
@@ -17579,7 +17650,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L134",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_applymultiplier",
+      "target": "core_pointsmanager_multiplierfor",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -17591,7 +17674,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L146",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -17603,7 +17686,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L126",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -17615,7 +17698,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L92",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_multiplierfor",
+      "target": "core_pointsmanager_multipliers",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -17627,7 +17722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L150",
+      "source_location": "L215",
       "weight": 1.0
     },
     {
@@ -17639,7 +17734,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L162",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -17651,7 +17746,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L179",
+      "source_location": "L244",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_pointsfor",
+      "target": "core_pointsmanager_applymultiplier",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager_pointsfor",
+      "target": "core_pointsmanager_getpts",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -17663,7 +17782,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "core/pointsManager.js",
-      "source_location": "L139",
+      "source_location": "L204",
       "weight": 1.0
     },
     {
@@ -18023,7 +18142,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L708",
+      "source_location": "L734",
       "weight": 1.0
     },
     {
@@ -18035,7 +18154,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L669",
+      "source_location": "L695",
       "weight": 1.0
     },
     {
@@ -18707,7 +18826,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -18719,7 +18838,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -18731,7 +18850,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -18743,7 +18862,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -18755,7 +18874,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -18767,7 +18886,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -18779,7 +18898,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -19120,7 +19239,7 @@
     },
     {
       "source": "bots_minigames_commands_blackjack",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19132,7 +19251,7 @@
     },
     {
       "source": "bots_minigames_commands_blackjack",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19204,7 +19323,7 @@
     },
     {
       "source": "bots_minigames_commands_connect4",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19216,7 +19335,7 @@
     },
     {
       "source": "bots_minigames_commands_connect4",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19396,7 +19515,7 @@
     },
     {
       "source": "bots_minigames_commands_flipcoin",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19408,7 +19527,7 @@
     },
     {
       "source": "bots_minigames_commands_flipcoin",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19480,7 +19599,7 @@
     },
     {
       "source": "bots_minigames_commands_hangman",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19492,7 +19611,7 @@
     },
     {
       "source": "bots_minigames_commands_hangman",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19553,6 +19672,18 @@
     {
       "source": "bots_minigames_commands_points",
       "target": "core_pointsmanager_getpoints",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "bots/minigames/commands/points.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "bots_minigames_commands_points",
+      "target": "core_pointsmanager_multiplierfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19636,18 +19767,6 @@
     },
     {
       "source": "bots_minigames_commands_rps",
-      "target": "core_pointsmanager_getpts",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "bots/minigames/commands/rps.js",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "bots_minigames_commands_rps",
       "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
@@ -19660,6 +19779,18 @@
     },
     {
       "source": "bots_minigames_commands_rps",
+      "target": "core_pointsmanager_pointsfor",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "bots/minigames/commands/rps.js",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "bots_minigames_commands_rps",
       "target": "core_i18n_t",
       "relation": "imports",
       "_origin": "ast",
@@ -19720,7 +19851,7 @@
     },
     {
       "source": "bots_minigames_commands_slots",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19732,7 +19863,7 @@
     },
     {
       "source": "bots_minigames_commands_slots",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19804,7 +19935,7 @@
     },
     {
       "source": "bots_minigames_commands_tictactoe",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19816,7 +19947,7 @@
     },
     {
       "source": "bots_minigames_commands_tictactoe",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19888,7 +20019,7 @@
     },
     {
       "source": "bots_minigames_commands_trivia",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19900,7 +20031,7 @@
     },
     {
       "source": "bots_minigames_commands_trivia",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19984,7 +20115,7 @@
     },
     {
       "source": "bots_minigames_commands_wordle",
-      "target": "core_pointsmanager_getpts",
+      "target": "core_pointsmanager_notifyrewards",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -19996,7 +20127,7 @@
     },
     {
       "source": "bots_minigames_commands_wordle",
-      "target": "core_pointsmanager_notifyrewards",
+      "target": "core_pointsmanager_pointsfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -21767,7 +21898,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -21779,7 +21910,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -21791,7 +21922,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -21803,7 +21934,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -24195,24 +24326,13 @@
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_settings",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "bots_commands_commands_minigames",
       "target": "bots_commands_commands_minigames_execute",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L163",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -24228,18 +24348,18 @@
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_newround",
+      "target": "bots_commands_commands_minigames_settings",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_makeembed_readjson_writejson",
+      "target": "bots_commands_commands_minigames_randomint",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -24250,7 +24370,18 @@
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_applymeta_optiontext_guard",
+      "target": "bots_commands_commands_minigames_newround",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "bots_commands_commands_minigames",
+      "target": "bots_commands_commands_minigames_makeembed_readjson_writejson",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -24261,7 +24392,7 @@
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_t",
+      "target": "bots_commands_commands_minigames_applymeta_optiontext_guard",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -24272,7 +24403,7 @@
     },
     {
       "source": "bots_commands_commands_minigames",
-      "target": "bots_commands_commands_minigames_config",
+      "target": "bots_commands_commands_minigames_t",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -24283,13 +24414,24 @@
     },
     {
       "source": "bots_commands_commands_minigames",
+      "target": "bots_commands_commands_minigames_config",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "bots/commands/commands/minigames.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "bots_commands_commands_minigames",
       "target": "bots_commands_commands_minigames_jokes_file",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -25097,7 +25239,7 @@
     },
     {
       "source": "bots_minigames_commands_blackjack",
-      "target": "bots_minigames_commands_blackjack_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_blackjack_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25295,7 +25437,7 @@
     },
     {
       "source": "bots_minigames_commands_connect4",
-      "target": "bots_minigames_commands_connect4_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_connect4_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25548,7 +25690,7 @@
     },
     {
       "source": "bots_minigames_commands_flipcoin",
-      "target": "bots_minigames_commands_flipcoin_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_flipcoin_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25636,7 +25778,7 @@
     },
     {
       "source": "bots_minigames_commands_hangman",
-      "target": "bots_minigames_commands_hangman_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_hangman_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25713,7 +25855,7 @@
     },
     {
       "source": "bots_minigames_commands_points",
-      "target": "bots_minigames_commands_points_getpoints_rewards",
+      "target": "bots_minigames_commands_points_getpoints_rewards_multiplierfor",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25801,7 +25943,7 @@
     },
     {
       "source": "bots_minigames_commands_rps",
-      "target": "bots_minigames_commands_rps_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_rps_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25900,7 +26042,7 @@
     },
     {
       "source": "bots_minigames_commands_slots",
-      "target": "bots_minigames_commands_slots_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_slots_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26087,7 +26229,7 @@
     },
     {
       "source": "bots_minigames_commands_tictactoe",
-      "target": "bots_minigames_commands_tictactoe_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_tictactoe_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26208,7 +26350,7 @@
     },
     {
       "source": "bots_minigames_commands_trivia",
-      "target": "bots_minigames_commands_trivia_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_trivia_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26362,7 +26504,7 @@
     },
     {
       "source": "bots_minigames_commands_wordle",
-      "target": "bots_minigames_commands_wordle_addpoints_getpts_notifyrewards",
+      "target": "bots_minigames_commands_wordle_addpoints_pointsfor_notifyrewards",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26780,17 +26922,6 @@
     },
     {
       "source": "core_dashboard_discord",
-      "target": "core_dashboard_discord_avatarurl",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "core/dashboard/discord.js",
-      "source_location": "L122",
-      "weight": 1.0
-    },
-    {
-      "source": "core_dashboard_discord",
       "target": "core_dashboard_discord_config",
       "relation": "contains",
       "_origin": "ast",
@@ -26802,13 +26933,24 @@
     },
     {
       "source": "core_dashboard_discord",
+      "target": "core_dashboard_discord_avatarurl",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "core/dashboard/discord.js",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "core_dashboard_discord",
       "target": "core_dashboard_discord_usercache",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L134",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -26819,7 +26961,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L136",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
@@ -26830,7 +26972,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -28804,13 +28946,24 @@
     },
     {
       "source": "test_harness",
+      "target": "test_harness_section",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
       "target": "test_harness_generated",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L104",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -28821,7 +28974,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L105",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -28832,7 +28985,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L117",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -28843,7 +28996,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L123",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -28854,7 +29007,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L166",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -28865,7 +29018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L167",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -28876,7 +29029,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L176",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -28887,7 +29040,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L176",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -28898,7 +29051,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L193",
+      "source_location": "L201",
       "weight": 1.0
     },
     {
@@ -28909,7 +29062,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L200",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -28920,7 +29073,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L201",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -28931,7 +29084,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L247",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -28986,7 +29139,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L300",
+      "source_location": "L308",
       "weight": 1.0
     },
     {
@@ -29008,18 +29161,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L310",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_nameof",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L316",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -29031,6 +29173,17 @@
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
       "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "test_harness",
+      "target": "test_harness_nameof",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "test/harness.js",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -29063,7 +29216,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L73",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -29074,7 +29227,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L82",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -29085,7 +29238,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L85",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -29096,7 +29249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L86",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -29107,18 +29260,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "test/harness.js",
-      "source_location": "L90",
-      "weight": 1.0
-    },
-    {
-      "source": "test_harness",
-      "target": "test_harness_section",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "test/harness.js",
-      "source_location": "L94",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -29937,24 +30079,24 @@
     },
     {
       "source": "web_src_components_ui_dropdown_menu",
+      "target": "web_src_components_ui_dropdown_menu_dropdownmenucontent",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/dropdown-menu.jsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_dropdown_menu",
       "target": "web_src_components_ui_dropdown_menu_dropdownmenuitem",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L24",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_dropdown_menu",
-      "target": "web_src_components_ui_dropdown_menu_dropdownmenulabel",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L39",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -29970,13 +30112,24 @@
     },
     {
       "source": "web_src_components_ui_dropdown_menu",
+      "target": "web_src_components_ui_dropdown_menu_dropdownmenulabel",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/dropdown-menu.jsx",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_dropdown_menu",
       "target": "web_src_components_ui_dropdown_menu_dropdownmenuseparator",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L43",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -29999,17 +30152,6 @@
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/dropdown-menu.jsx",
       "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_dropdown_menu",
-      "target": "web_src_components_ui_dropdown_menu_dropdownmenucontent",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/dropdown-menu.jsx",
-      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -30058,6 +30200,39 @@
     },
     {
       "source": "web_src_components_ui_select",
+      "target": "web_src_components_ui_select_selectseparator",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/select.jsx",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_select",
+      "target": "web_src_components_ui_select_selectscrollupbutton",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/select.jsx",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_select",
+      "target": "web_src_components_ui_select_selectscrolldownbutton",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/select.jsx",
+      "source_location": "L118",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_select",
       "target": "web_src_components_ui_select_selectvalue",
       "relation": "contains",
       "_origin": "ast",
@@ -30080,17 +30255,6 @@
     },
     {
       "source": "web_src_components_ui_select",
-      "target": "web_src_components_ui_select_selectcontent",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L36",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_select",
       "target": "web_src_components_ui_select_select",
       "relation": "contains",
       "_origin": "ast",
@@ -30102,13 +30266,24 @@
     },
     {
       "source": "web_src_components_ui_select",
+      "target": "web_src_components_ui_select_selectcontent",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/components/ui/select.jsx",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_components_ui_select",
       "target": "web_src_components_ui_select_selectlabel",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L61",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -30119,29 +30294,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L65",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_select",
-      "target": "web_src_components_ui_select_selectseparator",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L85",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_select",
-      "target": "web_src_components_ui_select_selectscrollupbutton",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L89",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -30153,17 +30306,6 @@
       "confidence_score": 1.0,
       "source_file": "web/src/components/ui/select.jsx",
       "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_components_ui_select",
-      "target": "web_src_components_ui_select_selectscrolldownbutton",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/components/ui/select.jsx",
-      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -30647,7 +30789,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L668",
+      "source_location": "L694",
       "weight": 1.0
     },
     {
@@ -30669,7 +30811,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/config/inputs.jsx",
-      "source_location": "L707",
+      "source_location": "L733",
       "weight": 1.0
     },
     {
@@ -31283,7 +31425,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L18",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -31522,7 +31664,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "bots/commands/commands/minigames.js",
-      "source_location": "L63",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -31942,7 +32084,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L310",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -31954,7 +32096,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L310",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -31966,7 +32108,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L310",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -31978,7 +32120,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L310",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -31990,7 +32132,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L313",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -32002,7 +32144,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L313",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -32014,7 +32156,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L313",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -32026,7 +32168,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L313",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -32038,7 +32180,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L314",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -32050,7 +32192,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L314",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -32062,7 +32204,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L314",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -32074,7 +32216,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L314",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -32086,7 +32228,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L314",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -32098,7 +32240,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L315",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -32110,7 +32252,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L315",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -32122,7 +32264,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L315",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -32134,7 +32276,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L316",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -32146,7 +32288,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L316",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -32158,7 +32300,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/config.js",
-      "source_location": "L320",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -32410,7 +32552,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L218",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -32422,7 +32564,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L218",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -32434,7 +32576,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L219",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -32446,7 +32588,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L219",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -32458,7 +32600,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L219",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -32470,7 +32612,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L219",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -32482,7 +32624,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L219",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -32494,7 +32636,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L220",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -32506,7 +32648,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L220",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -32518,7 +32660,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/discord.js",
-      "source_location": "L220",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -32566,7 +32708,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L362",
+      "source_location": "L374",
       "weight": 1.0
     },
     {
@@ -32578,7 +32720,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/dashboard/features.js",
-      "source_location": "L362",
+      "source_location": "L374",
       "weight": 1.0
     },
     {
@@ -33406,7 +33548,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -33418,7 +33560,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -33430,7 +33572,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -33442,7 +33584,19 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_pointsfor",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -33454,7 +33608,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -33466,7 +33620,43 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L183",
+      "source_location": "L248",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_applymultiplier",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L249",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_multiplierfor",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L249",
+      "weight": 1.0
+    },
+    {
+      "source": "core_pointsmanager",
+      "target": "core_pointsmanager_multipliers",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "core/pointsManager.js",
+      "source_location": "L249",
       "weight": 1.0
     },
     {
@@ -33478,7 +33668,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L184",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -33490,7 +33680,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L184",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -33502,7 +33692,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "core/pointsManager.js",
-      "source_location": "L184",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -33829,5 +34019,5 @@
       "source_file": "SECURITY.md"
     }
   ],
-  "built_at_commit": "1749a62f77e531bd7c5dc63b7e85baa3b7010b14"
+  "built_at_commit": "4883dec3ddfb14a61dacbd7e5a5119023d543572"
 }

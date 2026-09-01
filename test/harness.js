@@ -67,6 +67,14 @@ const FIXTURE = {
       inviteUrl: 'https://example.com/invite',
     },
     backupDatabase: { enabled: true },
+    minigames: {
+      multipliers: [
+        { role: 'founder', factor: 3 },
+        { role: 'team',    factor: 2 },
+        { role: '',        factor: 5 },   // unresolvable: must match nobody
+        { role: 'manager', factor: 0 },   // a blank number field: must be dropped
+      ],
+    },
   },
 };
 
@@ -1081,6 +1089,77 @@ const nameOf = key => config.command(key).name;
         // await on every embed footer for no reason.
         assert.strictEqual(typeof pm.getPts('dice', 'win'), 'number');
         assert.strictEqual(typeof pm.pointsFooter(5, 10), 'string');
+        assert.strictEqual(typeof pm.pointsFor(null, 'dice', 'win'), 'number');
+      });
+
+      check('the shipped defaults hand nobody a bonus', () => {
+        // Whatever this installation configures, a FRESH clone must multiply by
+        // one. A shipped bonus role would be somebody else's role, and the
+        // whole point of the config layer is that no such thing ships.
+        const { parseJsonc, getPath } = req('core/jsonc');
+        const shipped = parseJsonc(
+          fs.readFileSync(path.join(REPO, 'config/config.example.jsonc'), 'utf8'),
+          'config.example.jsonc',
+        ).value ?? {};
+        const list = getPath(shipped, 'features.minigames.multipliers', null);
+        assert.ok(Array.isArray(list), 'multipliers is not a list in the defaults');
+        assert.deepStrictEqual(list, [], 'the defaults ship a bonus role');
+        assert.strictEqual(getPath(shipped, "features.minigames.multiplyLosses", null), false);
+      });
+
+      check('a bonus role multiplies, the highest one wins, and they do not stack', () => {
+        const member = ids => ({ roles: { cache: new Map(ids.map(id => [id, {}])) } });
+        assert.strictEqual(pm.multiplierFor(member([])), 1, 'a plain member is not multiplied');
+        assert.strictEqual(pm.multiplierFor(member([FAKE(5)])), 2, 'team should be x2');
+        assert.strictEqual(pm.multiplierFor(member([FAKE(2)])), 3, 'founder should be x3');
+        // Holding both is the case that decides it. Multiplied together this
+        // would be 6, and a member with three bonus roles would quietly earn
+        // twelve times the payout.
+        assert.strictEqual(pm.multiplierFor(member([FAKE(2), FAKE(5)])), 3, 'the factors stacked');
+        assert.strictEqual(pm.applyMultiplier(member([FAKE(5)]), 10), 20);
+        assert.strictEqual(pm.applyMultiplier(member([]), 10), 10);
+      });
+
+      check('an unresolvable bonus role denies the bonus, a factor of 0 is dropped', () => {
+        const member = ids => ({ roles: { cache: new Map(ids.map(id => [id, {}])) } });
+        // Same rule as every other role check here: a reference that resolves
+        // to nothing must match NOBODY, never everybody.
+        assert.ok(!pm.multipliers().some(m => !m.role), 'an empty role reference survived');
+        assert.ok(!pm.multipliers().some(m => m.factor <= 0), 'a factor of 0 survived');
+        // manager carries factor 0 in the fixture, which is what an emptied
+        // number field in the dashboard sends. It must not pay zero points.
+        assert.strictEqual(pm.multiplierFor(member([FAKE(3)])), 1);
+        assert.strictEqual(pm.applyMultiplier(member([FAKE(3)]), 10), 10);
+      });
+
+      check('a bonus does not multiply what a loss costs, unless it is told to', () => {
+        const member = { roles: { cache: new Map([[FAKE(2), {}]]) } };
+        assert.strictEqual(pm.applyMultiplier(member, -5), -5, 'the loss was multiplied');
+        assert.strictEqual(pm.applyMultiplier(member, 0), 0);
+      });
+
+      check('every game that pays reads the multiplied value, not the raw one', () => {
+        // getPts is the RAW setting. A game that still calls it hands the
+        // player the ordinary payout and the bonus is silently off for that one
+        // game only, which is the hardest version of this bug to notice.
+        const dir = path.join(REPO, 'bots/minigames/commands');
+        const offenders = [];
+        for (const file of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
+          const src = stripComments(fs.readFileSync(path.join(dir, file), 'utf8'));
+          if (/\bgetPts\s*\(/.test(src)) offenders.push(file);
+        }
+        assert.deepStrictEqual(offenders, [], 'still on the raw value: ' + offenders.join(', '));
+        const paying = fs.readdirSync(dir)
+          .filter(f => /\bpointsFor\s*\(/.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+        assert.ok(paying.length >= 9, `only ${paying.length} games award points`);
+      });
+
+      check('a bonus role that resolves to nothing is reported at boot', () => {
+        // It matches nobody and says nothing about it: the player just sees the
+        // ordinary payout. There is no symptom, so it has to be said out loud.
+        const { missing } = config.report();
+        assert.ok(missing.some(m => m.startsWith('features.minigames.multipliers')),
+          'an empty bonus role is not reported: ' + missing.join(', '));
       });
 
       await acheck('the throwaway database is the one in use', async () => {

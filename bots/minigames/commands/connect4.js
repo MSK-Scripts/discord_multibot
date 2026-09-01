@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 const ROWS = 6, COLS = 7;
@@ -143,7 +143,7 @@ module.exports = {
         gameOver = true;
         collector.stop();
         const outcome = result === 'player_win' ? 'win' : result === 'bot_win' ? 'lose' : 'draw';
-        const delta = getPts('connect4', outcome);
+        const delta = pointsFor(interaction, 'connect4', outcome);
         const pts = await addPoints(interaction.user.id, delta);
         await i.update({
           embeds: [buildEmbed(board, interaction.user, result, delta, pts.new)],

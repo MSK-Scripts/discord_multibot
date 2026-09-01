@@ -279,6 +279,21 @@ function report() {
 
   if (featureEnabled('backupDatabase') && !database.USER) missing.push('DB_USER (.env)');
 
+  // A bonus role that does not resolve matches nobody, so the multiplier is
+  // simply never applied and the player sees the ordinary payout. There is
+  // nothing to notice, which is why it has to be said out loud. Shipped empty,
+  // so this stays silent until somebody actually adds an entry.
+  if (featureEnabled('minigames')) {
+    const bonuses = get('features.minigames.multipliers', []);
+    if (Array.isArray(bonuses)) {
+      bonuses.forEach((m, n) => {
+        if (m && typeof m === 'object' && !roleId(m.role)) {
+          missing.push(`features.minigames.multipliers[${n}].role`);
+        }
+      });
+    }
+  }
+
   // Resolved BEFORE the problem list is copied: guildId() can add a line to it,
   // and reading the list first would report the state from one call ago.
   const guildMissing = !guildId();

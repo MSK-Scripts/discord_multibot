@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 // The rules of the game, not wording: `beats` is what decides the outcome, and
@@ -59,7 +59,7 @@ module.exports = {
       const body  = t(`games.rps.${outcome}Body`, vars);
       const color = gameColor(outcome === 'win' ? 'win' : outcome === 'lose' ? 'lose' : 'draw');
 
-      const delta = getPts('rps', outcome);
+      const delta = pointsFor(interaction, 'rps', outcome);
       const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
 
       for (const btn of row.components) btn.setDisabled(true);

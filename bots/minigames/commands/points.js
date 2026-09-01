@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameColor } = require('../../../core/gameKit');
-const { getPoints, rewards } = require('../../../core/pointsManager');
+const { getPoints, rewards, multiplierFor } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 const config = require('../../../core/config');
 
@@ -37,6 +37,18 @@ module.exports = {
         { name: t('points.current'), value: `**${current.toLocaleString(locale)} 🪙**`, inline: false },
         { name: t('points.rewards'), value: lines.join('\n') || t('points.noRewards'), inline: false },
       );
+
+    // The one place a bonus role is visible. The game footers show the already
+    // multiplied number and no game says where it came from, so without this a
+    // member has no way to tell a perk from a payout that was always that big.
+    const factor = multiplierFor(interaction.member);
+    if (factor !== 1) {
+      embed.spliceFields(1, 0, {
+        name:  t('points.bonusTitle'),
+        value: t('points.bonusValue', { factor: factor.toLocaleString(locale) }),
+        inline: false,
+      });
+    }
 
     if (nextReward) {
       const filled = Math.max(0, Math.min(Math.floor((current / nextReward.points) * BAR_WIDTH), BAR_WIDTH));

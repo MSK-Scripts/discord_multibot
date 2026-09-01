@@ -472,6 +472,35 @@ const anonymous = async (method, url) => {
     assert.strictEqual(res.body.features.find(f => f.id === 'memberCount').state, 'ready');
   });
 
+  await check('a bonus role saved in the panel reaches the points system', async () => {
+    // The whole path in one go: the form writes a list of objects, the file
+    // takes it, the running config reads it back and the points system applies
+    // it. Anything in between silently dropping the row would be invisible on
+    // screen, because the panel shows what you typed either way.
+    await client(OWNER)('PATCH', '/api/config', {
+      // A raw id rather than a name from the `roles` block, because the raw
+      // editor above replaced the whole file and that block is gone by now.
+      patch: { 'features.minigames.multipliers': [{ role: STAFF_ROLE, factor: 2 }] },
+    });
+    const pm = require(path.join(REPO, 'core/pointsManager'));
+    const member = { roles: { cache: new Map([[STAFF_ROLE, {}]]) } };
+    assert.strictEqual(pm.multiplierFor(member), 2, 'the saved bonus never arrived');
+    assert.strictEqual(pm.applyMultiplier(member, 10), 20);
+  });
+
+  await check('a bonus row without a role makes the tile incomplete', async () => {
+    // A row nobody can match pays nobody anything and reports nothing, which is
+    // the exact shape of failure the tiles exist for.
+    await client(OWNER)('PATCH', '/api/config', {
+      patch: { 'features.minigames.multipliers': [{ role: '', factor: 2 }] },
+    });
+    const res = await client(OWNER)('GET', '/api/status');
+    const tile = res.body.features.find(f => f.id === 'minigames');
+    assert.strictEqual(tile.state, 'incomplete');
+    assert.ok(tile.missing.includes('features.minigames.multipliers'));
+    await client(OWNER)('PATCH', '/api/config', { patch: { 'features.minigames.multipliers': [] } });
+  });
+
   await check('a feature switched off is "off", not "incomplete"', async () => {
     // A feature somebody turned off is not a problem to be fixed, and reporting
     // it as one is how a list of warnings becomes noise nobody reads.

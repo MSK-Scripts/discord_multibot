@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 // Cards, not wording. Ranks and suits are the same symbols everywhere.
@@ -116,7 +116,7 @@ module.exports = {
 
     const finish = async (responder, outcome, replyInstead = false) => {
       gameOver = true;
-      const delta = getPts('blackjack', ptsKey(outcome));
+      const delta = pointsFor(interaction, 'blackjack', ptsKey(outcome));
       const pts = await addPoints(interaction.user.id, delta);
       const payload = {
         embeds: [buildEmbed(playerHand, dealerHand, outcome, doubled, delta, pts.new)],

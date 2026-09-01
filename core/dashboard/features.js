@@ -263,6 +263,12 @@ const FEATURES = [
     fields: [
       F('features.minigames.games', 'gameGrid', 'Which games'),
       F('features.minigames.points', 'pointsMatrix', 'Points per outcome'),
+      F('features.minigames.multipliers', 'multiplierList', 'Bonus roles', {
+        help: 'These roles earn more from every game. The highest factor wins, they do not stack.',
+      }),
+      F('features.minigames.multiplyLosses', 'toggle', 'Bonus roles also lose more', {
+        help: 'Off means a bonus only ever helps: a loss costs the same for everybody.',
+      }),
       F('features.minigames.rewards', 'rewardList', 'Reward tiers'),
       F('features.minigames.showPointsFooter', 'toggle', 'Show the points footer'),
       F('features.minigames.trivia.useApi', 'toggle', 'Pull trivia questions from opentdb.com', {
@@ -270,7 +276,13 @@ const FEATURES = [
       }),
       F('features.minigames.colors', 'colorMap', 'Colours'),
     ],
-    requires: () => [],
+    // A bonus row whose role is empty does nothing at all and says nothing
+    // about it, which is precisely the state this tile exists to surface.
+    requires: (e) => {
+      const bonuses = getPath(e, 'features.minigames.multipliers', []);
+      return Array.isArray(bonuses) && bonuses.some(m => m && !resolves(e, 'roles', m.role))
+        ? ['features.minigames.multipliers'] : [];
+    },
   },
   {
     id: 'jokes',

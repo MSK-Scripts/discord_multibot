@@ -155,6 +155,8 @@
     "rewardUnlocked": "🎉 **Belohnung freigeschaltet!** Du hast **{points} Punkte** erreicht und bekommst: **{label}**!",
     "title": "🪙 Punkte - {name}",
     "current": "Aktuelle Punkte",
+    "bonusTitle": "✨ Rollen-Bonus",
+    "bonusValue": "Deine Rollen bringen dir **x{factor}** Punkte in jedem Minigame.",
     "rewards": "Belohnungen",
     "noRewards": "*Noch keine Belohnungen konfiguriert.*",
     "unlockedLine": "{label}  ✅  `{points} Pkt`",

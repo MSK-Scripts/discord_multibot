@@ -4,7 +4,7 @@ const {
 } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t, tList } = require('../../../core/i18n');
 
 const MAX_TRIES = 6;
@@ -118,7 +118,7 @@ module.exports = {
 
       if (won || lost) {
         gameOver = true;
-        delta = getPts('wordle', won ? `${guesses.length}_try` : 'lose');
+        delta = pointsFor(interaction, 'wordle', won ? `${guesses.length}_try` : 'lose');
         const pts = await addPoints(interaction.user.id, delta);
         oldPts = pts.old; newPts = pts.new;
         row.components[0].setDisabled(true);

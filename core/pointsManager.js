@@ -3,8 +3,8 @@
  * with crossing a threshold.
  *
  * TWO KINDS OF DATA, AND THEY LIVE IN DIFFERENT PLACES. The balances are STATE
- * and belong in the database. The point VALUES per game and the reward
- * thresholds are SETTINGS and live in config/config.jsonc under
+ * and belong in the database. The point VALUES per game, the reward thresholds
+ * and the bonus roles are SETTINGS and live in config/config.jsonc under
  * `features.minigames`. Mixing the two is how a config change ends up needing a
  * database migration.
  *
@@ -15,10 +15,10 @@
  * for a literal. In the config file the role sits next to its threshold and the
  * indirection is gone.
  *
- * `getPts()` and `pointsFooter()` are therefore synchronous — they only read
- * settings. `getPoints()` and `addPoints()` are ASYNC and every call site
- * awaits them. See the note in core/db/index.js for why the interface is async
- * even though better-sqlite3 is not.
+ * `getPts()`, `pointsFor()` and `pointsFooter()` are therefore synchronous —
+ * they only read settings. `getPoints()` and `addPoints()` are ASYNC and every
+ * call site awaits them. See the note in core/db/index.js for why the interface
+ * is async even though better-sqlite3 is not.
  */
 
 const { join } = require('path');
@@ -50,6 +50,71 @@ function getPts(game, ...keys) {
     node = (node && typeof node === 'object') ? node[key] : undefined;
   }
   return typeof node === 'number' && Number.isFinite(node) ? node : 0;
+}
+
+/**
+ * The configured bonus roles, HIGHEST FACTOR FIRST, with anything malformed
+ * dropped.
+ *
+ * A factor of 0 or less is dropped rather than obeyed. An empty number field in
+ * the dashboard arrives here as 0, and `Number(undefined)` is NaN: taking
+ * either at face value turns a role somebody meant as a perk into one that pays
+ * nothing, which looks exactly like the points system being broken.
+ */
+function multipliers() {
+  const list = config.get('features.minigames.multipliers', []);
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter(m => m && typeof m === 'object')
+    .map(m => ({ role: String(m.role ?? '').trim(), factor: Number(m.factor) }))
+    .filter(m => m.role && Number.isFinite(m.factor) && m.factor > 0)
+    .sort((a, b) => b.factor - a.factor);
+}
+
+/**
+ * What this member's payouts are multiplied by. 1 when no bonus role matches,
+ * which is the normal case and costs one config read.
+ *
+ * THE HIGHEST MATCH WINS AND THEY DO NOT STACK, hence the sort above and the
+ * early return here. Multiplying the factors together is the obvious other
+ * reading, and it is the one that quietly produces x12 for a member who happens
+ * to hold three bonus roles.
+ *
+ * A role reference that does not resolve becomes '' and matches nobody, so a
+ * typo denies the bonus rather than handing it to everyone. Same rule as every
+ * other role check in the repo.
+ */
+function multiplierFor(member) {
+  for (const m of multipliers()) {
+    const id = config.roleId(m.role);
+    if (id && member?.roles?.cache?.has(id)) return m.factor;
+  }
+  return 1;
+}
+
+/**
+ * A base payout, multiplied by what this member earns.
+ *
+ * LOSSES ARE LEFT ALONE unless `multiplyLosses` says otherwise: a perk that
+ * doubles what a bad round costs is a punishment, and nobody reads "your role
+ * gives you double points" as "and double losses".
+ */
+function applyMultiplier(member, base) {
+  if (!Number.isFinite(base) || base === 0) return 0;
+  if (base < 0 && config.get('features.minigames.multiplyLosses', false) !== true) return base;
+  const factor = multiplierFor(member);
+  return factor === 1 ? base : Math.round(base * factor);
+}
+
+/**
+ * What one outcome of one game is worth TO THIS PLAYER.
+ *
+ * This is what the games call. Applying the bonus here rather than inside
+ * `addPoints` is what keeps the number on screen and the number in the database
+ * the same one: the games hand this same value to their footer.
+ */
+function pointsFor(interaction, game, ...keys) {
+  return applyMultiplier(interaction?.member, getPts(game, ...keys));
 }
 
 /** The reward tiers, lowest threshold first, with anything malformed dropped. */
@@ -180,7 +245,8 @@ function pointsFooter(amount, newTotal) {
 }
 
 module.exports = {
-  init, getPts, rewards, getPoints, addPoints, topPoints,
+  init, getPts, pointsFor, rewards, getPoints, addPoints, topPoints,
+  multipliers, multiplierFor, applyMultiplier,
   notifyRewards, pointsFooter, getNewlyUnlockedRewards,
   IMPORTED_KEY, LEGACY_FILE,
 };

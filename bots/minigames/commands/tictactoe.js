@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 const EMPTY  = '';
@@ -201,7 +201,7 @@ module.exports = {
         let delta = 0, oldPts = 0, newPts = 0;
         if (result !== null) {
           const outcome = result === PLAYER ? 'win' : result === BOT ? 'lose' : 'draw';
-          delta = getPts('tictactoe', difficulty, outcome);
+          delta = pointsFor(interaction, 'tictactoe', difficulty, outcome);
           const pts = await addPoints(interaction.user.id, delta);
           oldPts = pts.old; newPts = pts.new;
         }

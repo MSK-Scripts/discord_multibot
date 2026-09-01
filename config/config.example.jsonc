@@ -367,6 +367,25 @@
         { "points": 4000,  "label": "🥇 Gold Player",    "role": "" },
         { "points": 10000, "label": "💎 Diamond Player", "role": "" }
       ],
+      // Roles that earn more from every game. `role` is a name from the `roles`
+      // block or a raw id, `factor` is what the payout is multiplied by: 2 for
+      // double, 1.5 for half again. The result is rounded.
+      //
+      // THE HIGHEST FACTOR A MEMBER QUALIFIES FOR WINS, THEY DO NOT STACK.
+      // Someone holding three bonus roles would otherwise earn 2 x 2 x 3, and
+      // nobody notices that until a leaderboard is beyond repair.
+      //
+      // A factor of 0 or less is dropped rather than obeyed: an empty field in
+      // the dashboard reads as 0, and a bonus role that silently pays nothing
+      // is worse than one that does not exist. A role that does not resolve is
+      // reported at boot, like every other unset id here.
+      //
+      //   { "role": "premium", "factor": 2 }
+      "multipliers": [],
+      // Whether a multiplier also applies to what a loss COSTS. Off, because a
+      // perk that doubles the losses is a punishment. Turn it on to keep the
+      // economy symmetric.
+      "multiplyLosses": false,
       // Shown under a game's result embed. {delta} and {total} are filled in.
       "showPointsFooter": true,
       // Trivia can pull questions from opentdb.com. THE API IS ENGLISH ONLY:

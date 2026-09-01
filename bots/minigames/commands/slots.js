@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 // The reel. Weights, not wording: how often a symbol shows up is the game's
@@ -85,7 +85,7 @@ module.exports = {
       const { key, mult } = evaluate(finalReels);
       const text = t(`games.slots.outcomes.${key}`, { symbols: finalReels.join('') });
 
-      const delta = getPts('slots', key);
+      const delta = pointsFor(interaction, 'slots', key);
       const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
       const color = gameColor(mult >= 20 ? 'draw' : mult > 0 ? 'win' : 'lose');
 

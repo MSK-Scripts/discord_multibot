@@ -2,7 +2,7 @@ const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = re
 const { makeEmbed } = require('../../../core/utils');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t } = require('../../../core/i18n');
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       const result = Math.random() < 0.5 ? 'heads' : 'tails';
       const won = choice === result;
 
-      const delta = getPts('flipcoin', won ? 'win' : 'lose');
+      const delta = pointsFor(interaction, 'flipcoin', won ? 'win' : 'lose');
       const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
 
       for (const btn of row.components) btn.setDisabled(true);

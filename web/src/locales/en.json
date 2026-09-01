@@ -224,6 +224,7 @@
     "guideTitle": "Embed title",
     "guideBody": "Body. Markdown works.",
     "addTier": "Add a tier",
+    "addBonusRole": "Add a bonus role",
     "roleOptional": "Role (optional)",
     "filterCommands": "Filter commands…",
     "restricted": "restricted",
@@ -376,6 +377,8 @@
 
     "features.minigames.games": { "label": "Which games" },
     "features.minigames.points": { "label": "Points per outcome" },
+    "features.minigames.multipliers": { "label": "Bonus roles", "help": "These roles earn more from every game. The highest factor wins, they do not stack." },
+    "features.minigames.multiplyLosses": { "label": "Bonus roles also lose more", "help": "Off means a bonus only ever helps: a loss costs the same for everybody." },
     "features.minigames.rewards": { "label": "Reward tiers" },
     "features.minigames.showPointsFooter": { "label": "Show the points footer" },
     "features.minigames.trivia.useApi": { "label": "Pull trivia questions from opentdb.com", "help": "The API is English only. Switch it off when the bot runs in another language." },

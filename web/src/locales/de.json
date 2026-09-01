@@ -224,6 +224,7 @@
     "guideTitle": "Titel des Embeds",
     "guideBody": "Inhalt. Markdown funktioniert.",
     "addTier": "Stufe hinzufügen",
+    "addBonusRole": "Bonus-Rolle hinzufügen",
     "roleOptional": "Rolle (optional)",
     "filterCommands": "Befehle filtern…",
     "restricted": "eingeschränkt",
@@ -376,6 +377,8 @@
 
     "features.minigames.games": { "label": "Welche Spiele" },
     "features.minigames.points": { "label": "Punkte je Ergebnis" },
+    "features.minigames.multipliers": { "label": "Bonus-Rollen", "help": "Diese Rollen bekommen in jedem Spiel mehr. Der höchste Faktor gewinnt, sie addieren sich nicht." },
+    "features.minigames.multiplyLosses": { "label": "Bonus-Rollen verlieren auch mehr", "help": "Aus heißt, ein Bonus hilft nur: eine Niederlage kostet alle gleich viel." },
     "features.minigames.rewards": { "label": "Belohnungsstufen" },
     "features.minigames.showPointsFooter": { "label": "Punkte-Footer anzeigen" },
     "features.minigames.trivia.useApi": { "label": "Quizfragen von opentdb.com holen", "help": "Die API ist nur auf Englisch. Schalte sie ab, wenn der Bot in einer anderen Sprache läuft." },

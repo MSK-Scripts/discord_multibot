@@ -4,7 +4,7 @@ const {
 } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t, tList } = require('../../../core/i18n');
 
 // The gallows. Drawing, not wording: it is the same picture in every language,
@@ -130,7 +130,7 @@ module.exports = {
 
       let oldPts = 0;
       if (result === 'won' || result === 'lost') {
-        game.delta = getPts('hangman', result === 'won' ? 'win' : 'lose');
+        game.delta = pointsFor(interaction, 'hangman', result === 'won' ? 'win' : 'lose');
         const pts = await addPoints(interaction.user.id, game.delta);
         oldPts = pts.old;
         game.total = pts.new;

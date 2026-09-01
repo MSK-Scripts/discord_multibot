@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
 const { applyMeta } = require('../../../core/commandKit');
 const { gameFooter, gameColor } = require('../../../core/gameKit');
-const { addPoints, getPts, notifyRewards } = require('../../../core/pointsManager');
+const { addPoints, pointsFor, notifyRewards } = require('../../../core/pointsManager');
 const { t, tData } = require('../../../core/i18n');
 const config = require('../../../core/config');
 
@@ -129,7 +129,7 @@ module.exports = {
     collector.on('collect', async i => {
       const chosen = Number.parseInt(i.customId.split('_')[1], 10);
       const correct = chosen === correctIdx;
-      const delta = getPts('trivia', question.difficulty, correct ? 'win' : 'lose');
+      const delta = pointsFor(interaction, 'trivia', question.difficulty, correct ? 'win' : 'lose');
       const { old: oldPts, new: newPts } = await addPoints(interaction.user.id, delta);
 
       buttons.forEach((btn, idx) => {
