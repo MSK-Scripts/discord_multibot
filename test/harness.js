@@ -51,7 +51,7 @@ const FIXTURE = {
   language: 'en',
   roles: {
     member: FAKE(1), founder: FAKE(2), manager: FAKE(3),
-    developer: FAKE(4), team: FAKE(5), giveawayNotify: FAKE(6),
+    developer: FAKE(4), team: FAKE(5), giveawayNotify: FAKE(6), sponsor: FAKE(7),
   },
   channels: { log: FAKE(10), memberCount: FAKE(11), feedback: FAKE(12) },
   features: {
@@ -67,6 +67,11 @@ const FIXTURE = {
       inviteUrl: 'https://example.com/invite',
     },
     backupDatabase: { enabled: true },
+    sponsor: {
+      enabled: true, role: 'sponsor', syncHour: 4,
+      shopBaseUrl: 'https://shop.example.com/',
+      sponsorsUrl: 'https://github.com/sponsors/example',
+    },
     minigames: {
       multipliers: [
         { role: 'founder', factor: 3 },
@@ -86,6 +91,13 @@ process.env.MULTIBOT_CONFIG = FIXTURE_PATH;
 // would write into data/multibot.db and hand out points to a made-up user on
 // the real installation.
 process.env.DATABASE_URL = 'sqlite::memory:';
+
+// Made-up secrets for the sponsor feature, set before dotenv runs so a real
+// .env on the developer's machine can never be what the tests sign with.
+const SPONSOR_LINK_SECRET = 'harness-link-secret-0123456789abcdef';
+const SPONSOR_SYNC_SECRET = 'harness-sync-secret-0123456789abcdef';
+process.env.SPONSOR_LINK_SECRET = SPONSOR_LINK_SECRET;
+process.env.SPONSOR_SYNC_SECRET = SPONSOR_SYNC_SECRET;
 
 const req = p => require(path.join(REPO, p));
 
@@ -283,6 +295,7 @@ function mockInteraction({ name, opts = {}, roles = [], userId = 'test-user-1', 
       getMember:  n => opts[n] ?? null,
       getBoolean: n => opts[n] ?? null,
       getChannel: n => opts[n] ?? null,
+      getSubcommand: () => opts.subcommand ?? null,
     },
     isChatInputCommand:          () => type === 'chat',
     isButton:                    () => type === 'button',
@@ -478,6 +491,87 @@ const nameOf = key => config.command(key).name;
     assert.ok(lastText(i).includes(roleId), 'the legacy custom id was ignored: ' + lastText(i));
   });
 
+  /** Decode a sponsor link token's payload, after checking its signature. */
+  const readSponsorToken = (url) => {
+    const token = decodeURIComponent(new URL(url).searchParams.get('t'));
+    const [b64, sig] = token.split('.');
+    const expected = require('crypto').createHmac('sha256', SPONSOR_LINK_SECRET)
+      .update('sponsor-link.' + b64).digest('base64url');
+    assert.strictEqual(sig, expected, 'the signature does not verify with the link secret');
+    return JSON.parse(Buffer.from(b64, 'base64url').toString('utf8'));
+  };
+
+  await acheck('/sponsor post is gated by the configured roles', async () => {
+    const i = await dispatch(mockInteraction({ name: nameOf('sponsor'), opts: { subcommand: 'post' } }));
+    assert.strictEqual(lastText(i), i18n.t('common.noPermission'));
+  });
+
+  await acheck('/sponsor post posts the panel with the link and the verify button', async () => {
+    const i = mockInteraction({ name: nameOf('sponsor'), opts: { subcommand: 'post' }, roles: [config.roleId('founder')] });
+    const sent = [];
+    i.channel.send = async m => { sent.push(m); return m; };
+    await dispatch(i);
+    assert.strictEqual(lastText(i), i18n.t('sponsor.posted'), lastText(i));
+    assert.strictEqual(sent.length, 1, 'nothing was posted');
+    const buttons = sent[0].components[0].toJSON().components;
+    assert.ok(buttons.some(b => b.url === 'https://github.com/sponsors/example'), 'no sponsors link button');
+    assert.ok(buttons.some(b => b.custom_id === 'sponsor_verify'), 'no verify button');
+  });
+
+  await acheck('the sponsor_verify button answers with a signed, personal shop link', async () => {
+    const i = mockInteraction({ name: '', type: 'button', userId: '900000000000077777' });
+    i.customId = 'sponsor_verify';
+    const before = Math.floor(Date.now() / 1000);
+    await dispatch(i);
+    const reply = i._out.replies.at(-1);
+    assert.strictEqual(reply.flags, djs.MessageFlags.Ephemeral, 'the personal link was not ephemeral');
+    const url = reply.components[0].toJSON().components[0].url;
+    assert.ok(url.startsWith('https://shop.example.com/api/sponsor/start?t='), url);
+    const payload = readSponsorToken(url);
+    assert.deepStrictEqual(Object.keys(payload), ['v', 'd', 'g', 'exp', 'n']);
+    assert.strictEqual(payload.v, 1);
+    assert.strictEqual(payload.d, '900000000000077777');
+    assert.strictEqual(payload.g, config.guildId());
+    assert.ok(payload.exp >= before + 900 && payload.exp <= before + 902, 'exp is not now + 900: ' + payload.exp);
+    assert.match(payload.n, /^[0-9a-f]{32}$/);
+  });
+
+  await acheck('without the link secret the button apologises instead of linking', async () => {
+    const saved = process.env.SPONSOR_LINK_SECRET;
+    const realError = console.error;
+    process.env.SPONSOR_LINK_SECRET = 'too-short';
+    console.error = () => {};
+    try {
+      const i = mockInteraction({ name: '', type: 'button' });
+      i.customId = 'sponsor_verify';
+      await dispatch(i);
+      assert.strictEqual(lastText(i), i18n.t('sponsor.verify.unavailable'));
+      assert.ok(!i._out.replies.at(-1).components, 'a link was handed out with a short secret');
+    } finally {
+      process.env.SPONSOR_LINK_SECRET = saved;
+      console.error = realError;
+    }
+  });
+
+  await acheck('/sponsor sync reports an aborted sync and changes nothing', async () => {
+    const realFetch = globalThis.fetch;
+    const realError = console.error;
+    const realLog = console.log;
+    globalThis.fetch = async () => ({ status: 503, json: async () => ({}) });
+    console.error = () => {};
+    console.log = () => {};
+    try {
+      const i = await dispatch(mockInteraction({
+        name: nameOf('sponsor'), opts: { subcommand: 'sync' }, roles: [config.roleId('manager')],
+      }));
+      assert.strictEqual(i._out.edits.at(-1)?.content, i18n.t('sponsor.sync.failed'));
+    } finally {
+      globalThis.fetch = realFetch;
+      console.error = realError;
+      console.log = realLog;
+    }
+  });
+
   // ------------------------------------------------------------ config paths
   section('F0) every config path the code reads exists in config.example.jsonc');
   {
@@ -661,7 +755,7 @@ const nameOf = key => config.command(key).name;
       // will disagree. The DASHBOARD_* group is the deliberate exception: a bind
       // address and a port describe the machine, not the Discord server, and the
       // dashboard reads them before it has any reason to look at a guild.
-      const ALLOWED = /^(COMMANDS_BOT_TOKEN|EVENTS_BOT_TOKEN|MINIGAMES_BOT_TOKEN|DB_HOST|DB_USER|DB_PASS|DB_NAME|DATABASE_URL|DASHBOARD_[A-Z_]+|CLIENT_ID|CLIENT_SECRET|SESSION_SECRET)$/;
+      const ALLOWED = /^(COMMANDS_BOT_TOKEN|EVENTS_BOT_TOKEN|MINIGAMES_BOT_TOKEN|DB_HOST|DB_USER|DB_PASS|DB_NAME|DATABASE_URL|DASHBOARD_[A-Z_]+|CLIENT_ID|CLIENT_SECRET|SESSION_SECRET|SPONSOR_LINK_SECRET|SPONSOR_SYNC_SECRET)$/;
       const declared = [...template.matchAll(/^([A-Z][A-Z0-9_]*)=/gm)].map(m => m[1]);
       assert.ok(declared.length >= 5, 'the template scan found almost nothing');
       const strays = declared.filter(n => !ALLOWED.test(n));
@@ -1419,6 +1513,276 @@ const nameOf = key => config.command(key).name;
       else if (fs.existsSync(pointsFile)) fs.unlinkSync(pointsFile);
       console.log('  ..   points.json restored (existed before: ' + hadFile + '), in-memory database dropped');
     }
+  }
+
+  // ------------------------------------------------------------ sponsors
+  section('S) GitHub Sponsors role: link token, members list, role diff');
+  {
+    const sponsor = req('core/sponsor');
+    const quiet = async (fn) => {
+      const real = { log: console.log, error: console.error, warn: console.warn };
+      console.log = console.error = console.warn = () => {};
+      try { return await fn(); } finally { Object.assign(console, real); }
+    };
+
+    check('the link token matches the fixed vector shared with the shop', () => {
+      // Computed OUTSIDE this code base (Python hmac/base64), so a change that
+      // breaks the contract cannot also move the expectation. The shop's tests
+      // can use the same vector.
+      const token = sponsor.buildLinkToken({
+        secret: 'harness-link-secret-0123456789abcdef',
+        discordId: '900000000000010001',
+        guildId: '900000000000010000',
+        now: Date.UTC(2026, 0, 1),
+        nonce: '00112233445566778899aabbccddeeff',
+      });
+      assert.strictEqual(token,
+        'eyJ2IjoxLCJkIjoiOTAwMDAwMDAwMDAwMDEwMDAxIiwiZyI6IjkwMDAwMDAwMDAwMDAxMDAwMCIsImV4cCI6MTc2NzIyNjUwMCwibiI6IjAwMTEyMjMzNDQ1NTY2Nzc4ODk5YWFiYmNjZGRlZWZmIn0'
+        + '.qYKp1z9QMAlavZwm5GzzTM3Q3qnOVN2jDmrMi0mKYGw');
+    });
+
+    check('a token signed with another secret does not match', () => {
+      const args = { discordId: '1', guildId: '2', now: 0, nonce: 'aa' };
+      const a = sponsor.buildLinkToken({ ...args, secret: 'a'.repeat(32) });
+      const b = sponsor.buildLinkToken({ ...args, secret: 'b'.repeat(32) });
+      assert.strictEqual(a.split('.')[0], b.split('.')[0]);
+      assert.notStrictEqual(a.split('.')[1], b.split('.')[1]);
+    });
+
+    check('the shop URL must be https, plain http only on this machine', () => {
+      assert.strictEqual(sponsor.normalizeBaseUrl('https://shop.example.com/'), 'https://shop.example.com');
+      assert.strictEqual(sponsor.normalizeBaseUrl('http://shop.example.com'), '');
+      assert.strictEqual(sponsor.normalizeBaseUrl('http://localhost:3000'), 'http://localhost:3000');
+      assert.strictEqual(sponsor.normalizeBaseUrl('not a url'), '');
+    });
+
+    check('a missing or short secret switches the feature off and says which', () => {
+      const saved = process.env.SPONSOR_SYNC_SECRET;
+      process.env.SPONSOR_SYNC_SECRET = 'x'.repeat(31);
+      try {
+        const s = sponsor.settings();
+        assert.strictEqual(s.ready, false);
+        assert.ok(s.missing.some(m => m.startsWith('SPONSOR_SYNC_SECRET')), s.missing.join(', '));
+        assert.ok(config.report().missing.some(m => m.startsWith('SPONSOR_SYNC_SECRET')), 'not reported at boot');
+        assert.strictEqual(sponsor.startSponsorSync(client), false, 'the sync started without its secret');
+      } finally { process.env.SPONSOR_SYNC_SECRET = saved; }
+      assert.strictEqual(sponsor.settings().ready, true, 'the fixture is not a ready configuration');
+    });
+
+    check('the role diff adds listed members, removes unlisted holders, never touches bots', () => {
+      const members = [
+        { id: 'keep',      bot: false, hasRole: true  },   // listed, has it
+        { id: 'gain',      bot: false, hasRole: false },   // listed, lacks it
+        { id: 'lose',      bot: false, hasRole: true  },   // not listed, has it
+        { id: 'stranger',  bot: false, hasRole: false },   // not listed, lacks it
+        { id: 'botHolder', bot: true,  hasRole: true  },   // a bot holding it: left alone
+        { id: 'botListed', bot: true,  hasRole: false },   // a bot on the list: left alone
+      ];
+      const diff = sponsor.diffSponsorRoles(members, ['keep', 'gain', 'botListed', 'gone']);
+      assert.deepStrictEqual(diff.toAdd, ['gain']);
+      assert.deepStrictEqual(diff.toRemove, ['lose']);
+      assert.strictEqual(diff.notInGuild, 1, 'a listed id outside the guild was not counted');
+    });
+
+    check('an empty list removes every human holder and adds nobody', () => {
+      const diff = sponsor.diffSponsorRoles([{ id: 'a', bot: false, hasRole: true }], []);
+      assert.deepStrictEqual(diff, { toAdd: [], toRemove: ['a'], notInGuild: 0 });
+    });
+
+    const listResponse = (status, body) => async () => ({
+      status, json: async () => { if (body instanceof Error) throw body; return body; },
+    });
+
+    await acheck('the members list is fetched with the bearer secret and read', async () => {
+      let seen = null;
+      const fetchImpl = async (url, init) => {
+        seen = { url, init };
+        return listResponse(200, {
+          ok: true, generatedAt: '2026-11-05T00:00:00Z',
+          members: [
+            { discordId: '900000000000010001', githubLogin: 'a', kind: 'monthly', validUntil: null },
+            { discordId: '900000000000010002', githubLogin: 'b', kind: 'one_time', validUntil: '2026-12-05T00:00:00Z' },
+          ],
+        })();
+      };
+      const r = await sponsor.fetchMembers({ baseUrl: 'https://shop.example.com', secret: 'S'.repeat(32), fetchImpl });
+      assert.strictEqual(seen.url, 'https://shop.example.com/api/sponsor/members');
+      assert.strictEqual(seen.init.headers.Authorization, 'Bearer ' + 'S'.repeat(32));
+      assert.ok(seen.init.signal instanceof AbortSignal, 'no timeout signal');
+      assert.strictEqual(r.ok, true);
+      assert.deepStrictEqual([...r.ids], ['900000000000010001', '900000000000010002']);
+    });
+
+    for (const [label, fetchImpl] of [
+      ['a non-200 answer', listResponse(500, { ok: true, members: [] })],
+      ['a 401', listResponse(401, { ok: false })],
+      ['ok !== true', listResponse(200, { ok: 'yes', members: [] })],
+      ['members that are not a list', listResponse(200, { ok: true, members: {} })],
+      ['a row without a Discord id', listResponse(200, { ok: true, members: [{ discordId: 'nope' }] })],
+      ['a body that is not JSON', listResponse(200, new SyntaxError('Unexpected token'))],
+      ['a timeout', async () => { throw Object.assign(new Error('aborted'), { name: 'TimeoutError' }); }],
+    ]) {
+      await acheck(`the members list is refused on ${label}`, async () => {
+        const r = await sponsor.fetchMembers({ baseUrl: 'https://shop.example.com', secret: 'S'.repeat(32), fetchImpl });
+        assert.strictEqual(r.ok, false, 'accepted');
+        assert.ok(r.reason, 'no reason given');
+      });
+    }
+
+    /** A guild with a sponsor role, members that record every role change, and a client. */
+    const sponsorGuild = () => {
+      const roleId = config.roleId('sponsor');
+      const calls = [];
+      const role = { id: roleId, editable: true };
+      const member = (id, { bot = false, has = false } = {}) => {
+        const cache = new Set(has ? [roleId] : []);
+        return {
+          id, user: { id, bot },
+          roles: {
+            cache,
+            add: async (r, reason) => { calls.push(['add', id, r.id, reason]); cache.add(r.id); },
+            remove: async (r, reason) => { calls.push(['remove', id, r.id, reason]); cache.delete(r.id); },
+          },
+        };
+      };
+      const members = new Map([
+        ['900000000000020001', member('900000000000020001', { has: true })],   // listed, keeps it
+        ['900000000000020002', member('900000000000020002')],                  // listed, gets it
+        ['900000000000020003', member('900000000000020003', { has: true })],   // unlisted, loses it
+        ['900000000000020004', member('900000000000020004', { bot: true, has: true })],
+      ]);
+      const guild = { id: config.guildId(), roles: { cache: new Map([[roleId, role]]) }, members: { fetch: async () => members } };
+      const fakeClient = { guilds: { cache: new Map([[guild.id, guild]]) } };
+      return { calls, fakeClient };
+    };
+    const listed = ['900000000000020001', '900000000000020002', '900000000000020004']
+      .map(discordId => ({ discordId, githubLogin: 'x', kind: 'monthly', validUntil: null }));
+
+    await acheck('the sync adds and removes exactly the diff, with an audit-log reason', async () => {
+      const { calls, fakeClient } = sponsorGuild();
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: listResponse(200, { ok: true, members: listed }) }));
+      assert.strictEqual(r.ok, true, r.reason);
+      assert.deepStrictEqual(calls.map(c => c.slice(0, 2)),
+        [['add', '900000000000020002'], ['remove', '900000000000020003']]);
+      assert.ok(calls.every(c => c[2] === config.roleId('sponsor')), 'a different role was touched');
+      assert.strictEqual(calls[0][3], i18n.t('sponsor.audit.added'));
+      assert.strictEqual(calls[1][3], i18n.t('sponsor.audit.removed'));
+      assert.deepStrictEqual([r.added, r.removed, r.failed], [1, 1, 0]);
+    });
+
+    /** A guild where `holders` humans hold the role, plus one human listed without it. */
+    const holderGuild = (holders) => {
+      const roleId = config.roleId('sponsor');
+      const calls = [];
+      const members = new Map();
+      const add = (id, has) => {
+        const cache = new Set(has ? [roleId] : []);
+        members.set(id, {
+          id, user: { id, bot: false },
+          roles: {
+            cache,
+            add: async (r) => { calls.push(['add', id]); cache.add(r.id); },
+            remove: async (r) => { calls.push(['remove', id]); cache.delete(r.id); },
+          },
+        });
+      };
+      for (let n = 0; n < holders; n++) add(`9000000000000300${String(n).padStart(2, '0')}`, true);
+      add('900000000000039999', false);
+      const guild = {
+        id: config.guildId(),
+        roles: { cache: new Map([[roleId, { id: roleId, editable: true }]]) },
+        members: { fetch: async () => members },
+      };
+      return { calls, fakeClient: { guilds: { cache: new Map([[guild.id, guild]]) } } };
+    };
+    const onlyNewcomer = listResponse(200, { ok: true, members: [
+      { discordId: '900000000000039999', githubLogin: 'n', kind: 'one_time', validUntil: null },
+    ] });
+
+    check('the removal brake: more than half of the holders AND at least 3', () => {
+      assert.strictEqual(sponsor.removalBrake(4, 4), true);
+      assert.strictEqual(sponsor.removalBrake(5, 3), true);
+      assert.strictEqual(sponsor.removalBrake(6, 3), false, 'exactly half must not brake');
+      assert.strictEqual(sponsor.removalBrake(2, 2), false, 'below 3 removals must not brake');
+      assert.strictEqual(sponsor.removalBrake(0, 0), false);
+    });
+
+    await acheck('the brake holds back the removals of a mass loss, additions still happen', async () => {
+      const { calls, fakeClient } = holderGuild(4);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: onlyNewcomer }));
+      assert.strictEqual(r.ok, true, r.reason);
+      assert.deepStrictEqual(calls.filter(c => c[0] === 'remove'), [], 'roles were removed through the brake');
+      assert.deepStrictEqual(calls, [['add', '900000000000039999']], 'the addition did not happen');
+      assert.strictEqual(r.braked, true);
+      assert.strictEqual(r.heldBack, 4);
+    });
+
+    await acheck('below 3 removals the brake stays out of the way', async () => {
+      const { calls, fakeClient } = holderGuild(2);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: listResponse(200, { ok: true, members: [] }) }));
+      assert.strictEqual(r.braked, false);
+      assert.deepStrictEqual(calls.map(c => c[0]), ['remove', 'remove']);
+    });
+
+    await acheck('force bypasses the brake for that run', async () => {
+      const { calls, fakeClient } = holderGuild(4);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: onlyNewcomer, force: true }));
+      assert.strictEqual(r.braked, false);
+      assert.strictEqual(calls.filter(c => c[0] === 'remove').length, 4);
+    });
+
+    check('only /sponsor sync can force, the daily run never does', () => {
+      const src = stripComments(fs.readFileSync(path.join(REPO, 'core/sponsor.js'), 'utf8'));
+      const daily = src.match(/const run = \(\) => runSync\(([^)]*)\)/);
+      assert.ok(daily, 'the scheduled call was not found');
+      assert.strictEqual(daily[1].trim(), 'client', 'the scheduled run passes options: ' + daily[1]);
+    });
+
+    await acheck('/sponsor sync force:true reaches the sync', async () => {
+      // Through the real dispatch: the option must arrive as `force`, not be
+      // dropped on the way from the command to runSync.
+      const realFetch = globalThis.fetch;
+      globalThis.fetch = async () => ({ status: 503, json: async () => ({}) });
+      const realRun = sponsor.runSync;
+      let seen = null;
+      sponsor.runSync = async (_c, opts) => { seen = opts; return { ok: false, reason: 'stub' }; };
+      try {
+        await dispatch(mockInteraction({
+          name: nameOf('sponsor'), opts: { subcommand: 'sync', force: true }, roles: [config.roleId('founder')],
+        }));
+      } finally { sponsor.runSync = realRun; globalThis.fetch = realFetch; }
+      assert.deepStrictEqual(seen, { force: true });
+    });
+
+    for (const [label, fetchImpl] of [
+      ['an HTTP error', listResponse(502, { ok: true, members: [] })],
+      ['ok: false', listResponse(200, { ok: false, members: [] })],
+      ['a timeout', async () => { throw Object.assign(new Error('aborted'), { name: 'TimeoutError' }); }],
+    ]) {
+      await acheck(`a failed list fetch (${label}) changes no role at all`, async () => {
+        const { calls, fakeClient } = sponsorGuild();
+        const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl }));
+        assert.strictEqual(r.ok, false);
+        assert.deepStrictEqual(calls, [], 'roles were changed after a failed fetch');
+      });
+    }
+
+    check('the daily run is scheduled for the next sync hour, local time', () => {
+      const at = (h, m = 0) => new Date(2026, 5, 10, h, m, 0, 0);
+      assert.strictEqual(sponsor.msUntilHour(at(3, 30), 4), 30 * 60_000);
+      assert.strictEqual(sponsor.msUntilHour(at(4, 0), 4), 24 * 3_600_000, 'the same minute must mean tomorrow');
+      assert.strictEqual(sponsor.msUntilHour(at(5, 0), 4), 23 * 3_600_000);
+    });
+
+    check('the sync schedules itself when configured and can be stopped', () => {
+      const started = (() => {
+        const real = console.log;
+        console.log = () => {};
+        try { return sponsor.startSponsorSync(client); } finally { console.log = real; }
+      })();
+      sponsor.stopSponsorSync();
+      assert.strictEqual(started, true);
+    });
   }
 
   // ------------------------------------------------------------ client

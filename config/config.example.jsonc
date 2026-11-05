@@ -93,7 +93,8 @@
     "manager":        "",
     "developer":      "",
     "team":           "",
-    "giveawayNotify": ""
+    "giveawayNotify": "",
+    "sponsor":        ""    // kept in line with the shop's sponsor list, see features.sponsor
   },
 
   // ─── Channels ──────────────────────────────────────────────────────────────
@@ -429,6 +430,25 @@
       "deleteLocalFile": true
     },
 
+    // ── GitHub Sponsors role (/sponsor) ─────────────────────────────────────
+    //
+    // A shop links a member's GitHub account, checks the sponsorship and hands
+    // out the role. The bot posts the panel (/sponsor post), gives each member
+    // a signed, 15-minute link into the shop (the panel's button) and once a
+    // day adds and removes the role to match the shop's list (/sponsor sync
+    // runs it by hand).
+    //
+    // Needs SPONSOR_LINK_SECRET and SPONSOR_SYNC_SECRET in .env, each at least
+    // 32 characters and identical to the shop's. Without them the sync stays
+    // off. If the shop's list cannot be fetched or read, no role is changed.
+    "sponsor": {
+      "enabled": false,
+      "role": "sponsor",         // a key from "roles" above, or a raw role id
+      "shopBaseUrl": "",         // e.g. https://shop.example.com, https only
+      "sponsorsUrl": "",         // e.g. https://github.com/sponsors/<org>, the panel's link button
+      "syncHour": 4              // 0-23, the server's local time
+    },
+
     // ── Message context menus ───────────────────────────────────────────────
     //
     // Right-click a message → Apps. `name` is what Discord shows; renaming one
@@ -467,6 +487,7 @@
     "backup_database": { "enabled": true, "name": "backup_database", "description": "", "roles": ["founder"] },
     "send_message":    { "enabled": true, "name": "send_message",    "description": "", "roles": ["founder", "manager"] },
     "send_embed":      { "enabled": true, "name": "send_embed",      "description": "", "roles": ["founder", "manager"] },
+    "sponsor":         { "enabled": true, "name": "sponsor",         "description": "", "roles": ["founder", "manager"] },
 
     "random":          { "enabled": true, "name": "random",          "description": "", "roles": ["team"] },
     "rg":              { "enabled": true, "name": "rg",              "description": "", "roles": [] },

@@ -100,6 +100,15 @@ const database = {
   NAME:     _env('DB_NAME', 'es_extended'),
 };
 
+/**
+ * The two secrets shared with the shop for the GitHub Sponsors role. Read on
+ * every call rather than once, so the harness can take one away.
+ */
+const sponsorSecrets = () => ({
+  link: _env('SPONSOR_LINK_SECRET'),
+  sync: _env('SPONSOR_SYNC_SECRET'),
+});
+
 // ─── ids ─────────────────────────────────────────────────────────────────────
 
 const SNOWFLAKE = /^\d{17,20}$/;
@@ -279,6 +288,19 @@ function report() {
 
   if (featureEnabled('backupDatabase') && !database.USER) missing.push('DB_USER (.env)');
 
+  // Without these the sync stays off and the verify button answers with an
+  // apology. Checked here too so it shows up in the one list read at boot.
+  if (featureEnabled('sponsor')) {
+    if (!roleId(get('features.sponsor.role', ''))) missing.push('features.sponsor.role');
+    // https only, plain http just for a shop on this machine: the sync sends a
+    // bearer secret there. core/sponsor.js applies the same rule.
+    const shop = String(get('features.sponsor.shopBaseUrl', '') ?? '').trim();
+    if (!/^(https:\/\/|http:\/\/(localhost|127\.0\.0\.1|\[::1\])([:/]|$))/i.test(shop)) missing.push('features.sponsor.shopBaseUrl');
+    const secrets = sponsorSecrets();
+    if (secrets.link.length < 32) missing.push('SPONSOR_LINK_SECRET (.env, at least 32 characters)');
+    if (secrets.sync.length < 32) missing.push('SPONSOR_SYNC_SECRET (.env, at least 32 characters)');
+  }
+
   // A bonus role that does not resolve matches nobody, so the multiplier is
   // simply never applied and the player sees the ordinary payout. There is
   // nothing to notice, which is why it has to be said out loud. Shipped empty,
@@ -324,7 +346,7 @@ module.exports = {
 
   get, raw: () => merged, reload, load, hasUserConfig,
 
-  tokens, database,
+  tokens, database, sponsorSecrets,
   guildId, roleId, roleIds, channelId,
   brandName, thumbnailUrl, embedColor, brandLinks, parseColor,
   command, commandKeys, contextMenu,

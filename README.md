@@ -187,6 +187,8 @@ DB_NAME=es_extended
 | `/send_message` | Sends a custom message to any channel via modal | ✅ Manager / Founder |
 | `/send_embed` | Sends a fully customizable embed to any channel | ✅ Manager / Founder |
 | `/backup_database` | Creates a MySQL database backup and uploads it to the log channel | ✅ Founder |
+| `/sponsor post` | Posts the GitHub Sponsors panel with the verify button | ✅ Manager / Founder |
+| `/sponsor sync [force]` | Runs the sponsor role sync now; `force` overrides the removal brake once | ✅ Manager / Founder |
 | `/ping` | Shows bot latency and API response time | — |
 | `/userinfo` | Shows info and minigame points for a user | — |
 | `/clear` | Bulk-deletes up to 100 messages | ✅ Team |
@@ -199,6 +201,20 @@ DB_NAME=es_extended
 - `✅ Verification` — assigns the Member role
 - `🎁 Giveaway Notify` — toggles the Giveaway notification role
 - `⏰ Garage / Handcuffs / Storage / Vehicle Keys` — toggles script update notification roles
+
+**GitHub Sponsors role** (off by default, `features.sponsor` in `config/config.jsonc`):
+a shop links a member's GitHub account, checks the sponsorship and grants the
+role. The panel's `Verify` button gives the member a personal link into the
+shop, signed with `SPONSOR_LINK_SECRET` and valid for 15 minutes. Once a minute
+after startup and then daily at `syncHour` (server time), the bot fetches the
+shop's sponsor list with `SPONSOR_SYNC_SECRET` and adds or removes the role to
+match. If the list cannot be fetched or read, no role is changed. If it would
+take the role from more than half of the current holders and at least three
+members, the removals are held back (additions still happen) until somebody runs
+`/sponsor sync force:true`. Settings:
+`enabled`, `role` (default `sponsor` from the `roles` block), `shopBaseUrl`
+(https), `sponsorsUrl` (the panel's link button), `syncHour`. Both secrets go in
+`.env`, at least 32 characters each and identical to the shop's.
 
 ### Events Bot
 
@@ -308,6 +324,7 @@ discord_multibot/
 ├── core/
 │   ├── config.js                    ← Environment config
 │   ├── utils.js                     ← Shared helpers (makeEmbed, readJson, …)
+│   ├── sponsor.js                   ← GitHub Sponsors: link token, sponsor list, daily role sync
 │   └── pointsManager.js             ← Points read/write + reward notifications
 ├── data/
 │   ├── points.json                  ← Persistent user points (auto-created)
@@ -319,6 +336,7 @@ discord_multibot/
     │   └── commands/
     │       ├── community.js          ← /information, /rules, /roles
     │       ├── admin.js              ← /backup_database, /send_message, /send_embed
+    │       ├── sponsor.js            ← /sponsor post, /sponsor sync
     │       ├── support.js            ← /script_guides
     │       ├── orders.js             ← /donation, /order_terms, /order_price
     │       ├── utility.js            ← /ping, /userinfo, /clear
