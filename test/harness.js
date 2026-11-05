@@ -1785,6 +1785,26 @@ const nameOf = key => config.command(key).name;
     });
   }
 
+  section('L) message logging survives partial messages');
+  {
+    // An edit or delete of an uncached message arrives as a partial with
+    // author null. Reading author.id threw, and with no 'error' listener on
+    // the client that exception ended the whole process.
+    const logging = req('bots/events/handlers/logging');
+    const partial = { partial: true, guild: { id: '1' }, author: null, content: null, channel: { id: '2' } };
+
+    await acheck('an edit of an uncached message is skipped, not thrown', async () => {
+      await logging.onMessageEdit(partial, { ...partial, partial: false, content: 'new' });
+    });
+    await acheck('a delete of an uncached message is skipped, not thrown', async () => {
+      await logging.onMessageDelete(partial);
+    });
+    check('every client gets an error listener, so one failing handler cannot end the process', () => {
+      const src = fs.readFileSync(path.join(REPO, 'main.js'), 'utf8');
+      assert.match(src, /client\.on\(Events\.Error,/);
+    });
+  }
+
   // ------------------------------------------------------------ client
   section('H) real discord.js Client and a live REST round trip');
   let realClient = null;
