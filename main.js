@@ -34,6 +34,13 @@ async function runGroup(group, token) {
     const client = new Client({ intents: [...intentSet], partials: [...partialSet] });
     const registry = createRegistry();
 
+    // discord.js turns a rejected event handler into an 'error' event on the
+    // client. With no listener, Node makes that an uncaught exception and the
+    // whole bot process exits, so one bad event took every bot down.
+    client.on(Events.Error, err => {
+      console.error(`[${label}] event handler failed: ${err?.stack || err}`);
+    });
+
     for (const b of group) {
       try {
         b.module.attach(client, registry, { botName: b.name });

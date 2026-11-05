@@ -235,8 +235,10 @@ async function onMemberUnban(guild, user) {
 
 // ─── Message events ───────────────────────────────────────────────────────────
 
+// An uncached message arrives as a partial without an author (Partials.Message).
+// There is nothing to log for it, and reading author.id would throw.
 async function onMessageDelete(message) {
-  if (!message.guild || message.author?.bot) return;
+  if (!message.guild || !message.author || message.author.bot) return;
   if (ignoredChannel(message.channel.id) || ignoredUser(message.author.id)) return;
 
   let deleter = null;
@@ -286,7 +288,7 @@ async function onBulkMessageDelete(messages) {
 }
 
 async function onMessageEdit(before, after) {
-  if (!before.guild || before.author?.bot) return;
+  if (!before.guild || !before.author || before.author.bot) return;
   if (before.content === after.content) return;
   if (ignoredChannel(before.channel.id) || ignoredUser(before.author.id)) return;
 
