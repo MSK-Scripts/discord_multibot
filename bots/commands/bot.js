@@ -7,6 +7,7 @@ const { join } = require('path');
 const { enabled } = require('../../core/commandKit');
 const { t } = require('../../core/i18n');
 const config = require('../../core/config');
+const sponsor = require('../../core/sponsor');
 
 const intents = [
   GatewayIntentBits.Guilds,
@@ -45,6 +46,9 @@ function attach(client, registry) {
   client.once(Events.ClientReady, () => {
     console.log(`[Commands Bot] Ready as ${client.user.tag} - ${commands.size} commands loaded`
       + (skipped.length ? `, ${skipped.length} off (${skipped.join(', ')})` : '') + '.');
+    // The daily GitHub Sponsors role sync. Does nothing while the feature is
+    // off, and warns once when it is on but not configured.
+    sponsor.startSponsorSync(client);
   });
 
   client.on(Events.InteractionCreate, async interaction => {
@@ -109,6 +113,9 @@ async function handlePersistentButton(interaction) {
   // and never takes it away.
   if (customId === 'rules_verification') return handleVerification(interaction);
 
+  // The GitHub Sponsors panel: a personal, signed link into the shop.
+  if (customId === sponsor.VERIFY_BUTTON_ID) return handleSponsorVerify(interaction);
+
   const id = buttonIdFromCustomId(customId);
   if (!id) return;
 
@@ -137,6 +144,36 @@ async function handleVerification(interaction) {
     });
   }
   setTimeout(() => interaction.deleteReply().catch(() => {}), 5000);
+}
+
+/**
+ * The sponsor panel's button. Answers with a link that only works for the
+ * member who clicked, for 15 minutes; the shop does the rest. The link is
+ * built per click and never posted publicly, which is why it is ephemeral.
+ */
+async function handleSponsorVerify(interaction) {
+  // A panel posted while the feature was on keeps its button after it is
+  // switched off. Say so rather than answer with a link that cannot work.
+  if (!config.featureEnabled('sponsor')) {
+    return interaction.reply({ content: t('common.featureDisabled'), flags: MessageFlags.Ephemeral });
+  }
+
+  const url = sponsor.linkFor(interaction.user.id, interaction.guild.id);
+  if (!url) {
+    console.error(`[Sponsor] cannot build a link: ${sponsor.settings().missing.join(', ') || 'unknown reason'}`);
+    return interaction.reply({ content: t('sponsor.verify.unavailable'), flags: MessageFlags.Ephemeral });
+  }
+
+  const row = new ActionRowBuilder().addComponents(new ButtonBuilder()
+    .setStyle(ButtonStyle.Link)
+    .setURL(url)
+    .setLabel(t('sponsor.verify.linkButton')));
+
+  await interaction.reply({
+    content: t('sponsor.verify.text', { minutes: Math.round(sponsor.LINK_TTL_SECONDS / 60) }),
+    components: [row],
+    flags: MessageFlags.Ephemeral,
+  });
 }
 
 async function toggleRole(interaction, roleId) {

@@ -31,6 +31,9 @@
     "backup_database": { "description": "Ein Datenbank-Backup erstellen" },
     "send_message":    { "description": "Eine einfache Nachricht als Bot senden" },
     "send_embed":      { "description": "Ein Embed als Bot senden" },
+    "sponsor":         { "description": "Das GitHub-Sponsors-Panel posten oder die Sponsor-Rolle abgleichen",
+                         "options": { "post": "Das GitHub-Sponsors-Panel in diesem Kanal posten",
+                                      "sync": "Die Sponsor-Rolle jetzt mit dem Shop abgleichen" } },
     "random":          { "description": "Eine neue Runde Zahlenraten starten",
                          "options": { "number1": "Untere Grenze", "number2": "Obere Grenze" } },
     "rg":              { "description": "Rate die Zahl",
@@ -76,6 +79,31 @@
     "supportGuides": {
       "notFound": "❌ Zu diesem Eintrag gibt es keine Hilfeseite.",
       "noneConfigured": "❌ Es sind keine Hilfeseiten konfiguriert."
+    }
+  },
+
+  "sponsor": {
+    "panel": {
+      "title": "💖 GitHub Sponsors",
+      "description": "Wer {brand} auf GitHub sponsert, bekommt hier auf Discord Ticket-Support.\n\n**So verifizierst du dich**\n1. Sponsere uns auf GitHub, monatlich oder einmalig.\n2. Klick unten auf **Verifizieren**. Du bekommst einen persönlichen Link, der {minutes} Minuten gültig ist.\n3. Melde dich auf der Seite, die sich öffnet, mit GitHub an. Deine Sponsor-Rolle bekommst du sofort.\n\nDie Rolle wird einmal am Tag geprüft und bleibt, solange dein Sponsoring läuft.",
+      "sponsorButton": "Auf GitHub sponsern",
+      "verifyButton": "Verifizieren"
+    },
+    "posted": "✅ Das Sponsor-Panel wurde in diesen Kanal gesendet.",
+    "notConfigured": "❌ Die Sponsor-Funktion ist noch nicht fertig eingerichtet. Was fehlt, steht im Log des Bots.",
+    "verify": {
+      "text": "🔗 Hier ist dein persönlicher Link. Er ist {minutes} Minuten gültig und funktioniert nur für dich, also gib ihn bitte nicht weiter.",
+      "linkButton": "GitHub-Account verknüpfen",
+      "unavailable": "❌ Die Verifizierung ist gerade nicht verfügbar. Versuch es bitte später noch einmal oder wende dich an das Team."
+    },
+    "sync": {
+      "done": "✅ Sponsor-Abgleich fertig: {added} hinzugefügt, {removed} entfernt, {failed} fehlgeschlagen ({listed} Sponsoren gelistet).",
+      "busy": "⏳ Ein Abgleich läuft gerade schon. Versuch es bitte gleich noch einmal.",
+      "failed": "❌ Der Abgleich wurde abgebrochen, keine Rolle wurde geändert. Den Grund findest du im Log des Bots."
+    },
+    "audit": {
+      "added": "GitHub-Sponsor (Sponsor-Abgleich)",
+      "removed": "Kein GitHub-Sponsor mehr (Sponsor-Abgleich)"
     }
   },
 

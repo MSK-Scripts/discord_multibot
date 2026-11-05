@@ -31,6 +31,9 @@
     "backup_database": { "description": "Create a database backup" },
     "send_message":    { "description": "Send a plain message as the bot" },
     "send_embed":      { "description": "Send an embed as the bot" },
+    "sponsor":         { "description": "Post the GitHub Sponsors panel or sync the sponsor role",
+                         "options": { "post": "Post the GitHub Sponsors panel in this channel",
+                                      "sync": "Sync the sponsor role with the shop now" } },
     "random":          { "description": "Start a new round of Guess the Number",
                          "options": { "number1": "Lower bound", "number2": "Upper bound" } },
     "rg":              { "description": "Guess the number",
@@ -76,6 +79,31 @@
     "supportGuides": {
       "notFound": "❌ No guide found for this entry.",
       "noneConfigured": "❌ No guides are configured."
+    }
+  },
+
+  "sponsor": {
+    "panel": {
+      "title": "💖 GitHub Sponsors",
+      "description": "Sponsors of {brand} on GitHub get ticket support here on Discord.\n\n**How to verify**\n1. Sponsor us on GitHub, monthly or once.\n2. Click **Verify** below. You get a personal link, valid for {minutes} minutes.\n3. Sign in with GitHub on the page that opens. Your sponsor role is assigned right away.\n\nThe role is checked once a day and stays for as long as your sponsorship is active.",
+      "sponsorButton": "Sponsor on GitHub",
+      "verifyButton": "Verify"
+    },
+    "posted": "✅ The sponsor panel was posted in this channel.",
+    "notConfigured": "❌ The sponsor feature is not fully set up yet. The bot's log says what is missing.",
+    "verify": {
+      "text": "🔗 Here is your personal link. It is valid for {minutes} minutes and only works for you, so please don't share it.",
+      "linkButton": "Link my GitHub account",
+      "unavailable": "❌ Verification is not available right now. Please try again later or contact the team."
+    },
+    "sync": {
+      "done": "✅ Sponsor sync done: {added} added, {removed} removed, {failed} failed ({listed} sponsors listed).",
+      "busy": "⏳ A sync is already running. Please try again in a moment.",
+      "failed": "❌ The sync was aborted and no roles were changed. The bot's log has the reason."
+    },
+    "audit": {
+      "added": "GitHub sponsor (sponsor sync)",
+      "removed": "No longer a GitHub sponsor (sponsor sync)"
     }
   },
 
