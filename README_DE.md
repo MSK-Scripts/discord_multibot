@@ -189,7 +189,7 @@ DB_NAME=es_extended
 | `/send_embed` | Sendet ein vollständig anpassbares Embed per Modal | ✅ Manager / Founder |
 | `/backup_database` | Erstellt ein MySQL-Datenbank-Backup und lädt es in den Log-Channel hoch | ✅ Founder |
 | `/sponsor post` | Sendet das GitHub-Sponsors-Panel mit dem Verifizieren-Button | ✅ Manager / Founder |
-| `/sponsor sync` | Gleicht die Sponsor-Rolle sofort ab, statt auf den täglichen Lauf zu warten | ✅ Manager / Founder |
+| `/sponsor sync [force]` | Gleicht die Sponsor-Rolle sofort ab; `force` setzt die Bremse für diesen Lauf außer Kraft | ✅ Manager / Founder |
 | `/ping` | Zeigt Bot-Latenz und API-Antwortzeit | — |
 | `/userinfo` | Zeigt Infos und Minigame-Punkte eines Benutzers | — |
 | `/clear` | Löscht bis zu 100 Nachrichten auf einmal | ✅ Team |
@@ -210,7 +210,10 @@ persönlichen Link in den Shop, signiert mit `SPONSOR_LINK_SECRET` und 15 Minute
 gültig. Eine Minute nach dem Start und danach täglich zur Stunde `syncHour`
 (Serverzeit) holt der Bot mit `SPONSOR_SYNC_SECRET` die Sponsorenliste des Shops
 und vergibt oder entzieht die Rolle passend dazu. Lässt sich die Liste nicht
-abrufen oder lesen, wird keine Rolle geändert. Einstellungen: `enabled`, `role`
+abrufen oder lesen, wird keine Rolle geändert. Würde sie mehr als der Hälfte
+der aktuellen Inhaber und mindestens drei Mitgliedern die Rolle entziehen, hält
+der Bot das Entfernen zurück (Hinzufügen läuft weiter), bis jemand
+`/sponsor sync force:true` ausführt. Einstellungen: `enabled`, `role`
 (Standard `sponsor` aus dem Block `roles`), `shopBaseUrl` (https), `sponsorsUrl`
 (der Link-Button im Panel), `syncHour`. Beide Secrets stehen in der `.env`, je
 mindestens 32 Zeichen lang und gleich wie im Shop.

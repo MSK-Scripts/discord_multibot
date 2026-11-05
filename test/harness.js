@@ -1670,6 +1670,90 @@ const nameOf = key => config.command(key).name;
       assert.deepStrictEqual([r.added, r.removed, r.failed], [1, 1, 0]);
     });
 
+    /** A guild where `holders` humans hold the role, plus one human listed without it. */
+    const holderGuild = (holders) => {
+      const roleId = config.roleId('sponsor');
+      const calls = [];
+      const members = new Map();
+      const add = (id, has) => {
+        const cache = new Set(has ? [roleId] : []);
+        members.set(id, {
+          id, user: { id, bot: false },
+          roles: {
+            cache,
+            add: async (r) => { calls.push(['add', id]); cache.add(r.id); },
+            remove: async (r) => { calls.push(['remove', id]); cache.delete(r.id); },
+          },
+        });
+      };
+      for (let n = 0; n < holders; n++) add(`9000000000000300${String(n).padStart(2, '0')}`, true);
+      add('900000000000039999', false);
+      const guild = {
+        id: config.guildId(),
+        roles: { cache: new Map([[roleId, { id: roleId, editable: true }]]) },
+        members: { fetch: async () => members },
+      };
+      return { calls, fakeClient: { guilds: { cache: new Map([[guild.id, guild]]) } } };
+    };
+    const onlyNewcomer = listResponse(200, { ok: true, members: [
+      { discordId: '900000000000039999', githubLogin: 'n', kind: 'one_time', validUntil: null },
+    ] });
+
+    check('the removal brake: more than half of the holders AND at least 3', () => {
+      assert.strictEqual(sponsor.removalBrake(4, 4), true);
+      assert.strictEqual(sponsor.removalBrake(5, 3), true);
+      assert.strictEqual(sponsor.removalBrake(6, 3), false, 'exactly half must not brake');
+      assert.strictEqual(sponsor.removalBrake(2, 2), false, 'below 3 removals must not brake');
+      assert.strictEqual(sponsor.removalBrake(0, 0), false);
+    });
+
+    await acheck('the brake holds back the removals of a mass loss, additions still happen', async () => {
+      const { calls, fakeClient } = holderGuild(4);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: onlyNewcomer }));
+      assert.strictEqual(r.ok, true, r.reason);
+      assert.deepStrictEqual(calls.filter(c => c[0] === 'remove'), [], 'roles were removed through the brake');
+      assert.deepStrictEqual(calls, [['add', '900000000000039999']], 'the addition did not happen');
+      assert.strictEqual(r.braked, true);
+      assert.strictEqual(r.heldBack, 4);
+    });
+
+    await acheck('below 3 removals the brake stays out of the way', async () => {
+      const { calls, fakeClient } = holderGuild(2);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: listResponse(200, { ok: true, members: [] }) }));
+      assert.strictEqual(r.braked, false);
+      assert.deepStrictEqual(calls.map(c => c[0]), ['remove', 'remove']);
+    });
+
+    await acheck('force bypasses the brake for that run', async () => {
+      const { calls, fakeClient } = holderGuild(4);
+      const r = await quiet(() => sponsor.runSync(fakeClient, { fetchImpl: onlyNewcomer, force: true }));
+      assert.strictEqual(r.braked, false);
+      assert.strictEqual(calls.filter(c => c[0] === 'remove').length, 4);
+    });
+
+    check('only /sponsor sync can force, the daily run never does', () => {
+      const src = stripComments(fs.readFileSync(path.join(REPO, 'core/sponsor.js'), 'utf8'));
+      const daily = src.match(/const run = \(\) => runSync\(([^)]*)\)/);
+      assert.ok(daily, 'the scheduled call was not found');
+      assert.strictEqual(daily[1].trim(), 'client', 'the scheduled run passes options: ' + daily[1]);
+    });
+
+    await acheck('/sponsor sync force:true reaches the sync', async () => {
+      // Through the real dispatch: the option must arrive as `force`, not be
+      // dropped on the way from the command to runSync.
+      const realFetch = globalThis.fetch;
+      globalThis.fetch = async () => ({ status: 503, json: async () => ({}) });
+      const realRun = sponsor.runSync;
+      let seen = null;
+      sponsor.runSync = async (_c, opts) => { seen = opts; return { ok: false, reason: 'stub' }; };
+      try {
+        await dispatch(mockInteraction({
+          name: nameOf('sponsor'), opts: { subcommand: 'sync', force: true }, roles: [config.roleId('founder')],
+        }));
+      } finally { sponsor.runSync = realRun; globalThis.fetch = realFetch; }
+      assert.deepStrictEqual(seen, { force: true });
+    });
+
     for (const [label, fetchImpl] of [
       ['an HTTP error', listResponse(502, { ok: true, members: [] })],
       ['ok: false', listResponse(200, { ok: false, members: [] })],

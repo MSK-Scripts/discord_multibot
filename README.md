@@ -188,7 +188,7 @@ DB_NAME=es_extended
 | `/send_embed` | Sends a fully customizable embed to any channel | ✅ Manager / Founder |
 | `/backup_database` | Creates a MySQL database backup and uploads it to the log channel | ✅ Founder |
 | `/sponsor post` | Posts the GitHub Sponsors panel with the verify button | ✅ Manager / Founder |
-| `/sponsor sync` | Runs the sponsor role sync now instead of waiting for the daily run | ✅ Manager / Founder |
+| `/sponsor sync [force]` | Runs the sponsor role sync now; `force` overrides the removal brake once | ✅ Manager / Founder |
 | `/ping` | Shows bot latency and API response time | — |
 | `/userinfo` | Shows info and minigame points for a user | — |
 | `/clear` | Bulk-deletes up to 100 messages | ✅ Team |
@@ -208,7 +208,10 @@ role. The panel's `Verify` button gives the member a personal link into the
 shop, signed with `SPONSOR_LINK_SECRET` and valid for 15 minutes. Once a minute
 after startup and then daily at `syncHour` (server time), the bot fetches the
 shop's sponsor list with `SPONSOR_SYNC_SECRET` and adds or removes the role to
-match. If the list cannot be fetched or read, no role is changed. Settings:
+match. If the list cannot be fetched or read, no role is changed. If it would
+take the role from more than half of the current holders and at least three
+members, the removals are held back (additions still happen) until somebody runs
+`/sponsor sync force:true`. Settings:
 `enabled`, `role` (default `sponsor` from the `roles` block), `shopBaseUrl`
 (https), `sponsorsUrl` (the panel's link button), `syncHour`. Both secrets go in
 `.env`, at least 32 characters each and identical to the shop's.

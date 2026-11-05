@@ -33,7 +33,8 @@
     "send_embed":      { "description": "Ein Embed als Bot senden" },
     "sponsor":         { "description": "Das GitHub-Sponsors-Panel posten oder die Sponsor-Rolle abgleichen",
                          "options": { "post": "Das GitHub-Sponsors-Panel in diesem Kanal posten",
-                                      "sync": "Die Sponsor-Rolle jetzt mit dem Shop abgleichen" } },
+                                      "sync": "Die Sponsor-Rolle jetzt mit dem Shop abgleichen",
+                                      "force": "Die Rolle auch entziehen, wenn die Bremse das Entfernen zurückhalten würde" } },
     "random":          { "description": "Eine neue Runde Zahlenraten starten",
                          "options": { "number1": "Untere Grenze", "number2": "Obere Grenze" } },
     "rg":              { "description": "Rate die Zahl",
@@ -98,6 +99,7 @@
     },
     "sync": {
       "done": "✅ Sponsor-Abgleich fertig: {added} hinzugefügt, {removed} entfernt, {failed} fehlgeschlagen ({listed} Sponsoren gelistet).",
+      "braked": "⚠️ {count} Entfernungen wurden zurückgehalten: Die Liste des Shops würde mehr als der Hälfte der aktuellen Sponsoren die Rolle entziehen. Prüf den Shop und starte den Abgleich mit force, wenn die Liste stimmt.",
       "busy": "⏳ Ein Abgleich läuft gerade schon. Versuch es bitte gleich noch einmal.",
       "failed": "❌ Der Abgleich wurde abgebrochen, keine Rolle wurde geändert. Den Grund findest du im Log des Bots."
     },

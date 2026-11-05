@@ -33,7 +33,8 @@
     "send_embed":      { "description": "Send an embed as the bot" },
     "sponsor":         { "description": "Post the GitHub Sponsors panel or sync the sponsor role",
                          "options": { "post": "Post the GitHub Sponsors panel in this channel",
-                                      "sync": "Sync the sponsor role with the shop now" } },
+                                      "sync": "Sync the sponsor role with the shop now",
+                                      "force": "Also remove the role when the brake would hold the removals back" } },
     "random":          { "description": "Start a new round of Guess the Number",
                          "options": { "number1": "Lower bound", "number2": "Upper bound" } },
     "rg":              { "description": "Guess the number",
@@ -98,6 +99,7 @@
     },
     "sync": {
       "done": "✅ Sponsor sync done: {added} added, {removed} removed, {failed} failed ({listed} sponsors listed).",
+      "braked": "⚠️ {count} removals were held back: the shop's list would take the role from more than half of the current sponsors. Check the shop, then run the sync with force if the list is right.",
       "busy": "⏳ A sync is already running. Please try again in a moment.",
       "failed": "❌ The sync was aborted and no roles were changed. The bot's log has the reason."
     },

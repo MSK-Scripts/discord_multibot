@@ -184,6 +184,18 @@ function diffSponsorRoles(members, listedIds) {
   return { toAdd, toRemove, notInGuild };
 }
 
+/**
+ * Would this sync take the role from so many holders that it is more likely a
+ * fault in the shop than a wave of cancellations? More than half of the
+ * current holders AND at least BRAKE_MIN_REMOVALS members. The floor keeps a
+ * small server, where one cancellation is already half, from being stuck.
+ */
+const BRAKE_MIN_REMOVALS = 3;
+
+function removalBrake(holderCount, removalCount) {
+  return removalCount >= BRAKE_MIN_REMOVALS && removalCount > holderCount / 2;
+}
+
 // ─── the sync ────────────────────────────────────────────────────────────────
 
 let running = false;
@@ -191,9 +203,13 @@ let running = false;
 /**
  * Bring the role in line with the shop's list.
  *
- * @returns {Promise<{ok: boolean, reason?: string, added?: number, removed?: number, failed?: number, listed?: number, notInGuild?: number}>}
+ * `force` bypasses the removal brake for this one run. Only `/sponsor sync
+ * force:true` sets it; the daily run never does.
+ *
+ * @returns {Promise<{ok: boolean, reason?: string, added?: number, removed?: number, failed?: number,
+ *   listed?: number, notInGuild?: number, braked?: boolean, heldBack?: number}>}
  */
-async function runSync(client, { fetchImpl } = {}) {
+async function runSync(client, { fetchImpl, force = false } = {}) {
   if (running) return { ok: false, reason: 'busy' };
   running = true;
   try {
@@ -233,8 +249,21 @@ async function runSync(client, { fetchImpl } = {}) {
       view.push({ id: member.id, bot: member.user?.bot === true, hasRole: member.roles.cache.has(s.roleId) });
     }
 
-    const { toAdd, toRemove, notInGuild } = diffSponsorRoles(view, list.ids);
+    const { toAdd, toRemove: wanted, notInGuild } = diffSponsorRoles(view, list.ids);
     let added = 0, removed = 0, failed = 0;
+
+    // The list arrived and parsed, and still says most sponsors are gone. That
+    // is more likely the shop than the sponsors, so the removals wait for a
+    // human; the additions are safe either way and still go ahead.
+    const holders = view.filter(m => !m.bot && m.hasRole).length;
+    const braked = !force && removalBrake(holders, wanted.length);
+    const toRemove = braked ? [] : wanted;
+    if (braked) {
+      console.warn(`[Sponsor] removal brake: the list would take the role from ${wanted.length} of ${holders} holders. `
+        + 'No role removed this run; check the shop, then run /sponsor sync force:true if it is right.');
+    } else if (force && removalBrake(holders, wanted.length)) {
+      console.warn(`[Sponsor] removal brake bypassed by force: removing the role from ${wanted.length} of ${holders} holders.`);
+    }
 
     for (const id of toAdd) {
       try { await byId.get(id).roles.add(role, t('sponsor.audit.added')); added++; }
@@ -245,9 +274,11 @@ async function runSync(client, { fetchImpl } = {}) {
       catch (err) { failed++; console.error(`[Sponsor] could not remove the role from ${id}: ${err?.message ?? err}`); }
     }
 
-    const summary = { ok: true, added, removed, failed, listed: list.ids.size, notInGuild };
-    console.log(`[Sponsor] sync done: ${added} added, ${removed} removed, ${failed} failed `
-      + `(${list.ids.size} listed, ${notInGuild} not in the guild).`);
+    const heldBack = braked ? wanted.length : 0;
+    const summary = { ok: true, added, removed, failed, listed: list.ids.size, notInGuild, braked, heldBack };
+    console.log(`[Sponsor] sync done: ${added} added, ${removed} removed, ${failed} failed`
+      + (braked ? `, ${heldBack} removals held back by the brake` : '')
+      + ` (${list.ids.size} listed, ${notInGuild} not in the guild).`);
     return summary;
   } catch (err) {
     console.error(`[Sponsor] sync failed: ${err?.message ?? err}`);
@@ -306,6 +337,6 @@ function stopSponsorSync() {
 module.exports = {
   LINK_TTL_SECONDS, MIN_SECRET_LENGTH, VERIFY_BUTTON_ID,
   buildLinkToken, normalizeBaseUrl, startUrl, linkFor,
-  settings, fetchMembers, diffSponsorRoles, runSync, msUntilHour,
+  settings, fetchMembers, diffSponsorRoles, removalBrake, BRAKE_MIN_REMOVALS, runSync, msUntilHour,
   startSponsorSync, stopSponsorSync,
 };

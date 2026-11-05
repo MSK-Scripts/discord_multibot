@@ -64,10 +64,16 @@ async function sync(interaction) {
 
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
   console.log(`[Sponsor] manual sync requested by ${interaction.user.id}.`);
-  const result = await sponsor.runSync(interaction.client);
+  // force bypasses the removal brake for this one run only. The daily run
+  // never sets it: a mass removal always needs a human to look first.
+  const force = interaction.options.getBoolean('force') === true;
+  const result = await sponsor.runSync(interaction.client, { force });
 
   let content;
-  if (result.ok) content = t('sponsor.sync.done', { added: result.added, removed: result.removed, failed: result.failed, listed: result.listed });
+  if (result.ok) {
+    content = t('sponsor.sync.done', { added: result.added, removed: result.removed, failed: result.failed, listed: result.listed });
+    if (result.braked) content += '\n' + t('sponsor.sync.braked', { count: result.heldBack });
+  }
   else if (result.reason === 'busy') content = t('sponsor.sync.busy');
   else content = t('sponsor.sync.failed');
   await interaction.editReply({ content });
@@ -78,7 +84,8 @@ module.exports = {
   feature: 'sponsor',
   data: applyMeta(new SlashCommandBuilder(), 'sponsor')
     .addSubcommand(sub => sub.setName('post').setDescription(optionText('sponsor', 'post')))
-    .addSubcommand(sub => sub.setName('sync').setDescription(optionText('sponsor', 'sync'))),
+    .addSubcommand(sub => sub.setName('sync').setDescription(optionText('sponsor', 'sync'))
+      .addBooleanOption(o => o.setName('force').setDescription(optionText('sponsor', 'force')).setRequired(false))),
 
   async execute(interaction) {
     if (!await guard(interaction, 'sponsor')) return;
