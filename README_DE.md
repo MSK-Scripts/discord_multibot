@@ -188,6 +188,8 @@ DB_NAME=es_extended
 | `/send_message` | Sendet eine benutzerdefinierte Nachricht per Modal | ✅ Manager / Founder |
 | `/send_embed` | Sendet ein vollständig anpassbares Embed per Modal | ✅ Manager / Founder |
 | `/backup_database` | Erstellt ein MySQL-Datenbank-Backup und lädt es in den Log-Channel hoch | ✅ Founder |
+| `/sponsor post` | Sendet das GitHub-Sponsors-Panel mit dem Verifizieren-Button | ✅ Manager / Founder |
+| `/sponsor sync` | Gleicht die Sponsor-Rolle sofort ab, statt auf den täglichen Lauf zu warten | ✅ Manager / Founder |
 | `/ping` | Zeigt Bot-Latenz und API-Antwortzeit | — |
 | `/userinfo` | Zeigt Infos und Minigame-Punkte eines Benutzers | — |
 | `/clear` | Löscht bis zu 100 Nachrichten auf einmal | ✅ Team |
@@ -200,6 +202,18 @@ DB_NAME=es_extended
 - `✅ Verification` — vergibt die Member-Rolle
 - `🎁 Giveaway Notify` — schaltet die Giveaway-Benachrichtigungsrolle um
 - `⏰ Garage / Handcuffs / Storage / Vehicle Keys` — schaltet Script-Update-Rollen um
+
+**GitHub-Sponsors-Rolle** (standardmäßig aus, `features.sponsor` in `config/config.jsonc`):
+Ein Shop verknüpft den GitHub-Account eines Mitglieds, prüft das Sponsoring und
+vergibt die Rolle. Der Button `Verifizieren` im Panel gibt dem Mitglied einen
+persönlichen Link in den Shop, signiert mit `SPONSOR_LINK_SECRET` und 15 Minuten
+gültig. Eine Minute nach dem Start und danach täglich zur Stunde `syncHour`
+(Serverzeit) holt der Bot mit `SPONSOR_SYNC_SECRET` die Sponsorenliste des Shops
+und vergibt oder entzieht die Rolle passend dazu. Lässt sich die Liste nicht
+abrufen oder lesen, wird keine Rolle geändert. Einstellungen: `enabled`, `role`
+(Standard `sponsor` aus dem Block `roles`), `shopBaseUrl` (https), `sponsorsUrl`
+(der Link-Button im Panel), `syncHour`. Beide Secrets stehen in der `.env`, je
+mindestens 32 Zeichen lang und gleich wie im Shop.
 
 ### Events Bot
 
@@ -311,6 +325,7 @@ discord_multibot/
 ├── core/
 │   ├── config.js                    ← Umgebungskonfiguration
 │   ├── utils.js                     ← Gemeinsame Helfer (makeEmbed, readJson, …)
+│   ├── sponsor.js                   ← GitHub Sponsors: Link-Token, Sponsorenliste, täglicher Rollenabgleich
 │   └── pointsManager.js             ← Punkte lesen/schreiben + Reward-Benachrichtigungen
 ├── data/
 │   ├── points.json                  ← Persistente Benutzerpunkte (wird automatisch erstellt)
@@ -322,6 +337,7 @@ discord_multibot/
     │   └── commands/
     │       ├── community.js          ← /information, /rules, /roles
     │       ├── admin.js              ← /backup_database, /send_message, /send_embed
+    │       ├── sponsor.js            ← /sponsor post, /sponsor sync
     │       ├── support.js            ← /script_guides
     │       ├── orders.js             ← /donation, /order_terms, /order_price
     │       ├── utility.js            ← /ping, /userinfo, /clear
